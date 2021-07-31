@@ -3,7 +3,7 @@ node_modules/
 package-lock.json
 
 #Python pycache directories
- __pycache__/
- *.pyc
+__pycache__/
+*.pyc
 
 #We can just add to gitignore as we go
