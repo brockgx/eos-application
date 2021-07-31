@@ -1,1 +1,0 @@
-Dynamic react frontend for the portal to connect and use data from the python backend
