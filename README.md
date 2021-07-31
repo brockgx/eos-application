@@ -1,6 +1,7 @@
 # eos-application
 The application side for the project EOS Monitor, includes backend and portal frontend (SEPA/B)
-  
+
+# React - Frontend
 ### Initial Setup
 Uses a pretty similar structure to create-react-app, only difference mainly being the manual creation.
 * Folder structure as follows (in client folder):
@@ -26,3 +27,6 @@ Most of the work should be done in the `src` folder, as one is to create pages, 
 
 I suppose this is mainly for you @CompSciAlex, but anyone can view to understand.  
 Let me know if anything else is needed.
+
+# Python/Flask - Backend
+TODO
