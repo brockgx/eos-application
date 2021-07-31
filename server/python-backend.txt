@@ -1,1 +1,0 @@
-The python backend used for API calls with the frontend and connecting via sockets to the agents
