@@ -60,3 +60,5 @@ def do_it_all():
   yikes = start_socket_listener()
   bind_socket(yikes)
   accept_new_connections(yikes)
+
+do_it_all()
