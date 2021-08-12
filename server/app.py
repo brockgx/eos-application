@@ -6,6 +6,8 @@ import os
 from modules.routes.test_routes import test_routes
 
 #Setup any constants need to be used
+HOST = "127.0.0.1"
+PORT = 9999
 
 #Setup any variables needed to be used
 
