@@ -1,6 +1,8 @@
 #Import appropriate libraries
 import socket
 import threading
+import time
+from queue import Queue
 
 #Define any constant expressions
 IP = "127.0.0.1"
@@ -9,6 +11,9 @@ PORT = 1337
 #Define any variables
 all_connections = []
 all_addresses = []
+NUMBER_OF_THREADS = 2
+JOB_NUMBER = [1, 2]
+queue = Queue()
 
 #Create the server socket and start listening
 def start_socket_listener():
@@ -49,16 +54,118 @@ def accept_new_connections(soc):
       all_addresses.append(address)
 
       print(f"Connection from {address} has been established!")
-      for addr in all_addresses:
-        print(f"{addr}")
 
   except:
     print("Error accepting new connection")
 
+#Listing Connections
+def list_all_connections():
+    results = ''
+    print("List start")
+    for i, conn in enumerate(all_connections):
+        print("List try")
+        try:
+            print("Before try")
+            conn.send(str.encode("PINGING"))
+            conn.recv(1024)
+            print("List ping")
+
+        except:
+            del all_connections[i]
+            del all_addresses[i]
+            print(f'I got deleted {i}')
+            continue
+
+        results += str(i) + "   " + str(all_addresses[i][0]) + "   " + str(all_addresses[i][1]) + "\n"
+        print("List display")
+
+    print("----Clients----" + "\n" + results)
+
+# Selecting the target client
+def get_target():
+    try:
+        target = input("Please select the Client ID: ")
+        target = int(target)
+        conn = all_connections[target]
+        print("You are now connected to :" + str(all_addresses[target][0]))
+        print(str(all_addresses[target][0]) + ">", end="")
+
+        return conn
+
+    except:
+        print("Selection not valid")
+        return None
+
+# Send commands to client
+def send_target_commands(conn):   
+    while True:
+        try:
+            cmd = input()
+            if cmd == 'quit':
+                break
+            if cmd == 'dataone' or cmd == 'datatwo' : #change into function
+                conn.send(str.encode(cmd))
+                time.sleep(2)  
+                client_response = str(conn.recv(1024), "utf-8")
+                print(client_response)
+                break #Switch function
+            else:
+                print("Command not valid")
+                break
+              
+        except:
+            print("Error sending commands")
+            break
+
+def manage_clients():
+    while True:
+        cmd = input(">> ")
+        if cmd == 'list':
+            list_all_connections()
+        elif 'select' in cmd:
+            conn = get_target()
+            if conn is not None:
+                send_target_commands(conn)
+        elif 'exit' in cmd:
+            exit() #exit command for turtle to be added
+        else:
+            print("Command not recognized")
+
+# Create worker threads
+def createworkers():
+    for i in range(NUMBER_OF_THREADS):
+        t = threading.Thread(target=do_it_all)
+        t.daemon = True
+        t.start()
+
+
 #Combiner TEST
 def do_it_all():
-  yikes = start_socket_listener()
-  bind_socket(yikes)
-  accept_new_connections(yikes)
+   while True:
+      x = queue.get()
+      if x == 1:
+        yikes = start_socket_listener()
+        bind_socket(yikes)
+        accept_new_connections(yikes)
+      if x == 2:
+        manage_clients()
 
-do_it_all()
+      queue.task_done()
+
+def create_jobs():
+    for x in JOB_NUMBER:
+        queue.put(x)
+
+    queue.join()
+
+createworkers()
+create_jobs()
+
+
+#Listing all connections  /.
+#Select a target      /.
+#Data Transmissions      
+#AES modules importing
+#Switch Statement   /.
+#SSL
+#Closing a connection
