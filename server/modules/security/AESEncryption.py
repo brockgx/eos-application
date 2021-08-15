@@ -8,6 +8,7 @@ def RandomIV():
 	return str(random_number)
 
 def do_encrypt(msg):
+    global fileSecret
     fileSecret = str.encode(RandomIV())
     obj = AES.new('xaPiWZNUmOMo5r64', AES.MODE_CFB, fileSecret)
     ciphertext = obj.encrypt(msg)
@@ -15,6 +16,7 @@ def do_encrypt(msg):
 
 
 def do_decrypt(ciphertext):
+    global fileSecret
     obj2 = AES.new('xaPiWZNUmOMo5r64', AES.MODE_CFB, fileSecret)
     message = obj2.decrypt(ciphertext)
     return message
