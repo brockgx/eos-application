@@ -16,6 +16,7 @@ function App() {
     <Router>
       <div className="App">
         <h1>Hello dude this is a test exercise</h1>
+        <h2> Subtitle</h2>
         <Route path="/" exact component={Home} />
 
         {/*The route used for the concept of the dataflow*/}
