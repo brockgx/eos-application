@@ -4,6 +4,9 @@ import threading
 import time
 from queue import Queue
 
+#Import in house libraries
+from socket_data_transfer import sendSocketData, receiveSocketData
+
 #Define any constant expressions
 IP = "127.0.0.1"
 PORT = 1337
@@ -61,23 +64,19 @@ def accept_new_connections(soc):
 #Listing Connections
 def list_all_connections():
     results = ''
-    print("List start")
     for i, conn in enumerate(all_connections):
-        print("List try")
         try:
-            print("Before try")
-            conn.send(str.encode("PINGING"))
-            conn.recv(1024)
-            print("List ping")
+            sendSocketData(conn, "PINGING")
+            #conn.send(str.encode("PINGING"))
+            receiveSocketData(conn)
+            #conn.recv(1024)
 
         except:
             del all_connections[i]
             del all_addresses[i]
-            print(f'I got deleted {i}')
             continue
 
         results += str(i) + "   " + str(all_addresses[i][0]) + "   " + str(all_addresses[i][1]) + "\n"
-        print("List display")
 
     print("----Clients----" + "\n" + results)
 
@@ -104,9 +103,10 @@ def send_target_commands(conn):
             if cmd == 'quit':
                 break
             if cmd == 'dataone' or cmd == 'datatwo' : #change into function
-                conn.send(str.encode(cmd))
-                time.sleep(2)  
-                client_response = str(conn.recv(1024), "utf-8")
+                #Send via function
+                sendSocketData(conn, cmd)
+                time.sleep(2)
+                client_response = receiveSocketData(conn)
                 print(client_response)
                 break #Switch function
             else:
