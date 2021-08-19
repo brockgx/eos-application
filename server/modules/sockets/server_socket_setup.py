@@ -67,9 +67,7 @@ def list_all_connections():
     for i, conn in enumerate(all_connections):
         try:
             sendSocketData(conn, "PINGING")
-            #conn.send(str.encode("PINGING"))
             receiveSocketData(conn)
-            #conn.recv(1024)
 
         except:
             del all_connections[i]
@@ -102,13 +100,12 @@ def send_target_commands(conn):
             cmd = input()
             if cmd == 'quit':
                 break
-            if cmd == 'dataone' or cmd == 'datatwo' : #change into function
-                #Send via function
+            if cmd == 'dataone' or cmd == 'datatwo' :
                 sendSocketData(conn, cmd)
                 time.sleep(2)
                 client_response = receiveSocketData(conn)
                 print(client_response)
-                break #Switch function
+                break
             else:
                 print("Command not valid")
                 break
