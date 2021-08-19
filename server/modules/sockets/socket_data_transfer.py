@@ -4,6 +4,7 @@
 
 #Constants
 HEADERSIZE = 10
+RECVSIZE = 16
 
 #Global variables
 
@@ -27,7 +28,7 @@ def receiveSocketData(socketConn):
 
   while receive_msg:
     try:
-      msg = socketConn.recv(16)
+      msg = socketConn.recv(RECVSIZE)
     except:
       receive_msg = False
     
