@@ -4,6 +4,7 @@ import os
 
 #Import any custom made modules
 from modules.routes.test_routes import test_routes
+from modules.database.prototype_database import db
 
 #Setup any constants need to be used
 HOST = "127.0.0.1"
@@ -14,6 +15,12 @@ PORT = 5000
 #Instantiate the flask application
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+#Instantiate the DB (SQLLite for testing)
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:////{basedir}/modules/database/test.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= False
+db.app = app
+db.init_app(app)
 
 ##CONTENT##
 @app.route('/', methods=['GET'])
