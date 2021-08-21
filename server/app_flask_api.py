@@ -7,7 +7,7 @@ from modules.routes.test_routes import test_routes
 
 #Setup any constants need to be used
 HOST = "127.0.0.1"
-PORT = 9999
+PORT = 5000
 
 #Setup any variables needed to be used
 
@@ -26,7 +26,9 @@ def home_route():
 #Implement route module
 app.register_blueprint(test_routes)
 
-#Setup the flask app to listen
-if __name__ == '__main__':
-  port = 1337
-  app.run(host='127.0.0.1', port=port, debug=True)
+#Function for running the app
+def start_flask_api():
+  if __name__ == '__main__':
+    app.run(host=HOST,port=PORT,debug=True)
+
+start_flask_api()
