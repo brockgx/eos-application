@@ -32,7 +32,7 @@ def do_encrypt(msg):
     Key = str(RandomKey())
 
     try:
-        KeyFile = open("/home/devmain/uni-work/app-resources/eos-app/server/modules/security/PassIV","r")
+        KeyFile = open("PassIV","r")
     except IOError as err:
         print(err)
     KeyFileLines = KeyFile.read().splitlines()
