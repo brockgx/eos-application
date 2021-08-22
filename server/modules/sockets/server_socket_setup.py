@@ -5,7 +5,7 @@ import time
 from queue import Queue
 
 #Import in house libraries
-from socket_data_transfer import sendSocketData, receiveSocketData
+from .socket_data_transfer import sendSocketData, receiveSocketData
 
 #Define any constant expressions
 IP = "127.0.0.1"
@@ -154,10 +154,6 @@ def create_jobs():
         queue.put(x)
 
     queue.join()
-
-createworkers()
-create_jobs()
-
 
 #Listing all connections  /.
 #Select a target      /.

@@ -6,4 +6,6 @@ package-lock.json
 __pycache__/
 *.pyc
 
+#Database files
+*.db
 #We can just add to gitignore as we go
