@@ -8,4 +8,8 @@ __pycache__/
 
 #Database files
 *.db
+
+#Encryption key file
+PassIV
+
 #We can just add to gitignore as we go

@@ -31,7 +31,10 @@ def do_encrypt(msg):
     fileSecret = str(RandomIV())
     Key = str(RandomKey())
 
-    KeyFile = open("PassIV","r")
+    try:
+        KeyFile = open("/home/devmain/uni-work/app-resources/eos-app/server/modules/security/PassIV","r")
+    except IOError as err:
+        print(err)
     KeyFileLines = KeyFile.read().splitlines()
     KeyForEncryptionOfKey = (KeyFileLines[0])
     IVForEncryptionOfIV = (KeyFileLines[1])
@@ -48,7 +51,6 @@ def do_encrypt(msg):
     msg = bytes(msg,'UTF-8')
     MessageObj = AES.new(Key, AES.MODE_CFB, fileSecret)
     ciphertext = MessageObj.encrypt(msg)
-    print(decryptedcipher)
     return cipherkeys, ciphertext
     
 

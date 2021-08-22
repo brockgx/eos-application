@@ -2,6 +2,7 @@
 import socket
 import threading
 import time
+import requests
 from queue import Queue
 
 #Import in house libraries
@@ -100,11 +101,13 @@ def send_target_commands(conn):
             cmd = input()
             if cmd == 'quit':
                 break
-            if cmd == 'dataone' or cmd == 'datatwo' :
+            if cmd == 'dataone' or cmd == 'datatwo':
                 sendSocketData(conn, cmd)
                 time.sleep(2)
                 client_response = receiveSocketData(conn)
                 print(client_response)
+                ## Push to DB
+                requests.post("http://127.0.0.1:5000/testone", data=client_response)
                 break
             else:
                 print("Command not valid")
