@@ -21,6 +21,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:////{basedir}/modules/database/
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= False
 db.app = app
 db.init_app(app)
+#db.create_all()
 
 ##CONTENT##
 @app.route('/', methods=['GET'])

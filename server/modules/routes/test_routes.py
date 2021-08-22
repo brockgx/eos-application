@@ -1,18 +1,20 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 import json
 
 from ..database.prototype_database import db, Random
 
 test_routes = Blueprint('test_routes',__name__)
 
-@test_routes.route("/testone/<message>")
-def test_one(message):
-  test_one = Random(msg=message)
+@test_routes.route("/testone", methods=['POST'])
+def test_one():
+  new_data = request.data
+  print(new_data.decode("utf-8"))
+  test_one = Random(msg=new_data.decode("utf-8"))
 
   db.session.add(test_one)
   db.session.commit()
 
-  return "Test one"
+  return "Data added successfully"
 
 @test_routes.route("/testget")
 def test_get():
