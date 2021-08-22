@@ -28,35 +28,45 @@ def RandomKey():
 def do_encrypt(msg):
     global fileSecret
     global Key
+    fileSecret = str(RandomIV())
+    Key = str(RandomKey())
 
-    fileSecret = str.encode(RandomIV())
-    Key = RandomKey()
-    obj = AES.new(Key, AES.MODE_CFB, fileSecret)
-    ciphertext = obj.encrypt(msg)
-    return ciphertext
+    KeyFile = open("PassIV","r")
+    KeyFileLines = KeyFile.read().splitlines()
+    KeyForEncryptionOfKey = (KeyFileLines[0])
+    IVForEncryptionOfIV = (KeyFileLines[1])
+    KeyFile.close()
+
+    KeyObj = AES.new(KeyForEncryptionOfKey, AES.MODE_CFB, IVForEncryptionOfIV)
+    Keyphrase = bytes(Key + "," + fileSecret,"UTF-8")
+    cipherkeys = KeyObj.encrypt(Keyphrase)
+
+
+    testKeyObj = AES.new(KeyForEncryptionOfKey, AES.MODE_CFB, IVForEncryptionOfIV)
+    decryptedcipher = testKeyObj.decrypt(cipherkeys)
+
+    msg = bytes(msg,'UTF-8')
+    MessageObj = AES.new(Key, AES.MODE_CFB, fileSecret)
+    ciphertext = MessageObj.encrypt(msg)
+    print(decryptedcipher)
+    return cipherkeys, ciphertext
+    
 
 # This function will take an input, use the encrypted data and decrypt it using the IV and the key. #
 
-def do_decrypt(ciphertext):
-    global fileSecret
-    global Key
+def do_decrypt_key(Message):
+    KeyFiles = open("PassIV","r")
+    KeyFileLines = KeyFiles.read().splitlines()
+    KeyForDecryptionOfKey = (KeyFileLines[0])
+    IVForDecryptionOfIV = (KeyFileLines[1])
+    testKeyObj = AES.new(KeyForDecryptionOfKey, AES.MODE_CFB, IVForDecryptionOfIV)
+    decryptedKey = testKeyObj.decrypt(Message)
+    return decryptedKey
 
-    obj2 = AES.new(Key, AES.MODE_CFB, fileSecret)
-    message = obj2.decrypt(ciphertext)
-    return message
 
-# This function will retrieve the key that was used to encrypt the current message. #
+def do_decrypt(Message,Key,IV):
+    testKeyObj = AES.new(Key, AES.MODE_CFB,IV)
+    decryptedMessage = testKeyObj.decrypt(Message)
+    return decryptedMessage
 
-def RetrieveKey():
-	global Key
-
-	IV = str(Key)
-	return IV
-	
-#This function will retrive the IV that was used to encrypt the current message. #
-def RetrieveIV():
-	global fileSecret
-
-	Key = str(fileSecret.decode())
-	return Key
 	
