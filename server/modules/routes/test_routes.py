@@ -20,17 +20,16 @@ def test_one():
 def test_get():
   data = Random.query.all()
 
-  final = ""
+  final = []
   first = True
   for d in data:
-    if first:
-      final += d.msg
-      first = False
-    else:
-      final += " -:- " + d.msg
+    final.append({"id": d.id, "message": d.msg})
 
 
-  return final
+  return jsonify({
+    "description": "Random Messages",
+    "content": final
+  })
 
 @test_routes.route("/testdata")
 def test_data():
