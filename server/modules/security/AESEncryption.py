@@ -1,5 +1,6 @@
 from Crypto.Cipher import AES
 import secrets
+import pickle
 global fileSecret
 
 
@@ -70,5 +71,10 @@ def do_decrypt(Message,Key,IV):
     testKeyObj = AES.new(Key, AES.MODE_CFB,IV)
     decryptedMessage = testKeyObj.decrypt(Message)
     return decryptedMessage
+
+def serialize(Message):
+	Message = do_encrypt(Message)
+	SerializedMessage = bytes(pickle.dumps(Message))
+	return SerializedMessage
 
 	
