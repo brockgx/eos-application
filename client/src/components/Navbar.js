@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 
 import { Navbar, Nav, Container } from 'react-bootstrap'
-import { FaRegUserCircle, FaHome, FaEye, FaWeight } from 'react-icons/fa'
+import { FaRegUserCircle, FaHome, FaEye } from 'react-icons/fa'
 
 const NavbarComp = () => {
   return (

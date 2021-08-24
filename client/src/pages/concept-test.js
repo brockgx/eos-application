@@ -8,25 +8,38 @@ import '../styles/concept.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 //Concept Page view/component
-const Concept = (props) => {
-     const [devices, setDevices] = useState([])
+const Concept = () => {
+     const [messages, setMessages] = useState([])
   
-    // useEffect(() => {
-    //   const getDevices = async () => {
-    //     const devicesFromServer = await fetchDevices()
-    //     setDevices(devicesFromServer)
-    //   }
+    useEffect(() => {
+      const getMessages = async () => {
+        const messagesFromServer = await fetchMessages()
+        setMessages(messagesFromServer)
+      }
   
-    //   getDevices()
-    // }, [])
+      getMessages()
+    }, [])
   
-    // // Fetch device data from DB
-    // const fetchDevices = async () => {
-    //   const res = await fetch('sqlite:/path/to/devices')
-    //   const data = await res.json()
-  
-    //   return data
-    // }
+    // Fetch device data from DB
+    const fetchMessages = async () => {
+      const resp = await fetch('/testdata')
+      const data = await resp.json()
+      if(resp.ok) {
+        return data;
+      } else {
+        throw Error(`Request rejected with status ${resp.status}`);
+      }
+    }
+
+    // //Get Method
+    // const apiGet = () => {
+    //     fetch("/api")
+    //     .then((response) => response.json())
+    //     .then((json) => {
+    //         console.log(json);
+    //         setData(json);
+    //     });
+    // };
 
     // Columns for device grid
     const columns = [
@@ -36,13 +49,12 @@ const Concept = (props) => {
             width: 80,
         },
         { 
-            field: "msg",
+            field: "message",
             headerName: "Message", 
             width: 280, 
             sortable: false,
         }
     ]
-
     return (
         <Container fluid="md">
             <Row className="titleContainer">
@@ -53,9 +65,9 @@ const Concept = (props) => {
                     <h2 className="containerTitle">Connected Machines</h2>
                     <DataGrid
                         className="deviceList"
-                        rows={devices}
-                        pageSize={5}
+                        rows={messages}
                         disableColumnMenu
+                        disableSelectionOnClick
                         columns={columns}
                     />
                 </Col>
