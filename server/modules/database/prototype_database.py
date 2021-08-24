@@ -9,3 +9,11 @@ class Random(db.Model):
 
   def __repr__(self):
     return '<Message %r>' % self.msg
+
+class AppMetrics(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  machine_name = db.Column(db.String(256), nullable=False)
+  timestamp = db.Column(db.String(256), nullable=False)
+  app_name = db.Column(db.String(256), nullable=False)
+  app_cpu = db.Column(db.Float(2), nullable=False)
+  app_ram = db.Column(db.Float(2), nullable=False)

@@ -4,7 +4,7 @@ import os
 
 #Import any custom made modules
 from modules.routes.test_routes import test_routes
-from modules.database.prototype_database import db
+from modules.database.prototype_database import db, AppMetrics
 
 #Setup any constants need to be used
 HOST = "127.0.0.1"
@@ -21,7 +21,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:////{basedir}/modules/database/
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= False
 db.app = app
 db.init_app(app)
-#db.create_all()
+db.create_all()
 
 ##CONTENT##
 @app.route('/', methods=['GET'])

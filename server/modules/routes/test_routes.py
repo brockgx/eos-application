@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 import json
 
-from ..database.prototype_database import db, Random
+from ..database.prototype_database import db, Random, AppMetrics
 
 test_routes = Blueprint('test_routes',__name__)
 
@@ -46,3 +46,36 @@ def test_data():
 
   #final = json.loads(result.get_data().decode("utf-8"))
   return result
+
+@test_routes.route("/addmetrics", methods=["POST"])
+def add_metrics():
+  new_metrics = request.data
+  final_metrics = new_metrics.decode("utf-8")
+
+  obj = json.loads(final_metrics)
+
+  print(obj["machine_name"])
+
+  for app in obj["app_metrics"]:
+    db_metric = AppMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],app_name=app["name"],app_cpu=app["cpu_usage"],app_ram=app["ram_usage"])
+    db.session.add(db_metric)
+
+  db.session.commit()
+
+  return "New Metrics Successfully added"
+
+@test_routes.route("/getmetrics", methods=["GET"])
+def get_metrics():
+  data = AppMetrics.query.all()
+
+  final = []
+  for d in data:
+    final.append({"id": d.id, "machine_name": d.machine_name, "time": d.timestamp, "app_name": d.app_name, "app_cpu": d.app_cpu, "app_ram": d.app_ram})
+
+
+  return jsonify({
+    "description": "Application Machine Metrics",
+    "content": final
+  })
+
+  return "Metrics received!!"

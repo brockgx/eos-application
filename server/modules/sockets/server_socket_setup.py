@@ -107,7 +107,7 @@ def send_target_commands(conn):
                 client_response = receiveSocketData(conn)
                 print(client_response)
                 ## Push to DB
-                requests.post("http://127.0.0.1:5000/testone", data=client_response)
+                requests.post("http://127.0.0.1:5000/addmetrics", data=client_response)
                 break
             else:
                 print("Command not valid")
