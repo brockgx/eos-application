@@ -4,7 +4,7 @@ import os
 
 #Import any custom made modules
 from modules.routes.test_routes import test_routes
-from modules.database.prototype_database import db
+from modules.database.prototype_database import db, AppMetrics
 
 #Setup any constants need to be used
 HOST = "127.0.0.1"

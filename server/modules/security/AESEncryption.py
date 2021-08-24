@@ -1,5 +1,6 @@
 from Crypto.Cipher import AES
 import secrets
+import pickle
 global fileSecret
 
 
@@ -32,7 +33,7 @@ def do_encrypt(msg):
     Key = str(RandomKey())
 
     try:
-        KeyFile = open("PassIV","r")
+        KeyFile = open("/home/devmain/uni-work/app-resources/eos-app/server/modules/security/PassIV","r")
     except IOError as err:
         print(err)
     KeyFileLines = KeyFile.read().splitlines()
@@ -70,5 +71,10 @@ def do_decrypt(Message,Key,IV):
     testKeyObj = AES.new(Key, AES.MODE_CFB,IV)
     decryptedMessage = testKeyObj.decrypt(Message)
     return decryptedMessage
+
+def serialize(Message):
+	Message = do_encrypt(Message)
+	SerializedMessage = bytes(pickle.dumps(Message))
+	return SerializedMessage
 
 	
