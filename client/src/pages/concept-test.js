@@ -32,28 +32,42 @@ const Concept = () => {
       }
     }
 
-    // //Get Method
-    // const apiGet = () => {
-    //     fetch("/api")
-    //     .then((response) => response.json())
-    //     .then((json) => {
-    //         console.log(json);
-    //         setData(json);
-    //     });
-    // };
+    //Get Method
+    const apiGet = () => {
+        fetch("/api")
+        .then((response) => response.json())
+        .then((json) => {
+            console.log(json);
+            setData(json);
+        });
+    };
 
     // Columns for device grid
     const columns = [
         { 
-            field: "id",
-            headerName: "ID",
-            width: 80,
+            field: "machine-name",
+            headerName: "Machine",
+            width: 140,
         },
         { 
-            field: "message",
-            headerName: "Message", 
-            width: 280, 
-            sortable: false,
+            field: "collection-time",
+            headerName: "Time", 
+            width: 120, 
+        },
+        { 
+            field: "app_metrics",
+            headerName: "Application", 
+            width: 140, 
+        },
+        { 
+            field: "cpu_usage",
+            headerName: "CPU", 
+            width: 100, 
+        },
+        { 
+            field: "ram_usage",
+            headerName: "RAM", 
+            width: 100, 
         }
     ]
     return (
@@ -66,9 +80,10 @@ const Concept = () => {
                     <h2 className="containerTitle">Connected Machines</h2>
                     <DataGrid
                         className="deviceList"
-                        rows={messages.content}
+                        rows={messages}
                         disableColumnMenu
                         disableSelectionOnClick
+                        pageSize={5}
                         columns={columns}
                     />
                 </Col>
