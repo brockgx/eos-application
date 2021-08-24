@@ -22,7 +22,7 @@ const Concept = () => {
   
     // Fetch device data from DB
     const fetchMessages = async () => {
-      const resp = await fetch('/testget')
+      const resp = await fetch('/getmetrics')
       const data = await resp.json()
       if(resp.ok) {
         //console.log(data.content[4].message)
@@ -33,39 +33,39 @@ const Concept = () => {
     }
 
     //Get Method
-    const apiGet = () => {
-        fetch("/api")
-        .then((response) => response.json())
-        .then((json) => {
-            console.log(json);
-            setData(json);
-        });
-    };
+    // const apiGet = () => {
+    //     fetch("/api")
+    //     .then((response) => response.json())
+    //     .then((json) => {
+    //         console.log(json);
+    //         setData(json);
+    //     });
+    // };
 
     // Columns for device grid
     const columns = [
         { 
-            field: "machine-name",
+            field: "machine_name",
             headerName: "Machine",
-            width: 140,
+            width: 120,
         },
         { 
-            field: "collection-time",
+            field: "time",
             headerName: "Time", 
-            width: 120, 
+            width: 160, 
         },
         { 
-            field: "app_metrics",
+            field: "app_name",
             headerName: "Application", 
             width: 140, 
         },
         { 
-            field: "cpu_usage",
+            field: "app_cpu",
             headerName: "CPU", 
             width: 100, 
         },
         { 
-            field: "ram_usage",
+            field: "app_ram",
             headerName: "RAM", 
             width: 100, 
         }
@@ -80,7 +80,7 @@ const Concept = () => {
                     <h2 className="containerTitle">Connected Machines</h2>
                     <DataGrid
                         className="deviceList"
-                        rows={messages}
+                        rows={messages.content}
                         disableColumnMenu
                         disableSelectionOnClick
                         pageSize={5}
