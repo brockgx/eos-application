@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 //Concept Page view/component
 const Concept = () => {
-     const [messages, setMessages] = useState([])
+     const [messages, setMessages] = useState({description: "default desc", content: []})
   
     useEffect(() => {
       const getMessages = async () => {
@@ -22,9 +22,10 @@ const Concept = () => {
   
     // Fetch device data from DB
     const fetchMessages = async () => {
-      const resp = await fetch('/testdata')
+      const resp = await fetch('/testget')
       const data = await resp.json()
       if(resp.ok) {
+        //console.log(data.content[4].message)
         return data;
       } else {
         throw Error(`Request rejected with status ${resp.status}`);
@@ -65,7 +66,7 @@ const Concept = () => {
                     <h2 className="containerTitle">Connected Machines</h2>
                     <DataGrid
                         className="deviceList"
-                        rows={messages}
+                        rows={messages.content}
                         disableColumnMenu
                         disableSelectionOnClick
                         columns={columns}
@@ -90,6 +91,7 @@ const Concept = () => {
                             <Button
                                 className="btnExecute"
                                 bColor={'teal'}
+                                rowsPerPageOptions="[5,10,15]"
                                 textColor={'white'}
                                 text={'Execute'}
                                 onClick={() => {}}

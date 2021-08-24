@@ -17,11 +17,11 @@ app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 #Instantiate the DB (SQLLite for testing)
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:////{basedir}/modules/database/test.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = f'sqlite:///{basedir}\\modules\\database\\test.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= False
 db.app = app
 db.init_app(app)
-#db.create_all()
+db.create_all()
 
 ##CONTENT##
 @app.route('/', methods=['GET'])
