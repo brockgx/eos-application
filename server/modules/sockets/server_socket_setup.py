@@ -109,11 +109,11 @@ def send_target_commands(conn):
                 break
             if cmd == 'datatwo':
                 sendSocketData(conn, cmd)
-                time.sleep(2)
+                time.sleep(4)
                 client_response = receiveSocketData(conn)
                 print(client_response)
                 ## Push to DB
-                requests.post("http://localhost:5000/addmetrics", data=client_response)
+                requests.post("http://1902-49-192-234-73.ngrok.io/addmetrics", data=client_response)
                 break
             else:
                 print("Command not valid")
