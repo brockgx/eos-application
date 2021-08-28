@@ -33,7 +33,7 @@ def do_encrypt(msg):
     Key = str(RandomKey())
 
     try:
-        KeyFile = open("/home/devmain/uni-work/app-resources/eos-app/server/modules/security/PassIV","r")
+        KeyFile = open("PassIV","r")
     except IOError as err:
         print(err)
     KeyFileLines = KeyFile.read().splitlines()
@@ -71,6 +71,21 @@ def do_decrypt(Message,Key,IV):
     testKeyObj = AES.new(Key, AES.MODE_CFB,IV)
     decryptedMessage = testKeyObj.decrypt(Message)
     return decryptedMessage
+
+def decryption(message):
+	transmission = pickle.loads(message)
+	decryptedkey = do_decrypt_key(transmission[0])
+	decrytedkey=decryptedkey.decode()
+	print("These are the keys used to decode the message")
+	print(decryptedkey)
+	print("\n")
+	test = str(decryptedkey).split(",")
+	IV = test[1][:-1]
+	Key = test[0][2:]
+	decryptedmessage = do_decrypt(transmission[1],Key,IV)
+	print("This is the decrypted message")
+	print(decryptedmessage.decode())
+	return
 
 def serialize(Message):
 	Message = do_encrypt(Message)
