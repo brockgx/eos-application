@@ -3,7 +3,7 @@ import pickle
 import time
 
 #import personal libraries
-#from ..security.AESEncryption import serialize
+from ..security.AESEncryption import serialize
 
 #Constants
 HEADERSIZE = 10
