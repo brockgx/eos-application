@@ -9,20 +9,20 @@ import { SidebarData } from './SidebarData'
 
 import '../styles/sidebar.css';
 
+
 const Sidebar = () => {
   const[sidebar, setSidebar] = useState(false)
 
   const showSidebar = () => setSidebar(!sidebar)
   return (
-    <div className="navbar">
+    <div >
       <IconContext.Provider value={{color: '#fff'}}>
-      <div >
+      <div className="navbar">
         <Link to='#' className='menu-bars'>
           <FaIcons.FaBars onClick={showSidebar}/>
         </Link>
       </div>
       <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-        
         <ul className='nav-menu-items' onClick={showSidebar}>
           <li className='navbar-toggle'>
             <Link to="#" className='menu-bars'>
@@ -43,7 +43,6 @@ const Sidebar = () => {
       </nav>
       </IconContext.Provider>
     </div>
-    
   )
 }
 

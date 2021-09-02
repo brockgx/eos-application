@@ -7,6 +7,8 @@ import Machines from '../components/concept/Machines';
 import Commands from '../components/concept/Commands';
 
 import '../styles/concept.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.min.js'
 
 //Concept Page view/component
 const Concept = () => {
