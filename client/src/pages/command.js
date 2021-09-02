@@ -1,14 +1,12 @@
 import React from 'react';
 
-
-//Main homepage view/component
-const Home = (props) => {
+const Commands = (props) => {
     return (
         <div>
-            <h1>HOMEPAGE</h1>
+            <h1>COMMANDS PAGE</h1>
             <p>[TO DO]</p>
         </div>
     )
 }
 
-export { Home }
+export { Commands }

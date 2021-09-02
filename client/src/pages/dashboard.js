@@ -1,13 +1,13 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar'
+import React from 'react';
 
-//Dashboard Page view/component
-const dashboard = () => {
-  return (
-    <div>
-      <Sidebar />
-    </div>
-  )
+
+const Dashboard = (props) => {
+    return (
+        <div>
+            <h1>DASHBOARD PAGE</h1>
+            <p>[TO DO]</p>
+        </div>
+    )
 }
 
-export default dashboard
+export { Dashboard }

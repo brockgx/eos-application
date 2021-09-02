@@ -6,7 +6,7 @@ import { FaRegUserCircle, FaHome, FaEye } from 'react-icons/fa'
 
 const NavbarComp = () => {
   return (
-    <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
+    <Navbar className="Navbar">
       <Container>
         <Navbar.Brand style={{ color: 'teal' }}>EoS Monitor</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

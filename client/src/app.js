@@ -4,26 +4,35 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 //All page imports here
 import { Home } from './pages/home';
-import { Concept } from './pages/concept-test';
+import { Dashboard } from './pages/dashboard';
+import { Concept } from './pages/concept';
+import { Query } from './pages/query';
+import { Commands } from './pages/command';
+import { Support } from './pages/support';
+
+
 
 //All component imports here
-import NavbarComp from './components/Navbar';
+import Sidebar from './components/Sidebar';
 
 //This is the main application component for React
 //it houses the view, which is a single navbar component
 //and the various other pages, which are routed using React-Router
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <NavbarComp />
+    <div className="App">
+      <Router>
+        <Sidebar />
         <Switch>
-          <Route path="/home" exact component={Home} />
-          {/*The route used for the concept of the dataflow*/}
+          <Route path="/" exact component={Home} />
           <Route path="/concept" exact component={Concept} />
+          <Route path="/dashboard" exact component={Dashboard} />
+          <Route path="/query" exact component={Query} />
+          <Route path="/command" exact component={Commands} />
+          <Route path="/support" exact component={Support} />
         </Switch>
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 }
 

@@ -57,7 +57,7 @@ def add_metrics():
   print(obj["machine_name"])
 
   for app in obj["app_metrics"]:
-    db_metric = AppMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],app_name=app["name"],app_cpu=app["cpu_usage"],app_ram=app["ram_usage"])
+    db_metric = AppMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],app_name=app["name"],app_cpu=app["cpu"],app_ram=app["ram"])
     db.session.add(db_metric)
 
   db.session.commit()
