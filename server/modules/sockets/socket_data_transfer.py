@@ -17,7 +17,7 @@ def sendSocketData(socketConn, message):
   #full_msg = bytes(f'{len(str(serialized_msg)):<{HEADERSIZE}}' + str(serialized_msg)[2:][:-1], "utf-8")
   #encrypted_test = serialize(message)
   #print(encrypted_test)
-  full_msg = bytes(f'{len(message):<{HEADERSIZE}}' + message, "utf-8")
+  fullMsg = bytes(f'{len(message):<{HEADERSIZE}}' + message, "utf-8")
   #length = bytes(f'{len(str(encrypted_test)):<{HEADERSIZE}}')
   #full_msg = length + encrypted_test
   #print(full_msg)
@@ -25,7 +25,7 @@ def sendSocketData(socketConn, message):
 
   #Send the message if available
   try:
-    socketConn.sendall(full_msg)
+    socketConn.sendall(fullMsg)
   except:
     print("Failure message")
 
@@ -33,27 +33,27 @@ def sendSocketData(socketConn, message):
 def receiveSocketData(socketConn):
   #function variables
   #receieved_msg = "EMPTY"
-  receive_msg = True
-  new_msg = True
-  length_msg = True
-  complete_msg = b''
+  receiveMsg = True
+  newMsg = True
+  lengthMsg = True
+  completeMsg = b''
 
-  while receive_msg:
+  while receiveMsg:
     try:
       msg = socketConn.recv(RECVSIZE)
     except:
-      receive_msg = False
+      receiveMsg = False
 
     if msg != b'':
-      if new_msg:
-        length_msg = int(msg[:HEADERSIZE])
-        new_msg = False
+      if newMsg:
+        lengthMsg = int(msg[:HEADERSIZE])
+        newMsg = False
         
-      complete_msg += msg
+      completeMsg += msg
       
-      if len(complete_msg)-HEADERSIZE == length_msg:
+      if len(completeMsg)-HEADERSIZE == lengthMsg:
         #Do something with the data - print example
-        receieved_msg = complete_msg[HEADERSIZE:].decode("utf-8")
+        receievedMsg = completeMsg[HEADERSIZE:].decode("utf-8")
 
         #Decrypt here
         #my_msg = receieved_msg[2:][:-1]
@@ -63,8 +63,8 @@ def receiveSocketData(socketConn):
         #deserialized = pickle.loads(byte_msg)
 
 
-        new_msg = True
-        complete_msg = ''
-        receive_msg = False
+        newMsg = True
+        completeMsg = ''
+        receiveMsg = False
         
-  return receieved_msg
+  return receievedMsg

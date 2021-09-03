@@ -19,15 +19,15 @@ PORT = 1337
 #Returned (either):
 #   - False, due to a bad connection
 #   - The socket object, after successful connection
-def connect_to_agent(host, port):
+def connectToAgent(host, port):
   #Try socket connection, otherwise display error
   try:
     sock = socket.socket()
     sock.connect((host,int(port)))
     return sock
-  except Exception as err_msg:
+  except Exception as errMsg:
     print("Failed to connect to the agent")
-    print(f"[Error] Msg: {err_msg}")
+    print(f"[Error] Msg: {errMsg}")
     return False
 
 
@@ -38,39 +38,39 @@ def connect_to_agent(host, port):
 #Returned (either):
 #   - False, due to invalid inputs or validation
 #   - A tuple, of the connection IP and Port #
-def agent_socket_details():
+def getAgentSocketDetails():
   #Initialise variables for loops and the returned result
   validate = True
   result = False
   #Open first loop for getting the IP address
   while validate:
     #Initialise detail validation flags
-    validate_ip = False
-    validate_port = False
+    validateIp = False
+    validatePort = False
     
     #Trigger user input to get the IP address
-    user_ip_selection = input("Enter agent IP > ")
+    userIpSelection = input("Enter agent IP > ")
     
     #Validate the IP address, if correct move to port selection
     #otherwise catch exception and return response, users to enter value in again
     try:
-      ipaddress.IPv4Network(user_ip_selection)
-      validate_ip = True
+      ipaddress.IPv4Network(userIpSelection)
+      validateIp = True
     except:
       print("[Error] Invalid IP entered")
 
     #If IP is valid open loop to enter a port #
-    if validate_ip:
+    if validateIp:
       while validate:
         #Trigger user input to get the Port #
-        user_port_selection = input("Select port #> ")
+        userPortSelection = input("Select port #> ")
 
         #Validate the port #, if true the result will be the details and loops will break
         #otherwise an error will be printed and users will be asked to enter again
-        if 1 <= int(user_port_selection) <= 65535:
-          validate_port = True
+        if 1 <= int(userPortSelection) <= 65535:
+          validatePort = True
           validate = False
-          result = (user_ip_selection, int(user_port_selection))
+          result = (userIpSelection, int(userPortSelection))
         else:
           print("[Error] Invalid port number entered")
   
@@ -83,7 +83,7 @@ def agent_socket_details():
 #   - None
 #Returned:
 #   - None
-def start_server():
+def startServer():
   print("Server started...")
 
   #Start main to get connection details and run an infinte loop
@@ -91,43 +91,43 @@ def start_server():
   while True:
     #Initialise connection flag and retrieve agent details
     #if a new connection is wanted
-    connected_successfully = False
-    machine_connection = input("Connect to a new agent [Y/y else exit] > ")
-    if machine_connection == "Y" or machine_connection == "y":
-      agent_details = agent_socket_details()
+    connectedSuccessfully = False
+    machineConnection = input("Connect to a new agent [Y/y else exit] > ")
+    if machineConnection == "Y" or machineConnection == "y":
+      agentDetails = getAgentSocketDetails()
 
       #If the agent details are correct try and connect to the agent
       #if successful alter the flag to enter command loop otherwise
       #catch exceptions and output error message
-      if agent_details != False:
+      if agentDetails != False:
         try:
-          agent_socket = connect_to_agent(agent_details[0], agent_details[1])
-          if agent_socket != False:
-            connected_successfully = True
-        except Exception as err_msg:
-          print(f"Unable to connect to the agent (IP: {agent_details[0]}, Port: {agent_details[1]})")
-          print(f"[Error] Msg: {err_msg}")
+          agentSocket = connectToAgent(agentDetails[0], agentDetails[1])
+          if agentSocket != False:
+            connectedSuccessfully = True
+        except Exception as errMsg:
+          print(f"Unable to connect to the agent (IP: {agentDetails[0]}, Port: {agentDetails[1]})")
+          print(f"[Error] Msg: {errMsg}")
       else:
         print("Something went wrong with entered details, please enter again...")
     else:
       exit()
     
     #Once connected start the server functions
-    while connected_successfully:
+    while connectedSuccessfully:
       #Continuously gather user input
-      cmd = input(f"[{agent_details[0]} : {agent_details[1]}]> ")
+      cmd = input(f"[{agentDetails[0]} : {agentDetails[1]}]> ")
 
       #Check input against functionality and run a particular process
       #if exit is input, command loop will break and user can reconnect
       if cmd == "getdata" or cmd == "getmessage":
-        sendSocketData(agent_socket, cmd)
+        sendSocketData(agentSocket, cmd)
         time.sleep(2)
-        client_response = receiveSocketData(agent_socket)
+        client_response = receiveSocketData(agentSocket)
         print(client_response)
       elif cmd == "ping":
-        sendSocketData(agent_socket, "PINGING")
+        sendSocketData(agentSocket, "PINGING")
         time.sleep(2)
-        client_response = receiveSocketData(agent_socket)
+        client_response = receiveSocketData(agentSocket)
         print(client_response)
       elif cmd == "exit":
         print("----------------\n Session Closed \n----------------")
