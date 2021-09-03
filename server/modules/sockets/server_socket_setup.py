@@ -1,173 +1,136 @@
-#Import appropriate libraries
+#Import of any third party libraries
 import socket
-import threading
 import time
-import requests
-from queue import Queue
+import ipaddress
+from sys import exit
 
-#Import in house libraries
+#Import of any in house modules
 from .socket_data_transfer import sendSocketData, receiveSocketData
 
-#Define any constant expressions
-IP = "127.0.0.1"
+#Constants
+HOST = "127.0.0.1"
 PORT = 1337
 
-#Define any variables
-all_connections = []
-all_addresses = []
-NUMBER_OF_THREADS = 2
-JOB_NUMBER = [1, 2]
-queue = Queue()
 
-#Create the server socket and start listening
-def start_socket_listener():
+#Function: instantiate socket and connect
+#Params:
+#   - host (server IP to connect to)
+#   - port (the corresponding port to connect TCP)
+#Returned (either):
+#   - False, due to a bad connection
+#   - The socket object, after successful connection
+def connect_to_agent(host, port):
+  #Try socket connection, otherwise display error
   try:
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock = socket.socket()
+    sock.connect((host,int(port)))
+    return sock
+  except Exception as err_msg:
+    print("Failed to connect to the agent")
+    print(f"[Error] Msg: {err_msg}")
+    return False
 
-    return server_socket
 
-  except socket.error as err_msg:
-    print("Socket creation failed - Error: " + str(err_msg))
-
-##Binding socket to port
-def bind_socket(soc):
-  try:
-    print("Binding socket to port: " + str(PORT))
-
-    soc.bind((IP,PORT))
-    soc.listen(5)
-  
-  except socket.error as err_msg:
-    print("Socket binding failed - Error: " + str(err_msg))
-
-#Accepting connections
-def accept_new_connections(soc):
-  for c in all_connections:
-    c.close()
-
-  del all_connections[:]
-  del all_addresses[:]
-
-  try:
-    while True:
-      clientsocket, address = soc.accept()
-      soc.setblocking(1)
-
-      all_connections.append(clientsocket)
-      all_addresses.append(address)
-
-      print(f"Connection from {address} has been established!")
-
-  except:
-    print("Error accepting new connection")
-
-#Listing Connections
-def list_all_connections():
-    results = ''
-    for i, conn in enumerate(all_connections):
-        try:
-            sendSocketData(conn, "PINGING")
-            receiveSocketData(conn)
-
-        except:
-            del all_connections[i]
-            del all_addresses[i]
-            continue
-
-        results += str(i) + "   " + str(all_addresses[i][0]) + "   " + str(all_addresses[i][1]) + "\n"
-
-    print("----Clients----" + "\n" + results)
-
-# Selecting the target client
-def get_target():
+#Function: To get user input of connection IP and Port #
+#          and validate the input
+#Params:
+#   - None
+#Returned (either):
+#   - False, due to invalid inputs or validation
+#   - A tuple, of the connection IP and Port #
+def agent_socket_details():
+  #Initialise variables for loops and the returned result
+  validate = True
+  result = False
+  #Open first loop for getting the IP address
+  while validate:
+    #Initialise detail validation flags
+    validate_ip = False
+    validate_port = False
+    
+    #Trigger user input to get the IP address
+    user_ip_selection = input("Enter agent IP > ")
+    
+    #Validate the IP address, if correct move to port selection
+    #otherwise catch exception and return response, users to enter value in again
     try:
-        target = input("Please select the Client ID: ")
-        target = int(target)
-        conn = all_connections[target]
-        print("You are now connected to :" + str(all_addresses[target][0]))
-        print(str(all_addresses[target][0]) + ">", end="")
-
-        return conn
-
+      ipaddress.IPv4Network(user_ip_selection)
+      validate_ip = True
     except:
-        print("Selection not valid")
-        return None
+      print("[Error] Invalid IP entered")
 
-# Send commands to client
-def send_target_commands(conn):   
-    while True:
-        try:
-            cmd = input()
-            if cmd == 'quit':
-                break
-            if cmd == 'dataone':
-                sendSocketData(conn, cmd)
-                time.sleep(2)
-                client_response = receiveSocketData(conn)
-                print(client_response)
-                break
-            if cmd == 'datatwo':
-                sendSocketData(conn, cmd)
-                time.sleep(4)
-                client_response = receiveSocketData(conn)
-                print(client_response)
-                ## Push to DB
-                requests.post("http://1902-49-192-234-73.ngrok.io/addmetrics", data=client_response)
-                break
-            else:
-                print("Command not valid")
-                break
-              
-        except:
-            print("Error sending commands")
-            break
+    #If IP is valid open loop to enter a port #
+    if validate_ip:
+      while validate:
+        #Trigger user input to get the Port #
+        user_port_selection = input("Select port #> ")
 
-def manage_clients():
-    while True:
-        cmd = input(">> ")
-        if cmd == 'list':
-            list_all_connections()
-        elif 'select' in cmd:
-            conn = get_target()
-            if conn is not None:
-                send_target_commands(conn)
-        elif 'exit' in cmd:
-            exit() #exit command for turtle to be added
+        #Validate the port #, if true the result will be the details and loops will break
+        #otherwise an error will be printed and users will be asked to enter again
+        if 1 <= int(user_port_selection) <= 65535:
+          validate_port = True
+          validate = False
+          result = (user_ip_selection, int(user_port_selection))
         else:
-            print("Command not recognized")
-
-# Create worker threads
-def createworkers():
-    for i in range(NUMBER_OF_THREADS):
-        t = threading.Thread(target=do_it_all)
-        t.daemon = True
-        t.start()
+          print("[Error] Invalid port number entered")
+  
+  #Return either false or the connection details
+  return result
 
 
-#Combiner TEST
-def do_it_all():
-   while True:
-      x = queue.get()
-      if x == 1:
-        yikes = start_socket_listener()
-        bind_socket(yikes)
-        accept_new_connections(yikes)
-      if x == 2:
-        manage_clients()
+#Function: main execution to connect and transfer data (temporary)
+#Params:
+#   - None
+#Returned:
+#   - None
+def start_server():
+  print("Server started...")
 
-      queue.task_done()
+  #Start main to get connection details and run an infinte loop
+  #to run commands and data transfer
+  while True:
+    #Initialise connection flag and retrieve agent details
+    #if a new connection is wanted
+    connected_successfully = False
+    machine_connection = input("Connect to a new agent [Y/y else exit] > ")
+    if machine_connection == "Y" or machine_connection == "y":
+      agent_details = agent_socket_details()
 
-def create_jobs():
-    for x in JOB_NUMBER:
-        queue.put(x)
+      #If the agent details are correct try and connect to the agent
+      #if successful alter the flag to enter command loop otherwise
+      #catch exceptions and output error message
+      if agent_details != False:
+        try:
+          agent_socket = connect_to_agent(agent_details[0], agent_details[1])
+          if agent_socket != False:
+            connected_successfully = True
+        except Exception as err_msg:
+          print(f"Unable to connect to the agent (IP: {agent_details[0]}, Port: {agent_details[1]})")
+          print(f"[Error] Msg: {err_msg}")
+      else:
+        print("Something went wrong with entered details, please enter again...")
+    else:
+      exit()
+    
+    #Once connected start the server functions
+    while connected_successfully:
+      #Continuously gather user input
+      cmd = input(f"[{agent_details[0]} : {agent_details[1]}]> ")
 
-    queue.join()
-
-#Listing all connections  /.
-#Select a target      /.
-#Data Transmissions      
-#AES modules importing
-#Switch Statement   /.
-#SSL
-#Closing a connection
+      #Check input against functionality and run a particular process
+      #if exit is input, command loop will break and user can reconnect
+      if cmd == "getdata" or cmd == "getmessage":
+        sendSocketData(agent_socket, cmd)
+        time.sleep(2)
+        client_response = receiveSocketData(agent_socket)
+        print(client_response)
+      elif cmd == "ping":
+        sendSocketData(agent_socket, "PINGING")
+        time.sleep(2)
+        client_response = receiveSocketData(agent_socket)
+        print(client_response)
+      elif cmd == "exit":
+        print("----------------\n Session Closed \n----------------")
+        break
+      else:
+        print("Command not accepted on the agent")
