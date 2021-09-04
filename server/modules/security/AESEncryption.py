@@ -42,12 +42,8 @@ def do_encrypt(msg):
     KeyFile.close()
 
     KeyObj = AES.new(KeyForEncryptionOfKey, AES.MODE_CFB, IVForEncryptionOfIV)
-    Keyphrase = bytes(Key + "," + fileSecret,"UTF-8")
+    Keyphrase = Key + "," + fileSecret
     cipherkeys = KeyObj.encrypt(Keyphrase)
-
-
-    testKeyObj = AES.new(KeyForEncryptionOfKey, AES.MODE_CFB, IVForEncryptionOfIV)
-    decryptedcipher = testKeyObj.decrypt(cipherkeys)
 
     msg = bytes(msg,'UTF-8')
     MessageObj = AES.new(Key, AES.MODE_CFB, fileSecret)
@@ -73,23 +69,17 @@ def do_decrypt(Message,Key,IV):
     return decryptedMessage
 
 def decryption(message):
-	transmission = pickle.loads(message)
-	decryptedkey = do_decrypt_key(transmission[0])
-	decrytedkey=decryptedkey.decode()
-	print("These are the keys used to decode the message")
-	print(decryptedkey)
-	print("\n")
-	test = str(decryptedkey).split(",")
-	IV = test[1][:-1]
-	Key = test[0][2:]
-	decryptedmessage = do_decrypt(transmission[1],Key,IV)
-	print("This is the decrypted message")
+	keydecode = do_decrypt_key(message[0])
+	keydecode = keydecode.decode()
+	keydecode = keydecode.split(',')
+	decryptedmessage = do_decrypt(message[1],keydecode[0],keydecode[1])
 	print(decryptedmessage.decode())
-	return
+	return decryptedmessage
 
 def serialize(Message):
 	Message = do_encrypt(Message)
-	SerializedMessage = bytes(pickle.dumps(Message))
-	return SerializedMessage
+	header_length = (f'{len(str(Message))}')
+	encryptedtest = pickle.dumps([header_length,Message])
+	return encryptedtest
 
 	
