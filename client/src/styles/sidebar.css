@@ -1,6 +1,6 @@
 .sidebar {
   flex: 1.5;
-  background-color: #566685;
+  background-color: #212D40;
   height: calc(100vh - 70px);
   position: sticky;
   top: 50px;
@@ -34,7 +34,7 @@
 }
 
 .sidebarListItem:hover {
-  background-color: #8296bd;
+  background-color: #687CA1;
 }
 
 .listItemName {

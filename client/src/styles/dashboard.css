@@ -1,3 +1,30 @@
 .dashboard{
   flex: 10;
+  background-color: #edf0f5;
+  padding: 5px;
+
+}
+
+.connectedMachine{
+  display: flex;
+  flex-direction: column;
+  padding: 0px 50px;
+}
+
+.dashboardTitle{
+  display: flex;
+  justify-content: center;
+}
+
+.machineCard {
+}
+
+.expand {
+  transform: rotate(0deg);
+  margin-left: auto;
+  transition: 350ms;
+}
+
+.expandOpen  {
+  transform: rotate(180deg);
 }

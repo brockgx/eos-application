@@ -1,8 +1,9 @@
-import { Container } from '@material-ui/core';
 import {useState, useEffect} from 'react';
+
+import Machines from '../components/Machines.js';
 import '../styles/dashboard.css';
 
-const Dashboard = (props) => {
+const Dashboard = () => {
     const [machines, setMachines] = useState({description: "default desc", content: []})
   
     useEffect(() => {
@@ -16,10 +17,10 @@ const Dashboard = (props) => {
   
     // Fetch device data from DB
     const fetchMachines = async () => {
-      const resp = await fetch('')
+      const resp = await fetch('/getmachines')
       const data = await resp.json()
       if(resp.ok) {
-        //console.log(data.content[4].message)
+        console.log(data.content)
         return data;
       } else {
         throw Error(`Request rejected with status ${resp.status}`);
@@ -27,10 +28,14 @@ const Dashboard = (props) => {
     }
     return (
         <div className="dashboard">
-            <h1>DASHBOARD PAGE</h1>
-            <Container>
-                
-            </Container>
+          <div className="dashboardTitle">
+            <h1 >DASHBOARD PAGE</h1>
+          </div>
+            <div className="connectedMachine">
+                <Machines
+                  machines={machines.content}
+                />
+            </div>
         </div>
     )
 }
