@@ -5,7 +5,7 @@ from ..database.prototype_database import db, Random, AppMetrics
 
 test_routes = Blueprint('test_routes',__name__)
 
-@test_routes.route("/testone", methods=['POST','GET'])
+@test_routes.route("/testone", methods=['POST'])
 def test_one():
   new_data = request.data
   print(new_data.decode("utf-8"))
