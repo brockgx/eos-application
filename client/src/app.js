@@ -3,6 +3,7 @@ import './styles/app.css';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 //All page imports here
+import { Home } from './pages/home';
 import { Dashboard } from './pages/dashboard';
 import { Query } from './pages/query';
 import { Commands } from './pages/command';
@@ -22,8 +23,8 @@ function App() {
       <div className="content">
         <Sidebar />
         <Switch>
+          <Route path="/" exact component={Home} />
           <Route path="/dashboard" exact component={Dashboard} />
-          <Route path="/" exact component={Dashboard} />
           <Route path="/query" exact component={Query} />
           <Route path="/command" exact component={Commands} />
           <Route path="/support" exact component={Support} />
