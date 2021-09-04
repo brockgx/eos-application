@@ -1,0 +1,18 @@
+.command {
+  flex: 10;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.commandTitle{
+  padding: 20px;
+}
+
+.commandsTab{
+  -webkit-box-shadow: 0px 0px 15px -7px rgba(0, 0, 0, 0.8);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  height: 85%;
+  width: 95%;
+  padding: 10px;
+}
