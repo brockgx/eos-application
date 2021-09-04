@@ -3,7 +3,7 @@ import pickle
 import time
 
 #import personal libraries
-#from ..security.AESEncryption import serialize
+from ..security.AESEncryption import serialize
 
 #Constants
 HEADERSIZE = 10
@@ -14,20 +14,15 @@ RECVSIZE = 16
 #Function: send data
 def sendSocketData(socketConn, message):
   #The full message to send with the buffer
-  #full_msg = bytes(f'{len(str(serialized_msg)):<{HEADERSIZE}}' + str(serialized_msg)[2:][:-1], "utf-8")
-  #encrypted_test = serialize(message)
-  #print(encrypted_test)
-  fullMsg = bytes(f'{len(message):<{HEADERSIZE}}' + message, "utf-8")
-  #length = bytes(f'{len(str(encrypted_test)):<{HEADERSIZE}}')
-  #full_msg = length + encrypted_test
-  #print(full_msg)
+  encryptedMsg = serialize(message)
+  #fullMsg = bytes(f'{len(message):<{HEADERSIZE}}' + message, "utf-8")
   
 
   #Send the message if available
   try:
-    socketConn.sendall(fullMsg)
-  except:
-    print("Failure message")
+    socketConn.sendall(encryptedMsg)
+  except Exception as errMsg:
+    print("[Error] Failure sending message: " + str(errMsg))
 
 #Function: receive data
 def receiveSocketData(socketConn):
