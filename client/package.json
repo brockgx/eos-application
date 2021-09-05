@@ -42,7 +42,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://1902-49-192-234-73.ngrok.io",
+  "proxy": "http://localhost:5000",
   "keywords": [],
   "license": "ISC"
 }
