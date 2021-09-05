@@ -1,8 +1,13 @@
+/* Dashboard.js Styling */
 .dashboard{
   flex: 10;
   background-color: #edf0f5;
   padding: 5px;
+}
 
+.dashboardTitle{
+  display: flex;
+  justify-content: center;
 }
 
 .connectedMachine{
@@ -11,12 +16,28 @@
   padding: 0px 50px;
 }
 
-.dashboardTitle{
-  display: flex;
-  justify-content: center;
+
+/* Machines.js Styling */
+.machinesCard{
+  padding-bottom: 10px;
 }
 
-.machineCard {
+.cardContent
+
+.machineName {
+  display: flex;
+}
+
+.desktopIcon {
+  padding: 0px 15px 5px 5px;
+  width: 30px;
+  height: 30px;
+}
+
+.cardBody {
+  display: flex;
+  width: 25vw;
+  justify-content: space-around;
 }
 
 .expand {
@@ -28,3 +49,4 @@
 .expandOpen  {
   transform: rotate(180deg);
 }
+

@@ -26,6 +26,7 @@ const Dashboard = () => {
         throw Error(`Request rejected with status ${resp.status}`);
       }
     }
+    
     return (
         <div className="dashboard">
           <div className="dashboardTitle">
@@ -33,7 +34,7 @@ const Dashboard = () => {
           </div>
             <div className="connectedMachine">
                 <Machines
-                  machines={machines.content}
+                  machine={machines.content}
                 />
             </div>
         </div>
