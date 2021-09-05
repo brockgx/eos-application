@@ -10,10 +10,15 @@ import { Query } from './pages/query';
 import { Commands } from './pages/command';
 import { Support } from './pages/support';
 
-
-
 //All component imports here
 import Sidebar from './components/Sidebar';
+import SignInSide from './components/SignInSide';
+
+
+
+//function Example(props) {
+ // return <div>te</div>
+//}
 
 //This is the main application component for React
 //it houses the view, which is a single navbar component
@@ -22,6 +27,7 @@ function App() {
   return (
     <div className="App">
       <Router>
+        <SignInSide />
         <Sidebar />
         <Switch>
           <Route path="/" exact component={Home} />
