@@ -11,7 +11,11 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+
+/*
+This Sign In page is based on the free log in template found at the below link:
+https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/sign-in-side
+*/
 
 function Copyright() {
   return (
@@ -79,19 +83,15 @@ export default function SignInSide() {
             <TextField
               variant="standard"
               margin="normal"
-              required id = "standard-required"
               fullWidth
-              id="email"
-              label="Email"
-              // "Address or Username"
-              name="email"
+              required 
+              id="email address or username"
+              label="Email Address or Username"
               autoComplete="email"
               autoFocus
-          
             />
            
             <TextField
-             // variant="outlined"
               margin="normal"
               required
               fullWidth
@@ -111,6 +111,7 @@ export default function SignInSide() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              Link href="/dashboard"
             >
               Sign In
             </Button>

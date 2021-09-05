@@ -1,34 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import 'animate.css' ;
 import '../styles/home.css';
-//import { fadeIn } from 'react-animations';
+
+
 //Main homepage view/component
 const Home = (props) => {
-
-
-
-//const splash = () => {
-  //  <div className = "splash"></div>
-//};s
-
-//const splash = () => {
-  //  <div className = "splash"></div>
-//};
-
-const splash = document.querySelector('.splash');
-
-document.addEventListener('DOMContentLoaded', ()=>{
-  setTimeout(()=>{
- }, 2000);
-})
-
-//useEffect(() => {
-  //  const timeout = setTimeout(() => {     
-    // }, 3000);
-     //splash.className = ('splash.display-none');
-     
-     //return () => clearTimeout(timeout)
- //})
 
  function clickMe(){
      alert('You clicked me');
