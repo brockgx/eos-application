@@ -9,20 +9,27 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <IconContext.Provider value={{color: '#fff'}}>
-        <nav>
-          <ul className="sidebarList">
-            {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className="sidebarListItem">
-                  <Link to={item.path}>
-                    {item.icon}
-                    <span className="listItemName">{item.title}</span>
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
-      </nav>
+        <ul className="sidebarList">
+          {SidebarData.map((value, key) => {
+            return (
+              <li
+                key={key}
+                className="sidebarListItem"
+                id={window.location.pathname == value.path
+                  ? "active"
+                  : ""}
+                onClick={() => {
+                  window.location.pathname = value.path;
+                }}
+                  >
+                <Link to={value.path}>
+                  {value.icon}
+                  <span className="listItemName">{value.title}</span>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
       </IconContext.Provider>
     </div>
   )

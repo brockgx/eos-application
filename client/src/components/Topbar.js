@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import * as FaIcons from 'react-icons/fa';
 import logo from '../assets/logo.png'
-import eye from '../assets/eye.png'
+//import eye from '../assets/eye.png'
 import '../styles/topbar.css';
 
 const Topbar = () => {
@@ -13,7 +13,7 @@ const Topbar = () => {
       <div className="topbarWrapper">
         <div className="topLeft">
           <Link className="logoWrapper" to='/'>
-            <img src={eye} className="logo-img" alt="logo" />
+            <img src={logo} className="logo-img" alt="logo" />
             <span className="logo">EoS Monitor</span>
           </Link>
         </div>

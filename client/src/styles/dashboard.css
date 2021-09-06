@@ -18,25 +18,31 @@
 
 
 /* Machines.js Styling */
-.machinesCard{
+.machinesWrapper{
   padding-bottom: 10px;
 }
 
-.cardContent
+.machinesCard
 
-.machineName {
+.cardContent{
   display: flex;
 }
 
+.machineName {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 0px 10px;
+}
+
 .desktopIcon {
-  padding: 0px 15px 5px 5px;
-  width: 30px;
-  height: 30px;
+  padding: 5px;
+  width: 100px;
+  height: 100px;
 }
 
 .cardBody {
   display: flex;
-  width: 25vw;
+  width: 50vw;
   justify-content: space-around;
 }
 
