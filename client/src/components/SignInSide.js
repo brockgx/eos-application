@@ -16,13 +16,14 @@ import { makeStyles } from '@material-ui/core/styles';
 This Sign In page is based on the free log in template found at the below link:
 https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/sign-in-side
 */
+//I originally thought this would be a component, but now I think it's probably best a page
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website - EoS Monitor
+        EoS Monitor - Template by material-ui
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -111,7 +112,7 @@ export default function SignInSide() {
               variant="contained"
               color="primary"
               className={classes.submit}
-              Link href="/dashboard"
+              Link href="/home"
             >
               Sign In
             </Button>

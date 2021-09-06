@@ -13,16 +13,12 @@ const Home = (props) => {
 
     return (
         <div>
-            <div class="splash">
-                <h1 class="fade-in">Please wait while your page loads :)</h1>
-            </div>
-            <div class='finished'></div>
             <h1>HOMEPAGE</h1>
             <p>[TO DO]</p>
             <p>Another paragraph</p>
             <div>
                 <button onClick={clickMe}>
-                    button
+                    don't click
                 </button>
             </div>
             <div>

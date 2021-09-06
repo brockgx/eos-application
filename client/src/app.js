@@ -28,10 +28,20 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <SignInSide />
-        <Sidebar />
+         {
+         //  <SignInSide />
+         }
+         <Sidebar />
+         
         <Switch>
-          <Route path="/" exact component={Home} />
+          {
+          //I have changed the path of / to be signinside rather than home for now, this isn't permanent
+          //<Route path= "/SignInSide" exact component={ SignInSide }/>
+          }
+          
+          <Route path="/" exact component={ SignInSide } />
+          <Route path="/login" exact component={ SignInSide } />
+          <Route path="/home" exact component={ Home } />
           <Route path="/concept" exact component={Concept} />
           <Route path="/dashboard" exact component={() => <Dashboard authorised={true} />} />
           <Route path="/query" exact component={Query} />
