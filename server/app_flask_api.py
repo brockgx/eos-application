@@ -41,9 +41,9 @@ def home_route():
   )
 
 #Implement route module
-app.register_blueprint(test_routes)
-app.register_blueprint(command_routes)
-app.register_blueprint(dashboard_routes)
+app.register_blueprint(test_routes, url_prefix='/test')
+app.register_blueprint(command_routes, url_prefix='/commands')
+app.register_blueprint(dashboard_routes, url_prefix='/dash')
 
 #Function for running the app
 def start_flask_api():

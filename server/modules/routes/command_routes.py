@@ -16,21 +16,21 @@ command_routes = Blueprint('command_routes',__name__)
 
 
 #Route: main route for the commands
-@command_routes.route("/command", methods=['GET','POST','PUT','DELETE'])
+@command_routes.route("/", methods=['GET','POST','PUT','DELETE'])
 def command():
   return "The command routes are: /availableMachines - to get connected machines, /send - to send a command, /sendfile - to send a file"
 
 #Route: to get a list of all machines tied to the application
-@command_routes.route("/command/availablemachines", methods=['GET'])
+@command_routes.route("/availablemachines", methods=['GET'])
 def getAvailableMachines():
   return "Listing all online machines..."
 
 #Route: to send a command to the agent and get a response back
-@command_routes.route("/command/send", methods=['POST'])
+@command_routes.route("/send", methods=['POST'])
 def sendCommand():
   return "Sending command to agent..."
 
 #Route: to send a file to the agent machine
-@command_routes.route("/command/sendfile", methods=['POST'])
+@command_routes.route("/sendfile", methods=['POST'])
 def sendFile():
   return "Sending file to agent..."
