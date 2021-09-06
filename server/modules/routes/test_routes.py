@@ -47,6 +47,20 @@ def test_data():
   #final = json.loads(result.get_data().decode("utf-8"))
   return result
 
+@test_routes.route("/getmachines")
+def get_machines():
+  result = jsonify({
+    "description": "Connected Machines",
+    "content": [
+      {"id": "1", "machine_name": "miz007","machine_type": "windows","time": "14:53:38, 09/04/2021", "status": "Connected","ip_address": "127.0.0.1"},
+      {"id": "2", "machine_name": "Brock-PC","machine_type": "linux", "time": "14:53:38, 09/04/2021","status": "Connected","ip_address": "127.0.0.2"},
+      {"id": "3", "machine_name": "keeganator","machine_type": "linux", "time": "14:53:38, 09/04/2021","status": "Disconnected","ip_address": "127.0.0.3"},
+      {"id": "3", "machine_name": "AlexCompSci","machine_type": "windows", "time": "14:53:38, 09/04/2021","status": "Connected","ip_address": "127.0.0.3"},
+      {"id": "3", "machine_name": "Voidlord13","machine_type": "linux", "time": "14:53:38, 09/04/2021","status": "Connected","ip_address": "127.0.0.3"},
+    ]
+  })
+  return result
+
 @test_routes.route("/addmetrics", methods=["POST"])
 def add_metrics():
   new_metrics = request.data

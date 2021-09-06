@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react'
+
 import { DataGrid } from "@material-ui/data-grid";
 import '../styles/query.css';
 
@@ -31,34 +32,47 @@ const Query = (props) => {
     const columns = [
         { 
             field: "machine_name",
-            headerName: "Machine",
-            width: 160,
+            headerName: "Machine Name",
+            width: 200,
+            headerAlign: 'center',
+            align: 'center',
         },
         { 
             field: "time",
             headerName: "Time", 
-            width: 160, 
+            width: 220,
+            headerAlign: 'center', 
+            align: 'center',
         },
         { 
             field: "app_name",
             headerName: "Application", 
-            width: 160, 
+            width: 200,
+            headerAlign: 'center', 
+            align: 'center',
         },
         { 
             field: "app_cpu",
-            headerName: "CPU", 
-            width: 140, 
+            headerName: "CPU (%)", 
+            width: 140,
+            headerAlign: 'center', 
+            align: 'center',
         },
         { 
             field: "app_ram",
-            headerName: "RAM", 
-            width: 140, 
+            headerName: "RAM (%)", 
+            width: 140,
+            headerAlign: 'center', 
+            align: 'center',
         }
     ]
     return (
       <div className="query">
         <div className="queryTitle">
           <h1>Query Page</h1>
+        </div>
+        <div className="queryForm">
+          
         </div>
         <div className="machineList">
           <DataGrid
