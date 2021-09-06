@@ -8,13 +8,16 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/data-grid": "^4.0.0-alpha.37",
+    "@material-ui/icons": "^4.11.2",
     "bootstrap": "^5.1.0",
+    "clsx": "^1.1.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-beta.5",
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
+    "styled-components": "^5.3.1",
     "update": "^0.7.4",
     "web-vitals": "^2.1.0"
   },
@@ -42,7 +45,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://1902-49-192-234-73.ngrok.io",
+  "proxy": "http://127.0.0.1:5000/",
   "keywords": [],
   "license": "ISC"
 }
