@@ -5,6 +5,8 @@ import platform
 
 #Import any custom made modules
 from modules.routes.test_routes import test_routes
+from modules.routes.command_routes import command_routes
+from modules.routes.dashboard_routes import dashboard_routes
 from modules.database.prototype_database import db, AppMetrics
 
 #Setup any constants need to be used
@@ -40,6 +42,8 @@ def home_route():
 
 #Implement route module
 app.register_blueprint(test_routes)
+app.register_blueprint(command_routes)
+app.register_blueprint(dashboard_routes)
 
 #Function for running the app
 def start_flask_api():
