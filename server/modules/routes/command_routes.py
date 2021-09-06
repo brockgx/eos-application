@@ -20,4 +20,12 @@ command_routes = Blueprint('command_routes',__name__)
 def getAvailableMachines():
   pass
 
-#Route: 
+#Route: to send a command to the agent and get a response back
+@command_routes.route("command/send", methods=['POST'])
+def sendCommand():
+  pass
+
+#Route: to send a file to the agent machine
+@command_routes.route("command/sendfile", methods=['POST'])
+def sendFile():
+  pass
