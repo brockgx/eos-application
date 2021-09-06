@@ -17,3 +17,10 @@ class AppMetrics(db.Model):
   app_name = db.Column(db.String(256), nullable=False)
   app_cpu = db.Column(db.Float(2), nullable=False)
   app_ram = db.Column(db.Float(2), nullable=False)
+
+class ClientMachines(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  machine_name = db.Column(db.String(256), nullable=False)
+  os_type = db.Column(db.String(10), nullable=False)
+  ip_address = db.Column(db.Integer, nullable=False)
+  status = db.Column(db.Integer, nullable=False)

@@ -18,6 +18,7 @@ dashboard_routes = Blueprint('dashboard_routes',__name__)
 #Route: the main dashboard route
 @dashboard_routes.route('/dash', methods=['GET','POST','DELETE','PUT'])
 def dashView():
+  #Get a list of everything in the machines database
   return "Dashboard Main route"
 
 #Route: to get a list of all the machines added to the portal
