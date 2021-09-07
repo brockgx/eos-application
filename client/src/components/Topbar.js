@@ -12,7 +12,7 @@ const Topbar = () => {
     <div className="topbar">
       <div className="topbarWrapper">
         <div className="topLeft">
-          <Link className="logoWrapper" to='/'>
+          <Link className="logoWrapper" to='/dashboard'>
             <img src={logo} className="logo-img" alt="logo" />
             <span className="logo">EoS Monitor</span>
           </Link>
