@@ -52,11 +52,13 @@ def get_machines():
   result = jsonify({
     "description": "Connected Machines",
     "content": [
-      {"id": "1", "machine_name": "miz007","machine_type": "windows","time": "14:53:38, 09/04/2021", "status": "Connected","ip_address": "127.0.0.1"},
-      {"id": "2", "machine_name": "Brock-PC","machine_type": "linux", "time": "14:53:38, 09/04/2021","status": "Connected","ip_address": "127.0.0.2"},
-      {"id": "3", "machine_name": "keeganator","machine_type": "linux", "time": "14:53:38, 09/04/2021","status": "Disconnected","ip_address": "127.0.0.3"},
-      {"id": "3", "machine_name": "AlexCompSci","machine_type": "windows", "time": "14:53:38, 09/04/2021","status": "Connected","ip_address": "127.0.0.3"},
-      {"id": "3", "machine_name": "Voidlord13","machine_type": "linux", "time": "14:53:38, 09/04/2021","status": "Connected","ip_address": "127.0.0.3"},
+      {"id": "1", "machine_name": "miz007","machine_type": "windows","time": "14:53:38, 09/04/2021", "status": "Connected","ip_address": "127.0.0.1", "cpu": "22%","ram": "15%"},
+      {"id": "2", "machine_name": "Brock-PC","machine_type": "linux", "time": "14:53:38, 09/04/2021","status": "Connected","ip_address": "127.0.0.2", "cpu": "37%","ram": "55%"},
+      {"id": "3", "machine_name": "keeganator","machine_type": "linux", "time": "14:53:38, 09/04/2021","status": "Disconnected","ip_address": "127.0.0.4", "cpu": "52%","ram": "35%"},
+      {"id": "4", "machine_name": "AlexCompSci","machine_type": "windows", "time": "14:53:38, 09/04/2021","status": "Connected","ip_address": "127.0.0.5", "cpu": "12%","ram": "26%"},
+      {"id": "5", "machine_name": "Voidlord13","machine_type": "linux", "time": "14:53:38, 09/04/2021","status": "Disconnected","ip_address": "127.0.0.6", "cpu": "42%","ram": "15%"},
+
+
     ]
   })
   return result

@@ -15,10 +15,10 @@ const Wrapper = styled.div`
   padding: 20px;
 `;
 
-const Title = styled.h1`
-  font-weight: 600;
-  text-align: center;
-`;
+// const Title = styled.h1`
+//   font-weight: 600;
+//   text-align: center;
+// `;
 
 const Top = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ const TopButton = styled.button`
 const TopText = styled.span`
   font-weight: 500;
   font-size: 44px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 `;
 
 const Bottom = styled.div`
