@@ -1,9 +1,12 @@
 #Import any downloaded/third party modules and packages
 from flask import Flask, redirect, request, jsonify
 import os
+import platform
 
 #Import any custom made modules
 from modules.routes.test_routes import test_routes
+from modules.routes.command_routes import command_routes
+from modules.routes.dashboard_routes import dashboard_routes
 from modules.database.prototype_database import db, AppMetrics
 
 #Setup any constants need to be used
@@ -16,8 +19,14 @@ PORT = 5000
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+#Set DB path based on OS
+if platform.system() == "Windows":
+  DB_PATH = f'sqlite:///{basedir}\\modules\\database\\test.db'
+else:
+  DB_PATH = f'sqlite:////{basedir}/modules/database/test.db'
+
 #Instantiate the DB (SQLLite for testing)
-app.config["SQLALCHEMY_DATABASE_URI"] = f'sqlite:///{basedir}\\modules\\database\\test.db'
+app.config["SQLALCHEMY_DATABASE_URI"] = DB_PATH
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= False
 db.app = app
 db.init_app(app)
@@ -32,7 +41,9 @@ def home_route():
   )
 
 #Implement route module
-app.register_blueprint(test_routes)
+app.register_blueprint(test_routes, url_prefix='/test')
+app.register_blueprint(command_routes, url_prefix='/commands')
+app.register_blueprint(dashboard_routes, url_prefix='/dash')
 
 #Function for running the app
 def start_flask_api():
