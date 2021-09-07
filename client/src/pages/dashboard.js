@@ -1,9 +1,15 @@
+import React from 'react';
 import {useState, useEffect} from 'react';
+import * as IoIcons from 'react-icons/io';
 
 import styled from 'styled-components';
 // import Machines from '../components/Machines.js';
 import MachinesV2 from '../components/MachinesV2.js';
 // import '../styles/dashboard.css';
+
+// the below line was the original line
+// const Dashboard = (props) => {
+
 
 const Container = styled.div`
   flex: 10;
@@ -15,10 +21,10 @@ const Wrapper = styled.div`
   padding: 20px;
 `;
 
-const Title = styled.h1`
-  font-weight: 600;
-  text-align: center;
-`;
+// const Title = styled.h1`
+//   font-weight: 600;
+//   text-align: center;
+// `;
 
 const Top = styled.div`
   display: flex;
@@ -42,7 +48,7 @@ const TopButton = styled.button`
 const TopText = styled.span`
   font-weight: 500;
   font-size: 44px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 `;
 
 const Bottom = styled.div`
@@ -80,13 +86,27 @@ const Dashboard = () => {
         throw Error(`Request rejected with status ${resp.status}`);
       }
     }
-    
+
+    const refreshPage = () => {
+      window.location.reload();
+    }
+
     return (
         <Container>
           <Wrapper>
             {/* <Title>DASHBOARD PAGE</Title> */}
             <Top>
               <TopText>Connected Machines</TopText>
+              <IoIcons.IoMdRefresh 
+                onClick={refreshPage} 
+                style={{ 
+                  width: "30px", 
+                  height: "30px",
+                  marginRight: "1520px",
+                  marginBottom: "3px",
+                  cursor: "pointer"
+                  }} 
+                />
               <TopButton>Add New Machine</TopButton>
             </Top>
             <Bottom>

@@ -4,11 +4,14 @@ import { IconButton, Collapse } from '@material-ui/core'
 import styled from 'styled-components'
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import windows from '../assets/windows.png'
-import linux from '../assets/linux.png'
+// import windows from '../assets/windows.png'
+// import windows1 from '../assets/windows1.png'
+// import windows2 from '../assets/windows2.png'
+import windows3 from '../assets/windows3.png'
+// import linux from '../assets/linux.png'
+import linux1 from '../assets/linux1.png'
 
 const Container = styled.div`
   padding-bottom: 10px;
@@ -46,8 +49,9 @@ const Bottom = styled.div`
 
 const Image = styled.img`
   padding: 5px;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
+  margin-top: 5px;
   src: ${(props) => props.src };
 `;
 
@@ -103,6 +107,9 @@ const MachineDetails = styled.div`
 `;
 
 const MachineInfo = styled.span`
+  font-size: 22px;
+  font-weight: 300;
+  margin-bottom: 5px;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -131,12 +138,13 @@ const MachinesV2 = ({machine}) => {
           <DetailsLeft>
             {
               machine.machine_type === "windows"
-              ? <Image src={windows}/>
-              : <Image src={linux}/>
+              ? <Image src={windows3}/>
+              : <Image src={linux1}/>
             }
             <Details>
               <MachineName>
-                <b>Machine Name:</b> {machine.machine_name}
+                <b>Name:</b> {machine.machine_name}  
+                <MachineInfo> ({machine.ip_address})</MachineInfo>
               </MachineName>
               <MachineTime>
                 <b>Last Update:</b> {machine.time}
@@ -148,8 +156,7 @@ const MachinesV2 = ({machine}) => {
             </Details>
           </DetailsLeft>
           <DetailsRight>
-          <Details>
-              
+            <Details>
             </Details>
           </DetailsRight>
         </Top>
@@ -168,13 +175,10 @@ const MachinesV2 = ({machine}) => {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <MachineDetails>
                 <MachineInfo>
-                  <b>IP:</b> {machine.ip_address}
+                  <b>CPU Usage:</b> {machine.cpu}
                 </MachineInfo>
                 <MachineInfo>
-                  <b>CPU Usage:</b> 50%
-                </MachineInfo>
-                <MachineInfo>
-                  <b>RAM Usage:</b> 10%
+                  <b>RAM Usage:</b> {machine.ram}
                 </MachineInfo>
               </MachineDetails>
             </Collapse>  
