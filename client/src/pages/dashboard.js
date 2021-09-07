@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import * as IoIcons from 'react-icons/io';
 
 import styled from 'styled-components';
 // import Machines from '../components/Machines.js';
@@ -80,13 +81,27 @@ const Dashboard = () => {
         throw Error(`Request rejected with status ${resp.status}`);
       }
     }
-    
+
+    const refreshPage = () => {
+      window.location.reload();
+    }
+
     return (
         <Container>
           <Wrapper>
             {/* <Title>DASHBOARD PAGE</Title> */}
             <Top>
               <TopText>Connected Machines</TopText>
+              <IoIcons.IoMdRefresh 
+                onClick={refreshPage} 
+                style={{ 
+                  width: "30px", 
+                  height: "30px",
+                  marginRight: "1520px",
+                  marginBottom: "3px",
+                  cursor: "pointer"
+                  }} 
+                />
               <TopButton>Add New Machine</TopButton>
             </Top>
             <Bottom>
