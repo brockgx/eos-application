@@ -28,9 +28,9 @@ and the various other pages, which are routed using React-Router
 function App() {
   return (   
     <Router>
-      <Topbar />
+      { window.location.pathname != '/' &&  <Topbar /> }
       <div className="content">
-        <Sidebar />
+      { window.location.pathname != '/' &&  <Sidebar /> }
         <Switch>
           <Route path="/" exact component={ SignInSide } />
           <Route path="/login" exact component={ SignInSide } />
