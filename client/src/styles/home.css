@@ -15,4 +15,8 @@
 
 .password{
     width: 50%;
+
+}
+.home {
+  flex: 10;
 }

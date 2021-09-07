@@ -83,7 +83,8 @@ export default function SignInSide() {
                 width="150px" 
                 height="150px" 
                 border-radius="50%"
-                display="inline-block" />  
+                display="inline-block"
+                 />  
               </div>
               <Avatar className={classes.avatar} style = {{marginBottom:10}}>
                 <LockOutlinedIcon/>

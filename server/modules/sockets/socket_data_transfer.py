@@ -3,7 +3,7 @@ import pickle
 import time
 
 #import personal libraries
-from ..security.AESEncryption import serialize
+#from ..security.AESEncryption import serialize
 
 #Constants
 HEADERSIZE = 10
@@ -17,53 +17,54 @@ def sendSocketData(socketConn, message):
   #full_msg = bytes(f'{len(str(serialized_msg)):<{HEADERSIZE}}' + str(serialized_msg)[2:][:-1], "utf-8")
   #encrypted_test = serialize(message)
   #print(encrypted_test)
-  full_msg = bytes(f'{len(message):<{HEADERSIZE}}' + message, "utf-8")
+  fullMsg = bytes(f'{len(message):<{HEADERSIZE}}' + message, "utf-8")
   #length = bytes(f'{len(str(encrypted_test)):<{HEADERSIZE}}')
   #full_msg = length + encrypted_test
-  print(full_msg)
+  #print(full_msg)
   
 
   #Send the message if available
   try:
-    socketConn.sendall(full_msg)
+    socketConn.sendall(fullMsg)
   except:
     print("Failure message")
 
 #Function: receive data
 def receiveSocketData(socketConn):
   #function variables
-  receive_msg = True
-  new_msg = True
-  complete_msg = b''
+  #receieved_msg = "EMPTY"
+  receiveMsg = True
+  newMsg = True
+  lengthMsg = True
+  completeMsg = b''
 
-  while receive_msg:
+  while receiveMsg:
     try:
       msg = socketConn.recv(RECVSIZE)
     except:
-      receive_msg = False
-    
-    if new_msg:
-      length_msg = int(msg[:HEADERSIZE])
-      new_msg = False
+      receiveMsg = False
 
-    complete_msg += msg
+    if msg != b'':
+      if newMsg:
+        lengthMsg = int(msg[:HEADERSIZE])
+        newMsg = False
+        
+      completeMsg += msg
+      
+      if len(completeMsg)-HEADERSIZE == lengthMsg:
+        #Do something with the data - print example
+        receievedMsg = completeMsg[HEADERSIZE:].decode("utf-8")
 
-    if len(complete_msg)-HEADERSIZE == length_msg:
-      #Do something with the data - print example
-      receieved_msg = complete_msg[HEADERSIZE:].decode("utf-8")
-      #print("Doneski")
-      #print(receieved_msg)
-
-      #Decrypt here
-      #my_msg = receieved_msg[2:][:-1]
-      #print(my_msg)
-      #byte_msg = my_msg.encode()
-      #print(byte_msg)
-      #deserialized = pickle.loads(byte_msg)
+        #Decrypt here
+        #my_msg = receieved_msg[2:][:-1]
+        #print(my_msg)
+        #byte_msg = my_msg.encode()
+        #print(byte_msg)
+        #deserialized = pickle.loads(byte_msg)
 
 
-      new_msg = True
-      complete_msg = ''
-      receive_msg = False
-  
-  return receieved_msg
+        newMsg = True
+        completeMsg = ''
+        receiveMsg = False
+        
+  return receievedMsg

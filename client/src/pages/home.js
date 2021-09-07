@@ -2,6 +2,8 @@ import React from 'react';
 import 'animate.css' ;
 import '../styles/home.css';
 
+import '../styles/home.css';
+
 
 //Main homepage view/component
 const Home = (props) => {
@@ -12,7 +14,7 @@ const Home = (props) => {
 
 
     return (
-        <div>
+        <div className="home">
             <h1>HOMEPAGE</h1>
             <p>[TO DO]</p>
             <p>Another paragraph</p>
