@@ -6,11 +6,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import windows from '../assets/windows.png'
-import windows1 from '../assets/windows1.png'
-import windows2 from '../assets/windows2.png'
+// import windows from '../assets/windows.png'
+// import windows1 from '../assets/windows1.png'
+// import windows2 from '../assets/windows2.png'
 import windows3 from '../assets/windows3.png'
-import linux from '../assets/linux.png'
+// import linux from '../assets/linux.png'
 import linux1 from '../assets/linux1.png'
 
 const Container = styled.div`

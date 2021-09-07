@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react'
 import { DataGrid } from "@material-ui/data-grid";
 import styled from 'styled-components';
 
-import '../styles/query.css';
+// import '../styles/query.css';
 
 const Container = styled.div`
   flex: 10;
@@ -22,18 +22,18 @@ const Wrapper = styled.div`
 //   text-align: center;
 // `;
 
-const Top = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px 20px 40px;
-`;
+// const Top = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   padding: 10px 20px 20px 40px;
+// `;
 
-const TopText = styled.span`
-  font-weight: 500;
-  font-size: 44px;
-  padding-bottom: 10px;
-`;
+// const TopText = styled.span`
+//   font-weight: 500;
+//   font-size: 44px;
+//   padding-bottom: 10px;
+// `;
 
 const Bottom = styled.div`
   display: flex;

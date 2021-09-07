@@ -8,7 +8,7 @@ import Command3 from '../components/commands-tabs/Command3';
 
 import styled from 'styled-components';
 
-import '../styles/command.css';
+//import '../styles/command.css';
 
 const Container = styled.div`
   flex: 10;
@@ -39,6 +39,7 @@ const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0px 40px;
+
 `;
 const CommandsTab = styled.div`
   -webkit-box-shadow: 0px 0px 15px -7px rgba(0, 0, 0, 0.8);
@@ -49,6 +50,8 @@ const CommandsTab = styled.div`
   background-color: #ffff;
   border-radius: 6px;
   height: 65vh;
+  font-weight: 300;
+  font-size: 24px;
 `;
 
 const Commands = (props) => {
