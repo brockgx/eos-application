@@ -1,9 +1,14 @@
+import React from 'react';
 import {useState, useEffect} from 'react';
 
 import styled from 'styled-components';
 // import Machines from '../components/Machines.js';
 import MachinesV2 from '../components/MachinesV2.js';
 // import '../styles/dashboard.css';
+
+// the below line was the original line
+// const Dashboard = (props) => {
+
 
 const Container = styled.div`
   flex: 10;
