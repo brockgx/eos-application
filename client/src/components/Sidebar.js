@@ -15,7 +15,7 @@ const Sidebar = () => {
               <li
                 key={key}
                 className="sidebarListItem"
-                id={window.location.pathname == value.path
+                id={window.location.pathname === value.path
                   ? "active"
                   : ""}
                 onClick={() => {
