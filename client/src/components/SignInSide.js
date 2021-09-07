@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-
+import logo from '../assets/logo.png';
 /*
 This Sign In page is based on the free log in template found at the below link:
 https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/sign-in-side
@@ -34,7 +34,6 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-    position: "fixed",
   },
   image: {
     //backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -43,33 +42,30 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:
     theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundPosition: 'top',
   },
   paper: {
-    margin: theme.spacing(20, 2),
+    margin: theme.spacing(2, 2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   avatar: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '80%', // Fix IE 11 issue.
-    marginTop: theme.spacing(5),
-    margin: (20),
+    marginTop: theme.spacing(3),
     
   },
   submit: {
-    margin: theme.spacing(5, 0, 20),
+    margin: theme.spacing(10, 0, 10),
   },
 
-  //rememberMe: {
-    //margin: theme.spacing(5),},
-
 }));
+
 
 export default function SignInSide() {
   const classes = useStyles();
@@ -77,16 +73,26 @@ export default function SignInSide() {
   return (
     <Grid container component="main" className={classes.root} >
       <CssBaseline />
-      <Grid item xs={false} sm={3} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={24} 
-            square >
+      <Grid item xs={false} sm={4} md={6} className={classes.image} />
+      <Grid item xs={12} sm={8} md={6} component={Paper} elevation={4} square >
+
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon/>
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
+              <div>
+                <img src = {logo} 
+                alt="logo" 
+                width="150px" 
+                height="150px" 
+                border-radius="50%"
+                display="inline-block" />  
+              </div>
+              <Avatar className={classes.avatar} style = {{marginBottom:10}}>
+                <LockOutlinedIcon/>
+              </Avatar>
+              
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+          
           <form className={classes.form} noValidate>
             <TextField
               variant="standard"
@@ -97,6 +103,8 @@ export default function SignInSide() {
               label="Email Address or Username"
               autoComplete="email"
               autoFocus
+              className = "classEmail"
+              style = {{marginBottom:50}}
             />
            
             <TextField
@@ -108,12 +116,13 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              style = {{marginBottom:30}}
             />
             <FormControlLabel
               className ="rememberMe"
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="primary"/>}
               label="Remember me"
-              
+              style = {{marginTop:30 ,marginLeft: 0, Align: 'left'}}
             />
             <Button
               type="submit"
@@ -131,13 +140,8 @@ export default function SignInSide() {
                   Forgotten your password?
                 </Link>
               </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Click to Sign Up"}
-                </Link>
-              </Grid>
             </Grid>
-            <Box mt={5}>
+            <Box mt={3}>
               <Copyright />
             </Box>
           </form>
