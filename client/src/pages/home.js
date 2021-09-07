@@ -21,13 +21,6 @@ const Home = (props) => {
                     don't click
                 </button>
             </div>
-            <div>
-                <form className='form'>
-                    <p>Login</p>
-                    <input className='username'></input>
-                    <input className='password'></input>
-                </form>
-            </div>
         </div>
 )}
 

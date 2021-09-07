@@ -34,34 +34,40 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-    //position: "fixed",
+    position: "fixed",
   },
   image: {
     //backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundImage: 'url(https://source.unsplash.com/hpjSkU2UYSU)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(20, 2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   avatar: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    width: '80%', // Fix IE 11 issue.
+    marginTop: theme.spacing(5),
+    margin: (20),
     
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(5, 0, 20),
   },
+
+  //rememberMe: {
+    //margin: theme.spacing(5),},
 
 }));
 
@@ -69,13 +75,14 @@ export default function SignInSide() {
   const classes = useStyles();
 
   return (
-    <Grid container component="main" className={classes.root}>
+    <Grid container component="main" className={classes.root} >
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={false} sm={3} md={7} className={classes.image} />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={24} 
+            square >
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <LockOutlinedIcon/>
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
@@ -103,8 +110,10 @@ export default function SignInSide() {
               autoComplete="current-password"
             />
             <FormControlLabel
+              className ="rememberMe"
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
+              
             />
             <Button
               type="submit"
