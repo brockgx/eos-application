@@ -107,6 +107,9 @@ const MachineDetails = styled.div`
 `;
 
 const MachineInfo = styled.span`
+  font-size: 22px;
+  font-weight: 300;
+  margin-bottom: 5px;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -140,7 +143,8 @@ const MachinesV2 = ({machine}) => {
             }
             <Details>
               <MachineName>
-                <b>Name:</b> {machine.machine_name}
+                <b>Name:</b> {machine.machine_name}  
+                <MachineInfo> ({machine.ip_address})</MachineInfo>
               </MachineName>
               <MachineTime>
                 <b>Last Update:</b> {machine.time}
@@ -171,13 +175,10 @@ const MachinesV2 = ({machine}) => {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <MachineDetails>
                 <MachineInfo>
-                  <b>IP:</b> {machine.ip_address}
+                  <b>CPU Usage:</b> {machine.cpu}
                 </MachineInfo>
                 <MachineInfo>
-                  <b>CPU Usage:</b> 50%
-                </MachineInfo>
-                <MachineInfo>
-                  <b>RAM Usage:</b> 10%
+                  <b>RAM Usage:</b> {machine.ram}
                 </MachineInfo>
               </MachineDetails>
             </Collapse>  
