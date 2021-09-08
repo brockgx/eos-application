@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
+import Chart from "react-apexcharts";
 // import windows from '../assets/windows.png'
 // import windows1 from '../assets/windows1.png'
 // import windows2 from '../assets/windows2.png'
@@ -98,18 +99,21 @@ font-weight: 300;
 `;
 
 const MachineDetails = styled.div`
-  padding: 10px 0px 0px 10px;
+  padding: 10px 0px 0px 5px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
   border-top: 1px solid #687CA1;
+  font-size: 22px;
+  font-weight: 300;
+`;
 
+const MachineChart = styled.span`
+  padding-top: 10px;
 `;
 
 const MachineInfo = styled.span`
+  margin-top: 5px;
   font-size: 22px;
   font-weight: 300;
-  margin-bottom: 5px;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -131,6 +135,20 @@ const MachinesV2 = ({machine}) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const [cpuChart, setCPUChart] = useState(
+    {
+      series: [machine.cpu],
+      options: {}
+    }
+  );
+  const [RAMChart, setRAMChart] = useState(
+    {
+      series: [machine.ram],
+      options: {}
+    }
+  );
+
   return (
     <Container>
       <MachinesWrapper>
@@ -175,11 +193,29 @@ const MachinesV2 = ({machine}) => {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <MachineDetails>
                 <MachineInfo>
-                  <b>CPU Usage:</b> {machine.cpu}
+                  CPU Usage:
                 </MachineInfo>
+                <MachineChart>
+                  
+                  <Chart
+                    options={cpuChart.options}
+                    series={cpuChart.series}
+                    type="radialBar"
+                    width="300"
+                  />
+                </MachineChart>
                 <MachineInfo>
-                  <b>RAM Usage:</b> {machine.ram}
+                  RAM Usage:
                 </MachineInfo>
+                <MachineChart>
+                  
+                  <Chart
+                    options={RAMChart.options}
+                    series={RAMChart.series}
+                    type="radialBar"
+                    width="300"
+                  />
+                </MachineChart>
               </MachineDetails>
             </Collapse>  
           </MoreDetails>

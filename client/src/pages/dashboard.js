@@ -77,7 +77,7 @@ const Dashboard = () => {
   
     // Fetch device data from DB
     const fetchMachines = async () => {
-      const resp = await fetch('/getmachines')
+      const resp = await fetch('/test/getmachines')
       const data = await resp.json()
       if(resp.ok) {
         console.log(data.content)
@@ -100,9 +100,9 @@ const Dashboard = () => {
               <IoIcons.IoMdRefresh 
                 onClick={refreshPage} 
                 style={{ 
-                  width: "30px", 
-                  height: "30px",
-                  marginRight: "1520px",
+                  width: "25px", 
+                  height: "25px",
+                  marginRight: "1500px",
                   marginBottom: "3px",
                   cursor: "pointer"
                   }} 
