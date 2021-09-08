@@ -97,7 +97,7 @@ const Dashboard = () => {
             {/* <Title>DASHBOARD PAGE</Title> */}
             <Top>
               <TopText>Connected Machines</TopText>
-              <IoIcons.IoMdRefresh 
+              {/* <IoIcons.IoMdRefresh 
                 onClick={refreshPage} 
                 style={{ 
                   width: "25px", 
@@ -106,7 +106,7 @@ const Dashboard = () => {
                   marginBottom: "3px",
                   cursor: "pointer"
                   }} 
-                />
+                /> */}
               <TopButton>Add New Machine</TopButton>
             </Top>
             <Bottom>
