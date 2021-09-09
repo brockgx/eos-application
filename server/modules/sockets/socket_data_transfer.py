@@ -1,9 +1,10 @@
 #import third party libraries
 import pickle
 import time
+import base64
 
 #import personal libraries
-#from ..security.AESEncryption import serialize
+from ..security.AESEncryption import do_encrypt, do_decrypt
 
 #Constants
 HEADERSIZE = 10
@@ -17,7 +18,10 @@ def sendSocketData(socketConn, message):
   #full_msg = bytes(f'{len(str(serialized_msg)):<{HEADERSIZE}}' + str(serialized_msg)[2:][:-1], "utf-8")
   #encrypted_test = serialize(message)
   #print(encrypted_test)
-  fullMsg = bytes(f'{len(message):<{HEADERSIZE}}' + message, "utf-8")
+  encryptedMsg = do_encrypt(message)
+  print(encryptedMsg)
+  fullMsg = base64.b64encode(f'{len(str(base64.b64encode(encryptedMsg))):<{HEADERSIZE}}') + base64.b64encode(encryptedMsg)
+  print(fullMsg)
   #length = bytes(f'{len(str(encrypted_test)):<{HEADERSIZE}}')
   #full_msg = length + encrypted_test
   #print(full_msg)

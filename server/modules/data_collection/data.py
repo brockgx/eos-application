@@ -12,5 +12,5 @@ def data_collection(agentSocket):
     client_response = receiveSocketData(agentSocket)
     time.sleep (10)
     print(client_response)
-    requests.post("http://localhost:5000/testone", data=client_response)
+    requests.post("http://localhost:5000/test/testone", data=client_response)
     time.sleep (20)
