@@ -18,18 +18,6 @@ https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-starte
 */
 //I originally thought this would be a component, but now I think it's probably best a page
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        EoS Monitor - Template by material-ui
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'top',
   },
   paper: {
-    margin: theme.spacing(2, 2),
+    margin: theme.spacing(8, 2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -57,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '80%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(4),
     
   },
   submit: {
@@ -142,9 +130,7 @@ export default function SignInSide() {
                 </Link>
               </Grid>
             </Grid>
-            <Box mt={3}>
-              <Copyright />
-            </Box>
+            
           </form>
         </div>
       </Grid>
