@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 import json
 
-from ..database.prototype_database import db, Random, AppMetrics
+from ..database.prototype_database import db, Random, AppMetrics, SystemMetrics
 
 test_routes = Blueprint('test_routes',__name__)
 
@@ -75,6 +75,26 @@ def add_metrics():
     db_metric = AppMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],app_name=app["name"],app_cpu=app["cpu"],app_ram=app["ram"])
     db.session.add(db_metric)
 
+  sys_cpu = obj["system_metrics"][0]["cpu"]
+  sys_ram = obj["system_metrics"][1]["ram"]
+
+  first_disk = True
+  disks = ""
+  disk_perc = ""
+  for disk in obj["disk_metrics"]:
+    if first_disk:
+      first_disk = False
+      disks += disk["device"]
+      disk_perc += str(disk["percent"])
+    else:
+      disks += "," + str(disk["device"])
+      disk_perc += "," + str(disk["percent"])
+  
+  #Add system metric
+  db_sys_metric = SystemMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],cpu_usage=sys_cpu,ram_usage=sys_ram,disk_usage=disk_perc,disk_read=obj["disk_bytes_read"],disk_write=obj["disk_bytes_written"],network_usage=obj["network_percent"])
+  db.session.add(db_sys_metric)
+
+  print(disks)
   db.session.commit()
 
   return "New Metrics Successfully added"

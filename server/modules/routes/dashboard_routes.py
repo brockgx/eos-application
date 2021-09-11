@@ -29,7 +29,8 @@ def listClientMachines():
   finalList = []
 
   for mach in machineList:
-    finalList.append({"id": mach.id, "name": mach.machine_name, "os": mach.os_type, "address": mach.ip_address, "status": mach.status})
+    addr = str(ipaddress.IPv4Address(mach.ip_address))
+    finalList.append({"id": mach.id, "name": mach.machine_name, "os": mach.os_type, "address": addr, "status": mach.status})
 
   return jsonify({
     "description": "A list of all saved machines",

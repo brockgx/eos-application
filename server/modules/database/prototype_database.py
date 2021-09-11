@@ -18,6 +18,17 @@ class AppMetrics(db.Model):
   app_cpu = db.Column(db.Float(2), nullable=False)
   app_ram = db.Column(db.Float(2), nullable=False)
 
+class SystemMetrics(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  machine_name = db.Column(db.String(256), nullable=False)
+  timestamp = db.Column(db.String(256), nullable=False)
+  cpu_usage = db.Column(db.Float(2), nullable=False)
+  ram_usage = db.Column(db.Float(2), nullable=False)
+  disk_usage = db.Column(db.String(256), nullable=False)
+  disk_read = db.Column(db.String(256), nullable=False)
+  disk_write = db.Column(db.String(256), nullable=False)
+  network_usage = db.Column(db.Float(2), nullable=False)
+
 class ClientMachines(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   machine_name = db.Column(db.String(256), nullable=False)
