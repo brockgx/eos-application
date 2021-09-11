@@ -133,6 +133,11 @@ def startServer():
         time.sleep(2)
         client_response = receiveSocketData(agentSocket)
         print(client_response)
+      elif cmd == "json":
+        sendSocketData(agentSocket, "JSON")
+        time.sleep(2)
+        client_response = receiveSocketData(agentSocket)
+        print(client_response)
       elif cmd == "exit":
         print("----------------\n Session Closed \n----------------")
         break
