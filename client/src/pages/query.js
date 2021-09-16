@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 
 import { DataGrid } from "@material-ui/data-grid";
+import { Columns } from '../components/query/ColumnData';
 import styled from 'styled-components';
 
 // import '../styles/query.css';
@@ -66,11 +67,11 @@ const Right = styled.div`
   background-colour: white;
 `;
 
-const BottomText = styled.span`
-  font-weight: 400;
-  font-size: 38px;
-  padding-bottom: 20px;
-`;
+// const BottomText = styled.span`
+//   font-weight: 400;
+//   font-size: 38px;
+//   padding-bottom: 20px;
+// `;
 
 const QueryResult = styled.div`
   border-radius: 5px;
@@ -106,52 +107,6 @@ const Query = (props) => {
         throw Error(`Request rejected with status ${resp.status}`);
       }
     }
-
-    // Columns for device grid
-    const columns = [
-        { 
-            field: "id",
-            headerName: " ID",
-            width: 100,
-            headerAlign: 'center',
-            align: 'center',
-        },
-        { 
-            field: "machine_name",
-            headerName: "Machine Name",
-            width: 180,
-            headerAlign: 'center',
-            align: 'center',
-        },
-        { 
-            field: "time",
-            headerName: "Time", 
-            width: 160,
-            headerAlign: 'center', 
-            align: 'center',
-        },
-        { 
-            field: "app_name",
-            headerName: "Application", 
-            width: 160,
-            headerAlign: 'center', 
-            align: 'center',
-        },
-        { 
-            field: "app_cpu",
-            headerName: "CPU (%)", 
-            width: 160,
-            headerAlign: 'center', 
-            align: 'center',
-        },
-        { 
-            field: "app_ram",
-            headerName: "RAM (%)", 
-            width: 160,
-            headerAlign: 'center', 
-            align: 'center',
-        }
-    ]
     
     return (
       <Container>
@@ -173,9 +128,9 @@ const Query = (props) => {
                   rows={messages.content}
                   disableColumnMenu
                   disableSelectionOnClick
-                  pageSize={10}
-                  rowsPerPageOptions={[10, 25, 50]}
-                  columns={columns}
+                  pageSize={15}
+                  rowsPerPageOptions={[15, 25, 50]}
+                  columns={Columns}
                 />
               </QueryResult>
             </Right>

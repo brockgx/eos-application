@@ -10,9 +10,9 @@ import { Commands } from './pages/command';
 import { Support } from './pages/support';
 
 //All component imports here
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/navigation/Sidebar';
 import SignInSide from './components/SignInSide';
-import Topbar from './components/Topbar';
+import Topbar from './components/navigation/Topbar';
 
 
 /*

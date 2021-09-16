@@ -7,12 +7,8 @@ import clsx from "clsx";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import Chart from "react-apexcharts";
-// import windows from '../assets/windows.png'
-// import windows1 from '../assets/windows1.png'
-// import windows2 from '../assets/windows2.png'
-import windows3 from '../assets/windows3.png'
-// import linux from '../assets/linux.png'
-import linux1 from '../assets/linux1.png'
+import windows from '../../assets/windows.png'
+import linux from '../../assets/linux.png'
 
 const Container = styled.div`
   padding-bottom: 10px;
@@ -64,13 +60,13 @@ const Details = styled.div`
 `;
 
 const MachineName = styled.span`
-font-size: 28px;
-font-weight: 400;
+  font-size: 28px;
+  font-weight: 400;
 `;
 
 const MachineTime = styled.span`
-font-size: 18px;
-font-weight: 400;
+  font-size: 18px;
+  font-weight: 400;
 `;
 
 const MachineStatus = styled.div`
@@ -90,12 +86,12 @@ const MachineStatusName = styled.span`
 `;
 
 const MoreDetails = styled.div`
-padding: 0px 10px;
-display: flex;
-flex-direction: column;
-justify-content: space-around;
-font-size: 20px;
-font-weight: 300;
+  padding: 0px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 20px;
+  font-weight: 300;
 `;
 
 const MachineDetails = styled.div`
@@ -128,6 +124,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "rotate(180deg)"
   }
 }));
+
 const MachinesV2 = ({machine}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
@@ -138,14 +135,14 @@ const MachinesV2 = ({machine}) => {
 
   const [cpuChart, setCPUChart] = useState(
     {
-      series: [machine.cpu],
-      options: {}
+      options: {},
+      series: [machine.cpu]
     }
   );
   const [RAMChart, setRAMChart] = useState(
     {
-      series: [machine.ram],
-      options: {}
+      options: {},
+      series: [machine.ram]
     }
   );
 
@@ -156,8 +153,8 @@ const MachinesV2 = ({machine}) => {
           <DetailsLeft>
             {
               machine.machine_type === "windows"
-              ? <Image src={windows3}/>
-              : <Image src={linux1}/>
+              ? <Image src={windows}/>
+              : <Image src={linux}/>
             }
             <Details>
               <MachineName>
@@ -196,7 +193,6 @@ const MachinesV2 = ({machine}) => {
                   CPU Usage:
                 </MachineInfo>
                 <MachineChart>
-                  
                   <Chart
                     options={cpuChart.options}
                     series={cpuChart.series}
@@ -208,7 +204,6 @@ const MachinesV2 = ({machine}) => {
                   RAM Usage:
                 </MachineInfo>
                 <MachineChart>
-                  
                   <Chart
                     options={RAMChart.options}
                     series={RAMChart.series}

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { IconContext } from 'react-icons';
 import { SidebarData } from './SidebarData'
 
-import '../styles/sidebar.css';
+import '../../styles/sidebar.css';
 
 
 const Sidebar = () => {
