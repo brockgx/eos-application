@@ -6,12 +6,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-// import windows from '../assets/windows.png'
-// import windows1 from '../assets/windows1.png'
-// import windows2 from '../assets/windows2.png'
-import windows3 from '../assets/windows3.png'
-// import linux from '../assets/linux.png'
-import linux1 from '../assets/linux1.png'
+import Chart from "react-apexcharts";
+import windows from '../../assets/windows.png'
+import linux from '../../assets/linux.png'
 
 const Container = styled.div`
   padding-bottom: 10px;
@@ -63,13 +60,13 @@ const Details = styled.div`
 `;
 
 const MachineName = styled.span`
-font-size: 28px;
-font-weight: 400;
+  font-size: 28px;
+  font-weight: 400;
 `;
 
 const MachineTime = styled.span`
-font-size: 18px;
-font-weight: 400;
+  font-size: 18px;
+  font-weight: 400;
 `;
 
 const MachineStatus = styled.div`
@@ -89,27 +86,30 @@ const MachineStatusName = styled.span`
 `;
 
 const MoreDetails = styled.div`
-padding: 0px 10px;
-display: flex;
-flex-direction: column;
-justify-content: space-around;
-font-size: 20px;
-font-weight: 300;
-`;
-
-const MachineDetails = styled.div`
-  padding: 10px 0px 0px 10px;
+  padding: 0px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  border-top: 1px solid #687CA1;
+  font-size: 20px;
+  font-weight: 300;
+`;
 
+const MachineDetails = styled.div`
+  padding: 10px 0px 0px 5px;
+  display: flex;
+  border-top: 1px solid #687CA1;
+  font-size: 22px;
+  font-weight: 300;
+`;
+
+const MachineChart = styled.span`
+  padding-top: 10px;
 `;
 
 const MachineInfo = styled.span`
+  margin-top: 5px;
   font-size: 22px;
   font-weight: 300;
-  margin-bottom: 5px;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -124,6 +124,7 @@ const useStyles = makeStyles((theme) => ({
     transform: "rotate(180deg)"
   }
 }));
+
 const MachinesV2 = ({machine}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
@@ -131,6 +132,20 @@ const MachinesV2 = ({machine}) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const [cpuChart, setCPUChart] = useState(
+    {
+      options: {},
+      series: [machine.cpu]
+    }
+  );
+  const [RAMChart, setRAMChart] = useState(
+    {
+      options: {},
+      series: [machine.ram]
+    }
+  );
+
   return (
     <Container>
       <MachinesWrapper>
@@ -138,8 +153,8 @@ const MachinesV2 = ({machine}) => {
           <DetailsLeft>
             {
               machine.machine_type === "windows"
-              ? <Image src={windows3}/>
-              : <Image src={linux1}/>
+              ? <Image src={windows}/>
+              : <Image src={linux}/>
             }
             <Details>
               <MachineName>
@@ -175,11 +190,27 @@ const MachinesV2 = ({machine}) => {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <MachineDetails>
                 <MachineInfo>
-                  <b>CPU Usage:</b> {machine.cpu}
+                  CPU Usage:
                 </MachineInfo>
+                <MachineChart>
+                  <Chart
+                    options={cpuChart.options}
+                    series={cpuChart.series}
+                    type="radialBar"
+                    width="300"
+                  />
+                </MachineChart>
                 <MachineInfo>
-                  <b>RAM Usage:</b> {machine.ram}
+                  RAM Usage:
                 </MachineInfo>
+                <MachineChart>
+                  <Chart
+                    options={RAMChart.options}
+                    series={RAMChart.series}
+                    type="radialBar"
+                    width="300"
+                  />
+                </MachineChart>
               </MachineDetails>
             </Collapse>  
           </MoreDetails>

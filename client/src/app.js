@@ -10,9 +10,9 @@ import { Commands } from './pages/command';
 import { Support } from './pages/support';
 
 //All component imports here
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/navigation/Sidebar';
 import SignInSide from './components/SignInSide';
-import Topbar from './components/Topbar';
+import Topbar from './components/navigation/Topbar';
 
 
 /*
@@ -28,9 +28,9 @@ and the various other pages, which are routed using React-Router
 function App() {
   return (   
     <Router>
-      { window.location.pathname != '/' &&  <Topbar /> }
+      { window.location.pathname !== '/' &&  <Topbar /> }
       <div className="content">
-      { window.location.pathname != '/' &&  <Sidebar /> }
+      { window.location.pathname !== '/' &&  <Sidebar /> }
         <Switch>
           <Route path="/" exact component={ SignInSide } />
           <Route path="/login" exact component={ SignInSide } />

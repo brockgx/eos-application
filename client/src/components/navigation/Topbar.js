@@ -3,9 +3,9 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 
 import * as FaIcons from 'react-icons/fa';
-import logo from '../assets/logo.png'
+import logo from '../../assets/logo.png'
 //import eye from '../assets/eye.png'
-import '../styles/topbar.css';
+import '../../styles/topbar.css';
 
 const Topbar = () => {
   return (

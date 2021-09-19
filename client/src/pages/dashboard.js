@@ -1,15 +1,12 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import * as IoIcons from 'react-icons/io';
-
 import styled from 'styled-components';
-// import Machines from '../components/Machines.js';
-import MachinesV2 from '../components/MachinesV2.js';
-// import '../styles/dashboard.css';
 
-// the below line was the original line
-// const Dashboard = (props) => {
 
+// import components
+import MachinesV2 from '../components/dashboard/MachinesV2';
+import AddMachine from '../components/dashboard/AddMachine';
+import Search from '../components/search/Search';
 
 const Container = styled.div`
   flex: 10;
@@ -33,17 +30,7 @@ const Top = styled.div`
   padding: 10px 20px 20px 40px;
 `;
 
-const TopButton = styled.button`
-  padding: 10px;
-  font-size: 18px;
-  font-weight: 600;
-  border: filled;
-  border-radius: 5px;
-  border-color: #6a994e;
-  background-color: #6a994e;
-  color: #f8f7ff;
-  cursor: pointer;
-`;
+
 
 const TopText = styled.span`
   font-weight: 500;
@@ -65,7 +52,7 @@ const ConnectedMachines = styled.div`
 
 const Dashboard = () => {
     const [machines, setMachines] = useState({description: "default desc", content: []})
-  
+
     useEffect(() => {
       const getMachines = async () => {
         const machinesFromServer = await fetchMachines()
@@ -77,7 +64,7 @@ const Dashboard = () => {
   
     // Fetch device data from DB
     const fetchMachines = async () => {
-      const resp = await fetch('/getmachines')
+      const resp = await fetch('/test/getmachines')
       const data = await resp.json()
       if(resp.ok) {
         console.log(data.content)
@@ -87,9 +74,22 @@ const Dashboard = () => {
       }
     }
 
-    const refreshPage = () => {
-      window.location.reload();
+    //Filter machines
+    const filterMachines = (machines, query) => {
+      if (!query) {
+        return machines
+      }
+  
+      return machines.filter((machine) => {
+        const machineName = machine.machine_name.toLowerCase()
+        return machineName.includes(query)
+      })
     }
+
+    const { search } = window.location;
+    const query = new URLSearchParams(search).get('s');
+    const [searchQuery, setSearchQuery] = useState(query || '');
+    const filteredMachines = filterMachines(machines.content, searchQuery);
 
     return (
         <Container>
@@ -97,21 +97,15 @@ const Dashboard = () => {
             {/* <Title>DASHBOARD PAGE</Title> */}
             <Top>
               <TopText>Connected Machines</TopText>
-              <IoIcons.IoMdRefresh 
-                onClick={refreshPage} 
-                style={{ 
-                  width: "30px", 
-                  height: "30px",
-                  marginRight: "1520px",
-                  marginBottom: "3px",
-                  cursor: "pointer"
-                  }} 
-                />
-              <TopButton>Add New Machine</TopButton>
+              <Search
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              />
+              <AddMachine />
             </Top>
             <Bottom>
               <ConnectedMachines>
-                {machines.content.map((machine) => (
+                {filteredMachines.map((machine) => (
                   <MachinesV2 machine={machine} key={machine.id} />
                 ))}
               </ConnectedMachines>
