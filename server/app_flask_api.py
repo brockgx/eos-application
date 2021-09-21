@@ -7,6 +7,7 @@ import platform
 from modules.routes.test_routes import test_routes
 from modules.routes.command_routes import command_routes
 from modules.routes.dashboard_routes import dashboard_routes
+from modules.routes.query_routes import query_routes
 from modules.database.prototype_database import db, AppMetrics
 
 #Setup any constants need to be used
@@ -44,6 +45,7 @@ def home_route():
 app.register_blueprint(test_routes, url_prefix='/test')
 app.register_blueprint(command_routes, url_prefix='/commands')
 app.register_blueprint(dashboard_routes, url_prefix='/dash')
+app.register_blueprint(query_routes, url_prefix='/query')
 
 #Function for running the app
 def start_flask_api():

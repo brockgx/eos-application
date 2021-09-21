@@ -31,22 +31,6 @@ def test_get():
     "content": final
   })
 
-@test_routes.route("/testdata")
-def test_data():
-  result = jsonify({
-    "content": "Data Stream",
-    "machine": "WinNet01",
-    "app_metrics": [
-      {"app_name": "Discord","app_cpu": "50%","app_ram": "13%"},
-      {"app_name": "Word","app_cpu": "3%","app_ram": "7%"},
-      {"app_name": "Chrome","app_cpu": "1%","app_ram": "All of it"}
-    ],
-    "sys_metrics": {"cpu": "72%","ram": "65%","disk_read": "20%","disk_write": "6%","network": "24%"}
-  })
-
-  #final = json.loads(result.get_data().decode("utf-8"))
-  return result
-
 @test_routes.route("/getmachines")
 def get_machines():
   result = jsonify({
@@ -92,3 +76,16 @@ def get_metrics():
   })
 
   return "Metrics received!!"
+
+#Route: used for personal testing (brock) to run custom SQL queries
+@test_routes.route("/brocktest", methods=["GET"])
+def brockTest():
+  result = db.session.execute('SELECT * FROM app_metrics WHERE app_name = :aname LIMIT :start,:limit', {'aname': "python", "start": 0, "limit": 2})
+
+  final = []
+  for r in result:
+    print(r)
+    final.append({"id": r.id, "name": r.machine_name, "time": r.timestamp, "cpu": r.app_cpu})
+
+  return jsonify({"description": "A result of app metrics with python as the name", "content": final, "rows": len(final)})
+
