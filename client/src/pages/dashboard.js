@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 
 // import components
-import MachinesV2 from '../components/dashboard/MachinesV2';
+import Machines from '../components/dashboard/Machines';
 import AddMachine from '../components/dashboard/AddMachine';
 import Search from '../components/search/Search';
 
@@ -29,8 +29,6 @@ const Top = styled.div`
   justify-content: space-between;
   padding: 10px 20px 20px 40px;
 `;
-
-
 
 const TopText = styled.span`
   font-weight: 500;
@@ -106,7 +104,7 @@ const Dashboard = () => {
             <Bottom>
               <ConnectedMachines>
                 {filteredMachines.map((machine) => (
-                  <MachinesV2 machine={machine} key={machine.id} />
+                  <Machines machine={machine} key={machine.id} />
                 ))}
               </ConnectedMachines>
             </Bottom>
