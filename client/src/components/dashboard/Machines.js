@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {useHistory} from 'react-router-dom';
 
 import { IconButton, Collapse } from '@material-ui/core'
 import styled from 'styled-components'
@@ -6,13 +7,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import Chart from "react-apexcharts";
+import * as FaIcons from 'react-icons/fa';
+
+import MachineMetrics from './MachineMetrics';
+
 import windows from '../../assets/windows.png'
 import linux from '../../assets/linux.png'
 
 const Container = styled.div`
   padding-bottom: 10px;
-
 `;
 const MachinesWrapper = styled.div`
   background-color: white;
@@ -28,12 +31,21 @@ const DetailsLeft = styled.div`
   display: flex;  
   flex: 1;
 `;
+const DetailsMiddle = styled.div`
+  display: flex;
+  justify-content: flex-start; 
+  flex: 1;
+  font-size: 20px;
+  font-weight: 400;
+`;
 
 const DetailsRight = styled.div`
   display: flex;
-  flex: 1.5;
+  flex: 1;
+  justify-content: flex-end;
   font-size: 22px;
   font-weight: 300;
+  margin: 5px 10px;;
 `;
 
 const Top = styled.div`
@@ -41,7 +53,6 @@ const Top = styled.div`
 `;
 
 const Bottom = styled.div`
-
 `;
 
 const Image = styled.img`
@@ -102,14 +113,44 @@ const MachineDetails = styled.div`
   font-weight: 300;
 `;
 
-const MachineChart = styled.span`
-  padding-top: 10px;
-`;
-
 const MachineInfo = styled.span`
   margin-top: 5px;
   font-size: 22px;
   font-weight: 300;
+`;
+
+const Text = styled.span`
+  font-size: 22px;
+  font-weight: 300;
+`;
+
+const TagsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  border-top: 1px solid #687CA1;
+`;
+
+const Tags = styled.div`
+  font-size: 18px;
+  font-weight: 400;
+  display: flex;
+  padding: 10px 0px;
+`;
+
+const AddTags = styled.button`
+  font-size: 16px;
+  font-weight: 400;
+  border-radius: 5px;
+  border-color: #8B9AB7;
+  background-color: #8B9AB7;
+  color: #f8f7ff;
+  cursor: pointer;
+  &:hover {
+    border-color: #AEB8CC;
+    background-color: #AEB8CC;
+  }
+  width: 75px;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -125,7 +166,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const MachinesV2 = ({machine}) => {
+const Machines = ({machine}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
@@ -133,18 +174,19 @@ const MachinesV2 = ({machine}) => {
     setExpanded(!expanded);
   };
 
-  const [cpuChart, setCPUChart] = useState(
-    {
-      options: {},
-      series: [machine.cpu]
-    }
-  );
-  const [RAMChart, setRAMChart] = useState(
-    {
-      options: {},
-      series: [machine.ram]
-    }
-  );
+  const history = useHistory();
+
+  const handleDelete = () => {
+    fetch('/dash/clientmachines', {
+      method: 'DELETE',
+    }).then(() => {
+        history.push('/dashboard')
+    })
+  };
+
+  const handleEdit = () => {
+    history.push('/dashboard')
+  };
 
   return (
     <Container>
@@ -170,9 +212,20 @@ const MachinesV2 = ({machine}) => {
               </MachineStatus>
             </Details>
           </DetailsLeft>
+          <DetailsMiddle>
+            Common Functions: <br/>
+            - Restart <br/>
+            - Shut Down
+          </DetailsMiddle>
           <DetailsRight>
-            <Details>
-            </Details>
+            <FaIcons.FaEdit
+              onClick={handleEdit}
+              style={{color: "#4A5A76", padding: "5px", cursor: "pointer"}}
+            />
+            <FaIcons.FaRegTrashAlt 
+              onClick={handleDelete}
+              style={{color: "#A53C27", padding: "5px", cursor: "pointer"}}
+            />
           </DetailsRight>
         </Top>
         <Bottom>
@@ -189,29 +242,15 @@ const MachinesV2 = ({machine}) => {
             </IconButton>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <MachineDetails>
-                <MachineInfo>
-                  CPU Usage:
-                </MachineInfo>
-                <MachineChart>
-                  <Chart
-                    options={cpuChart.options}
-                    series={cpuChart.series}
-                    type="radialBar"
-                    width="300"
-                  />
-                </MachineChart>
-                <MachineInfo>
-                  RAM Usage:
-                </MachineInfo>
-                <MachineChart>
-                  <Chart
-                    options={RAMChart.options}
-                    series={RAMChart.series}
-                    type="radialBar"
-                    width="300"
-                  />
-                </MachineChart>
+                <MachineMetrics machine={machine} />
               </MachineDetails>
+              <TagsWrapper>
+                <Text>Tags:</Text>
+                <Tags>
+                Tag1, Tag2, Tag3
+                </Tags>
+                <AddTags>Add Tags</AddTags>
+              </TagsWrapper>
             </Collapse>  
           </MoreDetails>
         </Bottom>
@@ -220,4 +259,4 @@ const MachinesV2 = ({machine}) => {
   )
 }
 
-export default MachinesV2
+export default Machines
