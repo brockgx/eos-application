@@ -47,7 +47,7 @@ const FormItem = styled.div`
 const FormButtons = styled.div`
   margin-bottom: 20px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 `;
 
 
@@ -63,6 +63,7 @@ const Button = styled.button`
   color: ${(props) => props.textColor};
   cursor: pointer;
   &:hover {
+    border-color: ${(props) => props.hoverColor};
     background-color: ${(props) => props.hoverColor};
   }
 `;
@@ -90,13 +91,11 @@ const AddMachine = ({userInput}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    history.push('/dashboard')
     fetch('/dash/clientmachines', {
       method: 'POST',
       headers: {"Content-Type": "application/json" },
       body: JSON.stringify(newMachine)
     }).then(() => {
-      console.log(newMachine)
       setOpen(false)
     })
   };
@@ -172,12 +171,12 @@ const AddMachine = ({userInput}) => {
               <Button
                 type="submit"
                 marginRight="5px"
-                borderColor="#436049"
-                backgroundColor="#436049"
+                borderColor="#3e885b"
+                backgroundColor="#3e885b"
                 textColor="#f8f7ff"
                 fontWeight="400"
                 fontSize="18px"
-                hoverColor="#4B6C52"
+                hoverColor="#4DA871"
                 >
                 Add Machine
               </Button>
