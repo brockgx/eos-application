@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 import json
 
-from ..database.prototype_database import db, Random, AppMetrics
+from ..database.prototype_database import db, Random, AppMetrics, SystemMetrics
 
 test_routes = Blueprint('test_routes',__name__)
 
