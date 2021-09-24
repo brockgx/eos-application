@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 import json
 
-from ..database.prototype_database import db, Random, AppMetrics
+from ..database.prototype_database import db, Random, AppMetrics, SystemMetrics
 
 test_routes = Blueprint('test_routes',__name__)
 
@@ -31,22 +31,6 @@ def test_get():
     "content": final
   })
 
-@test_routes.route("/testdata")
-def test_data():
-  result = jsonify({
-    "content": "Data Stream",
-    "machine": "WinNet01",
-    "app_metrics": [
-      {"app_name": "Discord","app_cpu": "50%","app_ram": "13%"},
-      {"app_name": "Word","app_cpu": "3%","app_ram": "7%"},
-      {"app_name": "Chrome","app_cpu": "1%","app_ram": "All of it"}
-    ],
-    "sys_metrics": {"cpu": "72%","ram": "65%","disk_read": "20%","disk_write": "6%","network": "24%"}
-  })
-
-  #final = json.loads(result.get_data().decode("utf-8"))
-  return result
-
 @test_routes.route("/getmachines")
 def get_machines():
   result = jsonify({
@@ -73,6 +57,26 @@ def add_metrics():
     db_metric = AppMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],app_name=app["name"],app_cpu=app["cpu"],app_ram=app["ram"])
     db.session.add(db_metric)
 
+  sys_cpu = obj["system_metrics"][0]["cpu"]
+  sys_ram = obj["system_metrics"][1]["ram"]
+
+  first_disk = True
+  disks = ""
+  disk_perc = ""
+  for disk in obj["disk_metrics"]:
+    if first_disk:
+      first_disk = False
+      disks += disk["device"]
+      disk_perc += str(disk["percent"])
+    else:
+      disks += "," + str(disk["device"])
+      disk_perc += "," + str(disk["percent"])
+  
+  #Add system metric
+  db_sys_metric = SystemMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],cpu_usage=sys_cpu,ram_usage=sys_ram,disk_usage=disk_perc,disk_read=obj["disk_bytes_read"],disk_write=obj["disk_bytes_written"],network_usage=obj["network_percent"])
+  db.session.add(db_sys_metric)
+
+  print(disks)
   db.session.commit()
 
   return "New Metrics Successfully added"
@@ -92,3 +96,16 @@ def get_metrics():
   })
 
   return "Metrics received!!"
+
+#Route: used for personal testing (brock) to run custom SQL queries
+@test_routes.route("/brocktest", methods=["GET"])
+def brockTest():
+  result = db.session.execute('SELECT * FROM app_metrics WHERE app_name = :aname LIMIT :start,:limit', {'aname': "python", "start": 0, "limit": 2})
+
+  final = []
+  for r in result:
+    print(r)
+    final.append({"id": r.id, "name": r.machine_name, "time": r.timestamp, "cpu": r.app_cpu})
+
+  return jsonify({"description": "A result of app metrics with python as the name", "content": final, "rows": len(final)})
+
