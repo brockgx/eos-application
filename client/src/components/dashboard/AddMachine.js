@@ -154,9 +154,6 @@ const AddMachine = ({userInput}) => {
                     value={newMachine.os}
                     onChange={handleInputChange}
                   >
-                    <MenuItem key="mac" value="mac">
-                      Mac
-                    </MenuItem>
                     <MenuItem key="windows" value="windows">
                       Windows
                     </MenuItem>

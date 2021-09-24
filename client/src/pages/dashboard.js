@@ -62,7 +62,7 @@ const Dashboard = () => {
   
     // Fetch device data from DB
     const fetchMachines = async () => {
-      const resp = await fetch('/test/getmachines')
+      const resp = await fetch('/dash/clientmachines')
       const data = await resp.json()
       if(resp.ok) {
         console.log(data.content)

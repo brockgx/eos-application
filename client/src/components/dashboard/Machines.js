@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 
-import { IconButton, Collapse } from '@material-ui/core'
+import { IconButton, Collapse, Table, TableBody, TableCell, TableContainer,TableHead, TableRow, Paper } from '@material-ui/core'
 import styled from 'styled-components'
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -121,7 +121,7 @@ const MachineInfo = styled.span`
 
 const Text = styled.span`
   font-size: 22px;
-  font-weight: 300;
+  font-weight: 400;
 `;
 
 const TagsWrapper = styled.div`
@@ -150,7 +150,9 @@ const AddTags = styled.button`
     border-color: #AEB8CC;
     background-color: #AEB8CC;
   }
-  width: 75px;
+  width: 100px;
+  height: 35px;
+  margin-left: auto;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -188,27 +190,43 @@ const Machines = ({machine}) => {
     history.push('/dashboard')
   };
 
+  const rows = [
+    {
+      key: "Name",
+      value: "miz007"
+    },
+    {
+      key: "Location",
+      value: "swin-01"
+    },
+  ]
   return (
     <Container>
       <MachinesWrapper>
         <Top>
           <DetailsLeft>
             {
-              machine.machine_type === "windows"
+              machine.os === "windows"
               ? <Image src={windows}/>
               : <Image src={linux}/>
             }
             <Details>
               <MachineName>
-                <b>Name:</b> {machine.machine_name}  
-                <MachineInfo> ({machine.ip_address})</MachineInfo>
+                <b>Name:</b> {machine.name}  
+                <MachineInfo> ({machine.address})</MachineInfo>
               </MachineName>
               <MachineTime>
                 <b>Last Update:</b> {machine.time}
               </MachineTime>
               <MachineStatus>
                 <MachineStatusIcon color={machine.status} />
-                <MachineStatusName>{machine.status}</MachineStatusName>
+                <MachineStatusName>
+                {
+                  machine.status === "0"
+                  ? "Connected"
+                  : "Disconnected"
+                }
+                </MachineStatusName>
               </MachineStatus>
             </Details>
           </DetailsLeft>
@@ -246,9 +264,29 @@ const Machines = ({machine}) => {
               </MachineDetails>
               <TagsWrapper>
                 <Text>Tags:</Text>
-                <Tags>
-                Tag1, Tag2, Tag3
-                </Tags>
+                <Tags style={{width: "100%", padding: "10px 0px"}}>
+                <Table sx={{ minWidth: 750, border: "solid 0.5px" }}>
+                  <TableHead style={{ backgroundColor: "#F3F4F7", borderBottom:"solid 1px"}}>
+                    <TableRow style={{borderBottom: "solid 2px #56698A "}}>
+                      <TableCell style={{fontSize: "18px", fontWeight: "400"}}>Key</TableCell>
+                      <TableCell style={{fontSize: "18px", fontWeight: "400", borderLeft: "solid 1px #56698A "}}>Value</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody >
+                    {rows.map((row) => ( 
+                      <TableRow
+                        key={row.key}
+                        style={{fontSize: "16px", fontWeight: "300"}}
+                      >
+                        <TableCell component="th" scope="row" style={{fontSize: "16px", fontWeight: "300", width: "50%"}}>
+                          {row.key}
+                        </TableCell>
+                        <TableCell style={{fontSize: "16px", fontWeight: "300", borderLeft: "solid 1px #56698A ", width: "50%"}}>{row.value}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Tags>
                 <AddTags>Add Tags</AddTags>
               </TagsWrapper>
             </Collapse>  

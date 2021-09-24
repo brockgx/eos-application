@@ -9,7 +9,7 @@ import json
 import ipaddress
 
 #Import from in house modules
-from ..database.prototype_database import db, ClientMachines
+from ..database.prototype_database import db, ClientMachines, AppMetrics, SystemMetrics
 
 
 #Setup the blueprint for the dashboard routes

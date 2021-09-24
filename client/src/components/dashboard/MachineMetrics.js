@@ -14,7 +14,7 @@ const MachineChart = styled.span`
 const Label = styled.span`
   margin-top: 5px;
   font-size: 22px;
-  font-weight: 300;
+  font-weight: 400;
 `;
 
 const MachineMetrics = ({machine}) => {
@@ -36,14 +36,14 @@ const MachineMetrics = ({machine}) => {
             },
           }
         },
-        colors: ["#687CA1"],
+        colors: ["#56698A"],
         fill: {
           type: "gradient",
           gradient: {
             shade: "dark",
             type: "vertical",
-            shadeIntensity: 0,
-            opacityFrom: 0.8,
+            shadeIntensity: 0.2,
+            opacityFrom: 0.7,
             opacityTo: 1,
             stops: [0, 75, 100]
           }
