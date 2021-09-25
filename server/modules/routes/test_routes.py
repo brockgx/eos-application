@@ -1,7 +1,10 @@
 from flask import Blueprint, jsonify, request
 import json
+import socket
+import time
 
 from ..database.prototype_database import db, Random, AppMetrics, SystemMetrics
+from ..sockets.socket_data_transfer import sendSocketData, receiveSocketData
 
 test_routes = Blueprint('test_routes',__name__)
 
@@ -98,7 +101,7 @@ def get_metrics():
   return "Metrics received!!"
 
 #Route: used for personal testing (brock) to run custom SQL queries
-@test_routes.route("/brocktest", methods=["GET"])
+@test_routes.route("/brock/test", methods=["GET"])
 def brockTest():
   result = db.session.execute('SELECT * FROM app_metrics WHERE app_name = :aname LIMIT :start,:limit', {'aname': "python", "start": 0, "limit": 2})
 
@@ -109,3 +112,22 @@ def brockTest():
 
   return jsonify({"description": "A result of app metrics with python as the name", "content": final, "rows": len(final)})
 
+#Route: personal socket command use
+#Could POST? from agent to api or server to api
+#So could go from API -> AGENT -> SERVER -> BACK TO API
+@test_routes.route("/brock/socket", methods=["GET"])
+def brockSocket():
+
+  try:
+    sock = socket.socket()
+    sock.connect(("127.0.0.1",1338))
+
+    sendSocketData(sock, "Command")
+    time.sleep(2)
+    data = receiveSocketData(sock)
+    if data:
+      return data
+    else:
+      return "Command failed"
+  except:
+    return "Command failed"
