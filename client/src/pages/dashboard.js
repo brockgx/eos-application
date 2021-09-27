@@ -104,7 +104,7 @@ const Dashboard = () => {
             <Bottom>
               <ConnectedMachines>
                 {filteredMachines.map((machine) => (
-                  <Machines machine={machine} key={machine.id} />
+                  <Machines machine={machine} key={machine.name} />
                 ))}
               </ConnectedMachines>
             </Bottom>

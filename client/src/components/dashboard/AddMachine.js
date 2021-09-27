@@ -97,9 +97,9 @@ const AddMachine = ({userInput}) => {
       body: JSON.stringify(newMachine)
     }).then(() => {
       setOpen(false)
+      history.push('/dashboard')
     })
   };
-  
 
   return (
     <Container>

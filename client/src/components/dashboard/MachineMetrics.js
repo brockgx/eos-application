@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 import styled from 'styled-components';
 import Chart from "react-apexcharts";
@@ -17,7 +17,7 @@ const Label = styled.span`
   font-weight: 400;
 `;
 
-const MachineMetrics = ({machine}) => {
+const MachineMetrics = ({machineName}) => {
   const [radialChart, setRadialChart] = useState(
     {
       options: {
@@ -55,6 +55,29 @@ const MachineMetrics = ({machine}) => {
     }
   );
 
+  const [machineMetrics, setMachineMetrics] = useState({description: "default desc", content: []})
+
+  useEffect(() => {
+    const getMachines = async () => {
+      const data = await fetchMachineMetrics()
+      setMachineMetrics(data)
+    }
+
+    getMachines()
+  }, [])
+
+  // Fetch device data from DB
+  const fetchMachineMetrics = async () => {
+    const resp = await fetch('/dash/clientmachinemetrics')
+    const data = await resp.json()
+    if(resp.ok) {
+      console.log(data.content)
+      return data;
+    } else {
+      throw Error(`Request rejected with status ${resp.status}`);
+    }
+  }
+
   return (
     <Container>
       <Label>
@@ -63,7 +86,7 @@ const MachineMetrics = ({machine}) => {
       <MachineChart>
         <Chart
           options={radialChart.options}
-          series={[machine.cpu]}
+          series={[]}
           type="radialBar"
           width="300"
         />
@@ -74,7 +97,7 @@ const MachineMetrics = ({machine}) => {
       <MachineChart>
         <Chart
           options={radialChart.options}
-          series={[machine.ram]}
+          series={[]}
           type="radialBar"
           width="300"
         />

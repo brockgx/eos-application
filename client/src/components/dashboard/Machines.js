@@ -1,16 +1,15 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 
-import { IconButton, Collapse, Table, TableBody, TableCell, TableContainer,TableHead, TableRow, Paper } from '@material-ui/core'
+import { IconButton, Collapse, Table, TableBody, TableCell,TableHead, TableRow } from '@material-ui/core'
 import styled from 'styled-components'
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
 import * as FaIcons from 'react-icons/fa';
-
 import MachineMetrics from './MachineMetrics';
 
+import ip2int from 'ip2integer'
 import windows from '../../assets/windows.png'
 import linux from '../../assets/linux.png'
 
@@ -200,6 +199,7 @@ const Machines = ({machine}) => {
       value: "swin-01"
     },
   ]
+
   return (
     <Container>
       <MachinesWrapper>
@@ -213,7 +213,7 @@ const Machines = ({machine}) => {
             <Details>
               <MachineName>
                 <b>Name:</b> {machine.name}  
-                <MachineInfo> ({machine.address})</MachineInfo>
+                <MachineInfo> ({ip2int.toIp(machine.address)})</MachineInfo>
               </MachineName>
               <MachineTime>
                 <b>Last Update:</b> {machine.time}
@@ -260,7 +260,7 @@ const Machines = ({machine}) => {
             </IconButton>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <MachineDetails>
-                <MachineMetrics machine={machine} />
+                <MachineMetrics machineName={machine.name} />
               </MachineDetails>
               <TagsWrapper>
                 <Text>Tags:</Text>
