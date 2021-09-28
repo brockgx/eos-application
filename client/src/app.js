@@ -8,7 +8,7 @@ import { Dashboard } from './pages/dashboard';
 import { Query } from './pages/query';
 import { Commands } from './pages/command';
 import { Support } from './pages/support';
-
+import TestForm from './components/commands-tabs/TestForm';
 //All component imports here
 import Sidebar from './components/navigation/Sidebar';
 import SignInSide from './components/SignInSide';
@@ -39,6 +39,7 @@ function App() {
           <Route path="/query" exact component={Query} />
           <Route path="/command" exact component={Commands} />
           <Route path="/support" exact component={Support} />
+          <Route path="/TestForm" exact component={TestForm} />
         </Switch>
       </div>
     </Router>
