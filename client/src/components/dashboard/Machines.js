@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 
 import { IconButton, Collapse, Table, TableBody, TableCell,TableHead, TableRow } from '@material-ui/core'
@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import * as FaIcons from 'react-icons/fa';
+import * as IoIcons from 'react-icons/io';
 import MachineMetrics from './MachineMetrics';
 
 import ip2int from 'ip2integer'
@@ -34,6 +35,14 @@ const DetailsMiddle = styled.div`
   display: flex;
   justify-content: flex-start; 
   flex: 1;
+  font-size: 20px;
+  font-weight: 400;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+
+const FunctionContainer = styled.div`
+  display: flex;
   font-size: 20px;
   font-weight: 400;
 `;
@@ -120,7 +129,7 @@ const MachineInfo = styled.span`
 
 const Text = styled.span`
   font-size: 22px;
-  font-weight: 400;
+  font-weight: 600;
 `;
 
 const TagsWrapper = styled.div`
@@ -199,6 +208,12 @@ const Machines = ({machine}) => {
       value: "swin-01"
     },
   ]
+  const redirect_command = () =>{
+    history.push('/command')
+  }
+  const redirect_query = () =>{
+    history.push('/query')
+  }
 
   return (
     <Container>
@@ -213,10 +228,10 @@ const Machines = ({machine}) => {
             <Details>
               <MachineName>
                 <b>Name:</b> {machine.name}  
-                <MachineInfo> ({ip2int.toIp(machine.address)})</MachineInfo>
+                <MachineInfo> ({ip2int.toIp(machine.address)} : 1337)</MachineInfo>
               </MachineName>
               <MachineTime>
-                <b>Last Update:</b> {machine.time}
+                <b>Last Update:</b> 
               </MachineTime>
               <MachineStatus>
                 <MachineStatusIcon color={machine.status} />
@@ -231,9 +246,22 @@ const Machines = ({machine}) => {
             </Details>
           </DetailsLeft>
           <DetailsMiddle>
-            Common Functions: <br/>
-            - Restart <br/>
-            - Shut Down
+            <Text>Common Functions:</Text>
+            <FunctionContainer>
+              <IoIcons.IoMdPower
+                onClick={redirect_command}
+                style={{color: "#A53C27", padding: "3px 10px 0px 0px", cursor: "pointer"}}
+              />
+              Power
+            </FunctionContainer>
+            <FunctionContainer>
+              <FaIcons.FaDatabase
+                onClick={redirect_query}
+                style={{color: "#4A5A76", padding: "3px 10px 0px 0px", cursor: "pointer"}}
+              />
+              Query
+            </FunctionContainer>
+           
           </DetailsMiddle>
           <DetailsRight>
             <FaIcons.FaEdit
