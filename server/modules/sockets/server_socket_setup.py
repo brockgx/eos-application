@@ -2,6 +2,7 @@
 import socket
 import time
 import ipaddress
+import requests
 from sys import exit
 
 #Import of any in house modules
@@ -137,6 +138,7 @@ def startServer():
         sendSocketData(agentSocket, "JSON")
         time.sleep(2)
         client_response = receiveSocketData(agentSocket)
+        requests.post("http://localhost:5000/test/addmetrics", data=client_response)
         print(client_response)
       elif cmd == "exit":
         print("----------------\n Session Closed \n----------------")
