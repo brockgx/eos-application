@@ -4,9 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -18,25 +16,11 @@ https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-starte
 */
 //I originally thought this would be a component, but now I think it's probably best a page
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        EoS Monitor - Template by material-ui
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
   },
   image: {
-    //backgroundImage: 'url(https://source.unsplash.com/random)',
     backgroundImage: 'url(https://source.unsplash.com/hpjSkU2UYSU)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
@@ -135,16 +119,7 @@ export default function SignInSide() {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgotten your password?
-                </Link>
-              </Grid>
-            </Grid>
-            <Box mt={3}>
-              <Copyright />
-            </Box>
+            
           </form>
         </div>
       </Grid>

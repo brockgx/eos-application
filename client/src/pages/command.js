@@ -4,10 +4,13 @@ import { Tabs, Tab } from '@material-ui/core';
 import Command1 from '../components/commands-tabs/Command1';
 import Command2 from '../components/commands-tabs/Command2';
 import Command3 from '../components/commands-tabs/Command3';
-import TestForm from '../components/commands-tabs/TestForm';
+import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
 
+import React from 'react';
+import {Grid} from '@material-ui/core';
 import styled from 'styled-components';
-
+import { createStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 //import '../styles/command.css';
 
 const Container = styled.div`
@@ -19,14 +22,15 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  padding: 20px;
+  padding: 10px;
+  align-content: flex-end;
 `;
 
 const Top = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px 20px 40px;
+  padding: 10px 20px 0px 40px;
 `;
 
 const TopText = styled.span`
@@ -49,40 +53,105 @@ const CommandsTab = styled.div`
   padding: 30px;
   background-color: #ffff;
   border-radius: 6px;
-  height: 65vh;
+  height: 85vh;
   font-weight: 300;
   font-size: 24px;
 `;
+const useStyles = createStyles((theme) => ({
+  root: {
+    height: '100vh',
+  },
+
+  fileOption: {
+    //styling
+
+  },
+  AvailMachines: {
+    //styling
+  },
+  FileDestination: {
+    //styling
+  },
+
+  Submit: {
+    //styling
+  },
+
+  paper: {
+    border: "20px solid purple",
+  },
+}));
 
 const Commands = (props) => {
     const [selectedTab, setSelectedTab] = useState(0);
-
+    const classes = useStyles();
     const handleChange = (event, newValue) => {
         setSelectedTab(newValue);
     }
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    }
 
     return (
-      <Container>
+  <Container>
+    <Grid container 
+    spacing={2} 
+    className={classes.AvailMachines} 
+    direction="column" 
+    style = {{marginBottom:20}}>
+      <Grid item xs={12}>
         <Wrapper>
           <Top>
             <TopText>Commands</TopText>
           </Top>
-          <Bottom>
-            <CommandsTab>
-              <Tabs  value={selectedTab} onChange={handleChange} >
-                  <Tab label="Command Option 1" />
-                  <Tab label="Command Option 2" />
-                  <Tab label="Command Option 3" />
-                  <Tab label="TestForm"/>
-              </Tabs>
-              {selectedTab === 0 && <Command1 />}
-              {selectedTab === 1 && <Command2 />}
-              {selectedTab === 2 && <Command3 />}
-              {selectedTab === 3 && <TestForm/>}
-            </CommandsTab>
-          </Bottom>
+          <Grid item xs={12}>
+            <Bottom>
+              <Grid container>
+                <Grid item xs={12}>
+                  <CommandsTab>                              
+                    <Grid container>
+                      <Grid item xs={6} spacing={2}>
+                      <CmdMachineChoice style={{marginBottom: 30}} />
+
+                      <Grid container>
+                        <Grid item xs>
+                          <Tabs centered 
+                          className={classes.tabOption} 
+                          value={selectedTab} 
+                          style = {{marginBottom:40, marginLeft:-20}} 
+                          onChange={handleChange} >
+                          <Tab label="Command Option 1" />
+                          <Tab label="Command Option 2" />
+                          <Tab label="Command Option 3" />
+                          </Tabs>
+                        </Grid>
+                        <Grid item xs={11}>
+                          {selectedTab === 0 && <Command1 />}
+                        </Grid>
+                        {selectedTab === 1 && <Command2 />}
+                        {selectedTab === 2 && <Command3 />} 
+                      </Grid>
+                      </Grid>
+                      <Grid item xs = {6}>
+                        <Paper variant="outlined" style = {{height: '80%'}}>
+                        This grid item can be used to display the machines you have chosen styled to show to the right?
+                        </Paper>
+                      </Grid>
+                    </Grid>
+                  </CommandsTab>
+                </Grid> 
+              </Grid>                   
+            </Bottom>
+          </Grid>
         </Wrapper>
-      </Container>
+      </Grid>
+    </Grid>
+  </Container>
     )
 }
 
