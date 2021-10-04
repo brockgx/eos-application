@@ -54,7 +54,7 @@ export default function AvailApps() {
   return (
       <div>
     <Autocomplete
-      id="checkboxes-tags-avail-machines-demo"
+      id="avail-apps-demo"
       open={open}
       onOpen={() => {
         setOpen(true);
@@ -68,12 +68,7 @@ export default function AvailApps() {
       renderTags={() => null}
       renderOption={(props, option, { selected }) => (
         <li {...props}>
-          <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
-            style={{ marginRight: 8 }}
-            checked={selected}
-          />
+          
           {option.appID}
         </li>
       )}

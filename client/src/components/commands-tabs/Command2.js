@@ -104,7 +104,7 @@ export default function Command2(){
                         </div>
                         <Grid container direction="column">
                           <Grid item xs ={12} className={classes.fileOption} elevation={4} alignItems="flex-start">
-                          <Paper className={classes.paper}> Please select the file you would like to send.
+                          <Paper className={classes.paper}> Click the button to select the file you would like to send.
                           <Input type="file" 
                                   variant="outlined" 
                                   style={{display: 'none'}} 
@@ -123,16 +123,15 @@ export default function Command2(){
                   <Grid container direction ="column" xs={12} className={classes.FileDestination}>
                       <Grid item>
                       <Paper className={classes.paper}>
-                        This can be where you select the file destination
+                        Please enter the desired file destination:
                         <TextField
-                          placeholder="File Destination"
+                          placeholder="Enter File Destination Here"
                           variant="outlined"
                           margin="normal"
                           fullWidth
                           required
-                          label="Write the file destination."
                           className="fileDest"
-                          style = {{marginBottom:50, marginTop:30}}
+                          style = {{marginBottom:10, marginTop:10}}
                         />
                       </Paper>
                       </Grid>

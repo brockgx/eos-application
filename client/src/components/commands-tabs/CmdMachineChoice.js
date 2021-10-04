@@ -68,12 +68,7 @@ export default function CmdMachineChoice() {
       
       renderOption={(props, option, { selected }) => (
         <li {...props}>
-          <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
-            style={{ marginRight: 8 }}
-            checked={selected}
-          />
+          
           {option.machineID}
         </li>
       )}
@@ -81,11 +76,13 @@ export default function CmdMachineChoice() {
       value={value}
       onChange={(e, newValue) => setValue(newValue)}
       loading={loading}
-      style={{ width: 500, marginBottom: 30}}
+      fullWidth
+      style={{marginBottom: 30}}
       renderInput={(params) => (
         <TextField {...params} 
-        label="Select your target machine(s)." 
         variant="outlined"
+        fullWidth 
+        label="Select your target machine(s)." 
         placeholder="Machine 1, Machine 2 etc."
         InputProps={{
             ...params.InputProps,
@@ -105,11 +102,12 @@ export default function CmdMachineChoice() {
 
 //hardcoded but will be 
 const machinesAvail = [
-  { machineID: 'The Shawshank Redemption'},
-  { machineID: 'The Godfather'},
-  { machineID: 'The Godfather: Part II'},
-  { machineID: 'The Dark Knight'},
-  { machineID: '12 Angry Men'},
-  { machineID: "Schindler's List"},
-  { machineID: 'Pulp Fiction'},
+  { machineID: 'MyronPC'},
+  { machineID: 'BrockPC'},
+  { machineID: 'AlexPC'},
+  { machineID: 'DylanPC'},
+  { machineID: 'KeeganPC'},
+  { machineID: 'DipeshPC'},
+  { machineID: 'AlfredPC'},
+  { machineID: 'HitchcockPC'},
 ];

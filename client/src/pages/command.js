@@ -61,25 +61,6 @@ const useStyles = createStyles((theme) => ({
   root: {
     height: '100vh',
   },
-
-  fileOption: {
-    //styling
-
-  },
-  AvailMachines: {
-    //styling
-  },
-  FileDestination: {
-    //styling
-  },
-
-  Submit: {
-    //styling
-  },
-
-  paper: {
-    border: "20px solid purple",
-  },
 }));
 
 const Commands = (props) => {
@@ -115,12 +96,12 @@ const Commands = (props) => {
                 <Grid item xs={12}>
                   <CommandsTab>                              
                     <Grid container>
-                      <Grid item xs={6} spacing={2}>
-                      <CmdMachineChoice style={{marginBottom: 30}} />
-
+                      <Grid item xs={7} spacing={2}>
+                      
                       <Grid container>
                         <Grid item xs>
-                          <Tabs centered 
+                          <Tabs 
+                          centered 
                           className={classes.tabOption} 
                           value={selectedTab} 
                           style = {{marginBottom:40, marginLeft:-20}} 
@@ -132,14 +113,15 @@ const Commands = (props) => {
                         </Grid>
                         <Grid item xs={11}>
                           {selectedTab === 0 && <Command1 />}
+                          {selectedTab === 1 && <Command2 />}
+                          {selectedTab === 2 && <Command3 />} 
                         </Grid>
-                        {selectedTab === 1 && <Command2 />}
-                        {selectedTab === 2 && <Command3 />} 
                       </Grid>
                       </Grid>
-                      <Grid item xs = {6}>
-                        <Paper variant="outlined" style = {{height: '80%'}}>
-                        This grid item can be used to display the machines you have chosen styled to show to the right?
+                      <Grid item xs = {5}>
+                      <CmdMachineChoice />
+                        <Paper variant="outlined" style = {{height: '70vh'}}>
+                        Currently you have: no commands waiting. 
                         </Paper>
                       </Grid>
                     </Grid>

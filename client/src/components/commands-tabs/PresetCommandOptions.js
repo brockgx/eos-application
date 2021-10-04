@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import AvailApps from './AvailApps';
 import { styled } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 
 const CmdAccordion = styled((props) => (
@@ -53,6 +55,17 @@ export default function PresetCommandOptions() {
     setExpanded(newExpanded ? panel : false);
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+
   return (
     <div>
       <CmdAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
@@ -68,6 +81,13 @@ export default function PresetCommandOptions() {
             <AvailApps/>
             </Paper>
           </Typography>
+          <Button
+            variant="contained"
+            onClick={handleClick}
+          //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
+          >
+            Confirm
+        </Button>
         </CmdAccordionDetails>
       </CmdAccordion>
       <CmdAccordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
