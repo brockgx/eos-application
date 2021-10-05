@@ -9,7 +9,6 @@ import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
 import React from 'react';
 import {Grid} from '@material-ui/core';
 import styled from 'styled-components';
-import { createStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 //import '../styles/command.css';
 
@@ -19,6 +18,7 @@ const Container = styled.div`
   padding: 5px;
   align-items: center;
   flex-direction: column;
+  
 `;
 
 const Wrapper = styled.div`
@@ -39,6 +39,11 @@ const TopText = styled.span`
   padding-bottom: 10px;
 `;
 
+const TabsWrapper = styled.div`
+  padding: 10px;
+  font-size: 44px;
+`;
+
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
@@ -57,34 +62,21 @@ const CommandsTab = styled.div`
   font-weight: 300;
   font-size: 24px;
 `;
-const useStyles = createStyles((theme) => ({
-  root: {
-    height: '100vh',
-  },
-}));
 
 const Commands = (props) => {
     const [selectedTab, setSelectedTab] = useState(0);
-    const classes = useStyles();
     const handleChange = (event, newValue) => {
         setSelectedTab(newValue);
     }
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(null);
-    }
+  
 
-    return (
+  return (
   <Container>
     <Grid container 
     spacing={2} 
-    className={classes.AvailMachines} 
+    className="AvailMachines"
     direction="column" 
-    style = {{marginBottom:20}}>
+    >
       <Grid item xs={12}>
         <Wrapper>
           <Top>
@@ -100,16 +92,19 @@ const Commands = (props) => {
                       
                       <Grid container>
                         <Grid item xs>
-                          <Tabs 
-                          centered 
-                          className={classes.tabOption} 
-                          value={selectedTab} 
-                          style = {{marginBottom:40, marginLeft:-20}} 
-                          onChange={handleChange} >
-                          <Tab label="Command Option 1" />
-                          <Tab label="Command Option 2" />
-                          <Tab label="Command Option 3" />
-                          </Tabs>
+                          <TabsWrapper>
+                            <Tabs 
+                              centered 
+                              className="TabOption"
+                              value={selectedTab} 
+                              style = {{marginBottom:40, marginLeft:-20}} 
+                              onChange={handleChange} 
+                            >
+                              <Tab label="Command Option 1" />
+                              <Tab label="Command Option 2" />
+                              <Tab label="Command Option 3" />
+                            </Tabs>
+                          </TabsWrapper>
                         </Grid>
                         <Grid item xs={11}>
                           {selectedTab === 0 && <Command1 />}

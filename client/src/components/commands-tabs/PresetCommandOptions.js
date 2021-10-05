@@ -9,8 +9,6 @@ import Paper from '@material-ui/core/Paper';
 import AvailApps from './AvailApps';
 import { styled } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-
 
 const CmdAccordion = styled((props) => (
   <Accordion disableGutters elevation={0} square {...props} />
@@ -54,17 +52,10 @@ export default function PresetCommandOptions() {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  
+  const handleClick = (onClick) => {
+    alert(`thank you for your message`);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  }
 
   return (
     <div>
@@ -73,10 +64,9 @@ export default function PresetCommandOptions() {
           <Typography>COMMAND OPTION 1 - KILL PROCESS</Typography>
         </CmdAccordionSummary>
         <CmdAccordionDetails>
-          <Typography style={{marginBottom: 0}} >
+          <Typography>
             This is command option 1 - Kill process. Please select the application you would like to kill.
-            <Paper style={{
-                marginTop: 30, }}
+            <Paper  style={{marginTop: 30}}
             >
             <AvailApps/>
             </Paper>

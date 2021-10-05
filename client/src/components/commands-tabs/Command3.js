@@ -1,30 +1,24 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  TextField, 
-  CssBaseline, 
-  Input, 
-  Grid, 
-  Button, 
-} from '@material-ui/core';
-import { AttachFile } from '@material-ui/icons';
-import Paper from '@material-ui/core/Paper';
+import { TextField } from '@material-ui/core';
+import styled from 'styled-components';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '65vh',
-  },
-}));
+const CmdThreeContainer = styled.div`
+  border: 3px solid purple;
+`;
+
+const CustomInputWrapper = styled.div`
+  border: 3px solid green;
+`;
+
 
 export default function Command3(){
 
-  const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <CmdThreeContainer>
       <div>
-      [TODO: command 3]
+      Command 3 - Custom Commands. Enter Command(s) to run.
       </div>
-      <div>
+      <CustomInputWrapper>
         <TextField
           id="custom-cmd"
           multiline
@@ -34,12 +28,9 @@ export default function Command3(){
           margin="normal"
           fullWidth
         >
-
         </TextField>
-
-
-      </div>
-    </div>
+      </CustomInputWrapper>
+    </CmdThreeContainer>
   )
 }
 
