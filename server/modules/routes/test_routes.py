@@ -115,11 +115,14 @@ def brockTest():
 #Route: personal socket command use
 #Could POST? from agent to api or server to api
 #So could go from API -> AGENT -> SERVER -> BACK TO API
-@test_routes.route("/brock/file", methods=["POST"])
+@test_routes.route("/senddetails", methods=["POST"])
 def brockSocket():
   req = request.json
+  print(req)
+
+  return "Success"
   #data = json.loads(req)
-  return jsonify({"result": "File Uploaded", "fileName": req["name"], "fileContents": req["content"]})
+  #return jsonify({"result": "File Uploaded", "fileName": req["name"], "fileContents": req["content"]})
   # try:
   #   sock = socket.socket()
   #   sock.connect(("127.0.0.1",1338))
