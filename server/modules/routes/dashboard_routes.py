@@ -29,7 +29,14 @@ def listClientMachines():
   finalList = []
 
   for mach in machineList:
-    finalList.append({"id": mach.id, "name": mach.machine_name, "os": mach.os_type, "address": mach.ip_address, "status": mach.status})
+    finalList.append({
+      "id": mach.id,
+      "name": mach.machine_name,
+      "host_name": mach.host_name,
+      "os": mach.os_type,
+      "address": mach.ip_address,
+      "status": mach.status
+    })
 
   return jsonify({
     "description": "A list of all saved machines",
@@ -65,18 +72,38 @@ def add_new_client_machine():
       db.session.add(new_machine)
       db.session.commit()
 
-    resp = "Success"
+    return "Success"
   except Exception as err_msg:
-    resp = "[Error] " + str(err_msg)
-
-  return resp
+    return "[Error] " + str(err_msg)
 
 #Route: to remove an existing client machine from the portal
-@dashboard_routes.route('/clientmachines', methods=['DELETE'])
-def removeClientMachine():
-  return "Dashboard remove client route"
+@dashboard_routes.route('/clientmachines/<id>', methods=['DELETE'])
+def remove_client_machine(id):
+  #Get the machine to delete
+  try:
+    machine = db.session.query(ClientMachines).filter(ClientMachines.id==id).first()
+    if machine is None:
+      return "Machine with the id (" + str(id) + ") not found."
+    else:
+      db.session.delete(machine)
+      db.session.commit()
+      return "Removed machine with name: " + str(machine.host_name)
+  except Exception as err_msg:
+    return "An error occurred: " + str(err_msg)
 
 #Route: to update an existing client machine in the portal
-@dashboard_routes.route("/clientmachines", methods=['PUT'])
-def updateClientMachine():
-  return "Dashboard update client route"
+@dashboard_routes.route("/clientmachines/<id>", methods=['PUT'])
+def update_client_machine(id):
+  req = request.json
+  try:
+    machine = db.session.query(ClientMachines).filter(ClientMachines.id==id).first()
+    if machine is None:
+      return "Machine with the id (" + str(id) + ") not found."
+    else:
+      machine.name = req["new_name"]
+      db.session.commit()
+      return "Machine's name has been updated to " + str(req["new_name"]) + "."
+  except (TypeError,NameError,KeyError) as err_msg:
+    return "No new name was provided to update the machine."
+  except Exception as err_msg:
+    return "An error occurred: " + str(err_msg) + "."
