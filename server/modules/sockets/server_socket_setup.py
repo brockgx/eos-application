@@ -163,6 +163,27 @@ def startServer():
         time.sleep(2)
         client_response = receiveSocketData(agentSocket) # receive response from client
         print(client_response)
+      elif cmd.startswith("file"): # Send File
+        #
+        # To add:
+        #   Overwrite Y/N (default Y?)
+        #
+        #
+        #
+        fileData = cmd.split()
+        fileToSend = fileData[1] # File to load and send via json
+        saveLocation = fileData[2] # Save destination on client PC
+        # Open File
+        # Convert to base64
+        # Put in json
+        # Send to client
+        # ---Client---
+        # Receive json
+        # Take out base64 string
+        # convert to byte array
+        # save to destination on client pc
+        # send back success/failure
+        print(fileData)
       elif cmd == "exit":
         print("----------------\n Session Closed \n----------------")
         break
