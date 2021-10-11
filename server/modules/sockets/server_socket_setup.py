@@ -139,29 +139,29 @@ def startServer():
         time.sleep(2)
         client_response = receiveSocketData(agentSocket)
         print(client_response)
-      elif cmd.startswith("cmd"):
-        command = cmd.find(' ')+1
-        left, right = cmd[:command], cmd[command:]
+      elif cmd.startswith("cmd"): # find "cmd" in string
+        command = cmd.find(' ')+1 # find first space
+        left, right = cmd[:command], cmd[command:] # remove "cmd " from start
         x = {
             "TYPE": "command",
             "ATTRIBUTE": right
         }
-        sendCommand = ''.join("CMD\n" + json.dumps(x))
-        sendSocketData(agentSocket, sendCommand) # add command
+        sendCommand = ''.join("CMD\n" + json.dumps(x)) # pack command into json
+        sendSocketData(agentSocket, sendCommand) # send json
         time.sleep(2)
-        client_response = receiveSocketData(agentSocket)
+        client_response = receiveSocketData(agentSocket) # receive response from client
         print(client_response)
-      elif cmd.startswith("shell"):
-        command = cmd.find(' ')+1
-        left, right = cmd[:command], cmd[command:]
+      elif cmd.startswith("shell"): # find "shell" in string
+        command = cmd.find(' ')+1 # find first space
+        left, right = cmd[:command], cmd[command:] # remove "shell " from start
         x = {
             "TYPE": "shell",
             "ATTRIBUTE": right
         }
-        sendCommand = ''.join("SHELL\n" + json.dumps(x))
-        sendSocketData(agentSocket, sendCommand) # add command
+        sendCommand = ''.join("SHELL\n" + json.dumps(x)) # pack command into json
+        sendSocketData(agentSocket, sendCommand) # send json
         time.sleep(2)
-        client_response = receiveSocketData(agentSocket)
+        client_response = receiveSocketData(agentSocket) # receive response from client
         print(client_response)
       elif cmd == "exit":
         print("----------------\n Session Closed \n----------------")
