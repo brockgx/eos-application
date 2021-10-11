@@ -32,7 +32,7 @@ def listClientMachines():
   for mach in machineList:
     finalList.append({
       "id": mach.id,
-      "name": mach.machine_name,
+      "name": mach.name,
       "host_name": mach.host_name,
       "os": mach.os_type,
       "address": mach.ip_address,
