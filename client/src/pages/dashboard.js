@@ -62,10 +62,9 @@ const Dashboard = () => {
   
     // Fetch device data from DB
     const fetchMachines = async () => {
-      const resp = await fetch('/test/getmachines')
+      const resp = await fetch('/dash/clientmachines')
       const data = await resp.json()
       if(resp.ok) {
-        console.log(data.content)
         return data;
       } else {
         throw Error(`Request rejected with status ${resp.status}`);
@@ -77,15 +76,14 @@ const Dashboard = () => {
       if (!query) {
         return machines
       }
-  
       return machines.filter((machine) => {
-        const machineName = machine.machine_name.toLowerCase()
+        const machineName = machine.name
         return machineName.includes(query)
       })
     }
 
     const { search } = window.location;
-    const query = new URLSearchParams(search).get('s');
+    const query = new URLSearchParams(search);
     const [searchQuery, setSearchQuery] = useState(query || '');
     const filteredMachines = filterMachines(machines.content, searchQuery);
 
@@ -104,7 +102,7 @@ const Dashboard = () => {
             <Bottom>
               <ConnectedMachines>
                 {filteredMachines.map((machine) => (
-                  <Machines machine={machine} key={machine.id} />
+                  <Machines machine={machine} key={machine.name} />
                 ))}
               </ConnectedMachines>
             </Bottom>

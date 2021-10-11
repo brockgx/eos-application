@@ -5,11 +5,12 @@
 
 #Import from third party modules
 from flask import Blueprint, jsonify, request
+from sqlalchemy import desc
 import json
 import ipaddress
 
 #Import from in house modules
-from ..database.prototype_database import db, ClientMachines
+from ..database.prototype_database import db, ClientMachines, AppMetrics, SystemMetrics
 
 
 #Setup the blueprint for the dashboard routes
@@ -107,3 +108,19 @@ def update_client_machine(id):
     return "No new name was provided to update the machine."
   except Exception as err_msg:
     return "An error occurred: " + str(err_msg) + "."
+    
+#Route: to get a list of system metrics for a specified machine
+@dashboard_routes.route('/clientmachinemetrics/<name>', methods=['GET'])
+def listSystemMetrics(name):
+  
+  #Get a list of metrics from the system_metrics table - filter by machine_name
+  mach = SystemMetrics.query.filter_by(machine_name=name).order_by(SystemMetrics.id.desc()).first()
+  final = []
+
+  # for mach in result:
+  #   print(mach)
+  final.append({"id": mach.id, "name": mach.machine_name, "time": mach.timestamp, "cpu": mach.cpu_usage, "ram": mach.ram_usage,"disk": mach.disk_usage, "disk_read": mach.disk_read, "disk_write": mach.disk_write, "network": mach.network_usage})
+
+  return jsonify({
+    "description": "A list of system metrics for a machine",
+    "content": final  })
