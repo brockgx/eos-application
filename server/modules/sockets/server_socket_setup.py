@@ -3,6 +3,7 @@ import socket
 import time
 import ipaddress
 import json
+import base64
 from sys import exit
 
 #Import of any in house modules
@@ -164,7 +165,7 @@ def startServer():
         client_response = receiveSocketData(agentSocket) # receive response from client
         print(client_response)
       elif cmd.startswith("file"): # Send File
-        #
+        # # https://docs.python.org/3/library/base64.html
         # To add:
         #   Overwrite Y/N (default Y?)
         #
@@ -172,9 +173,20 @@ def startServer():
         #
         fileData = cmd.split()
         fileToSend = fileData[1] # File to load and send via json
-        saveLocation = fileData[2] # Save destination on client PC
+        destination = fileData[2] # Save destination on client PC
+        
         # Open File
         # Convert to base64
+        fileHandle = open(fileToSend, "rb")
+        file = fileHandle.read()
+        fileHandle.close()
+        b64File = base64.b64encode(file)
+        base64_string = b64File.decode("ascii")
+        x = {
+            "TYPE": "file",
+            "FILE": base64_string,
+            "DESTINATION": destination
+        }
         # Put in json
         # Send to client
         # ---Client---
@@ -183,7 +195,12 @@ def startServer():
         # convert to byte array
         # save to destination on client pc
         # send back success/failure
-        print(fileData)
+        print(x)
+        sendCommand = ''.join("FILE\n" + json.dumps(x)) # pack command into json
+        sendSocketData(agentSocket, sendCommand) # send json
+        time.sleep(2)
+        client_response = receiveSocketData(agentSocket) # receive response from client
+        print(client_response)
       elif cmd == "exit":
         print("----------------\n Session Closed \n----------------")
         break
