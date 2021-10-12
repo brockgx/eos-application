@@ -119,7 +119,7 @@ const Commands = (props) => {
             <Paper variant="outlined" style = {{height: '90%'}}>
               Currently you have: no commands waiting. 
               <div>
-              {Command2(props)}
+              
               </div>
             </Paper>
           </RightSideOutput>

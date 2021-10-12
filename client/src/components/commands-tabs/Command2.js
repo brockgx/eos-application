@@ -61,7 +61,7 @@ const InputWrapper = styled.div`
       margin-right: 10px;
 `;
 
-export default function Command2(props){
+export default function Command2(){
   const [file, setFile] = useState({
     fileUpload: "",
     fileDest: "",
