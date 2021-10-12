@@ -3,11 +3,11 @@ import { TextField } from '@material-ui/core';
 import styled from 'styled-components';
 
 const CmdThreeContainer = styled.div`
-  border: 3px solid purple;
+padding: 1px;
 `;
 
 const CustomInputWrapper = styled.div`
-  border: 3px solid green;
+padding: 1px;
 `;
 
 

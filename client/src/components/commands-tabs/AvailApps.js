@@ -6,11 +6,11 @@ import  {useState } from 'react';
 import styled from 'styled-components';
 
 const MainContainer = styled.div`
-  border: 3px solid purple;
+padding: 1px;
 `;
 
 const AutocompleteWrapper = styled.div`
-  border: 3px solid yellow;
+padding: 1px;
 `;
 
 function sleep(delay = 0) {
@@ -60,7 +60,6 @@ export default function AvailApps() {
         <Autocomplete
           id="avail-apps-demo"
           open={open}
-
           onOpen={() => {
           setOpen(true);
           }}

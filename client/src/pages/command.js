@@ -5,9 +5,8 @@ import Command1 from '../components/commands-tabs/Command1';
 import Command2 from '../components/commands-tabs/Command2';
 import Command3 from '../components/commands-tabs/Command3';
 import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
-
+import CMDTWOREF from '../components/commands-tabs/COMMANDTWOREF';
 import React from 'react';
-import {Grid} from '@material-ui/core';
 import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
 //import '../styles/command.css';
@@ -17,7 +16,7 @@ const Container = styled.div`
   background-color: #edf0f5;
   padding: 5px;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   
 `;
 
@@ -37,11 +36,13 @@ const TopText = styled.span`
   font-weight: 500;
   font-size: 44px;
   padding-bottom: 10px;
+  flex: 1;
 `;
 
 const TabsWrapper = styled.div`
-  padding: 10px;
+  padding: 0px;
   font-size: 44px;
+  flex: 80%;
 `;
 
 const Bottom = styled.div`
@@ -50,6 +51,8 @@ const Bottom = styled.div`
   padding: 0px 40px;
 
 `;
+
+
 const CommandsTab = styled.div`
   -webkit-box-shadow: 0px 0px 15px -7px rgba(0, 0, 0, 0.8);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
@@ -58,9 +61,21 @@ const CommandsTab = styled.div`
   padding: 30px;
   background-color: #ffff;
   border-radius: 6px;
-  height: 85vh;
+  height: 75vh;
   font-weight: 300;
   font-size: 24px;
+  display: flex;
+`;
+
+const RightSideOutput = styled.div`
+   flex: 1;
+   padding-bottom: 20px;
+   padding-left: 20px;
+`;
+
+const LeftSide = styled.div`
+  padding-right: 20px;
+  flex: 1;
 `;
 
 const Commands = (props) => {
@@ -72,62 +87,42 @@ const Commands = (props) => {
 
   return (
   <Container>
-    <Grid container 
-    spacing={2} 
-    className="AvailMachines"
-    direction="column" 
-    >
-      <Grid item xs={12}>
-        <Wrapper>
-          <Top>
-            <TopText>Commands</TopText>
-          </Top>
-          <Grid item xs={12}>
-            <Bottom>
-              <Grid container>
-                <Grid item xs={12}>
-                  <CommandsTab>                              
-                    <Grid container>
-                      <Grid item xs={7} spacing={2}>
-                      
-                      <Grid container>
-                        <Grid item xs>
-                          <TabsWrapper>
-                            <Tabs 
-                              centered 
-                              className="TabOption"
-                              value={selectedTab} 
-                              style = {{marginBottom:40, marginLeft:-20}} 
-                              onChange={handleChange} 
-                            >
-                              <Tab label="Command Option 1" />
-                              <Tab label="Command Option 2" />
-                              <Tab label="Command Option 3" />
-                            </Tabs>
-                          </TabsWrapper>
-                        </Grid>
-                        <Grid item xs={11}>
-                          {selectedTab === 0 && <Command1 />}
-                          {selectedTab === 1 && <Command2 />}
-                          {selectedTab === 2 && <Command3 />} 
-                        </Grid>
-                      </Grid>
-                      </Grid>
-                      <Grid item xs = {5}>
-                      <CmdMachineChoice />
-                        <Paper variant="outlined" style = {{height: '70vh'}}>
-                        Currently you have: no commands waiting. 
-                        </Paper>
-                      </Grid>
-                    </Grid>
-                  </CommandsTab>
-                </Grid> 
-              </Grid>                   
-            </Bottom>
-          </Grid>
-        </Wrapper>
-      </Grid>
-    </Grid>
+    <Wrapper>
+      <Top>
+        <TopText>Commands</TopText>
+      </Top>
+      <Bottom>
+        <CommandsTab>
+          <LeftSide>
+          
+              <TabsWrapper>
+                <Tabs 
+                  centered 
+                  className="TabOption"
+                  value={selectedTab} 
+                  style = {{marginBottom:40, marginLeft:-20}} 
+                  onChange={handleChange} 
+                >
+                  <Tab label="Command Option 1"/>
+                  <Tab label="Command Option 2"/>
+                  <Tab label="Command Option 3"/>  
+                  <Tab label="CMDTWOREF"/>              
+                </Tabs>
+              </TabsWrapper>
+              <CmdMachineChoice />        
+            {selectedTab === 0 && <Command1 />}
+            {selectedTab === 1 && <Command2 />}
+            {selectedTab === 2 && <Command3 />} 
+            {selectedTab === 3 && <CMDTWOREF />} 
+          </LeftSide>
+          <RightSideOutput>
+            <Paper variant="outlined" style = {{height: '90%'}}>
+              Currently you have: no commands waiting. 
+            </Paper>
+          </RightSideOutput>
+        </CommandsTab>                  
+      </Bottom>
+    </Wrapper>
   </Container>
     )
 }
