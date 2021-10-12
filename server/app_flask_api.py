@@ -13,8 +13,11 @@ from modules.database.prototype_database import db, AppMetrics
 #Setup any constants need to be used
 HOST = "127.0.0.1"
 PORT = 5000
+HTTPS_ENABLED = False
+CONTEXT = ('cert file', 'key file')
 
-#Setup any variables needed to be used
+#Need to setup config file for the API
+
 
 #Instantiate the flask application
 app = Flask(__name__)
@@ -50,6 +53,10 @@ app.register_blueprint(query_routes, url_prefix='/query')
 #Function for running the app
 def start_flask_api():
   if __name__ == '__main__':
-    app.run(host=HOST,port=PORT,debug=True)
+    if HTTPS_ENABLED:
+      print("HTTPS ENABLED")
+      #app.run(host=HOST,port=PORT,debug=True,ssl_context=CONTEXT)
+    else:
+      app.run(host=HOST,port=PORT,debug=True)
 
 start_flask_api()
