@@ -27,15 +27,6 @@ const Title = styled.span`
   font-weight: 400;
 `;
 
-const LabelContainer = styled.div`
-  display: flex;
-`;
-const Label = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-`;
-
-
 const MachineMetrics = ({machineName}) => {
   const [radialChart, setRadialChart] = useState(
     {
