@@ -140,6 +140,7 @@ def startServer():
         client_response = receiveSocketData(agentSocket)
         requests.post("http://localhost:5000/test/addmetrics", data=client_response)
         print(client_response)
+        requests.post("http://localhost:5000/test/addmetrics", data=client_response)
       elif cmd == "exit":
         print("----------------\n Session Closed \n----------------")
         break

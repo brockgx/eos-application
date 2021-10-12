@@ -1,7 +1,10 @@
 from flask import Blueprint, jsonify, request
 import json
+import socket
+import time
 
 from ..database.prototype_database import db, Random, AppMetrics, SystemMetrics
+from ..sockets.socket_data_transfer import sendSocketData, receiveSocketData
 
 test_routes = Blueprint('test_routes',__name__)
 
@@ -46,38 +49,59 @@ def get_machines():
 
 @test_routes.route("/addmetrics", methods=["POST"])
 def add_metrics():
-  new_metrics = request.data
-  final_metrics = new_metrics.decode("utf-8")
+  new_metrics = request.json
+  final_metrics = new_metrics["content"]
 
-  obj = json.loads(final_metrics)
+  for metric in final_metrics:
+    for app in metric["app_metrics"]:
+      db_metric = AppMetrics(machine_name=metric["machine_name"],timestamp=metric["collection_time"],app_name=app["name"],app_cpu=app["cpu"],app_ram=app["ram"])
+      db.session.add(db_metric)
+    
+    sys_cpu = metric["system_metrics"][0]["cpu"]
+    sys_ram = metric["system_metrics"][1]["ram"]
 
-  print(obj["machine_name"])
+    first_disk = True
+    disks = ""
+    disk_perc = ""
+    for disk in metric["disk_metrics"]:
+      if first_disk:
+        first_disk = False
+        disks += disk["device"]
+        disk_perc += str(disk["percent"])
+      else:
+        disks += "," + str(disk["device"])
+        disk_perc += "," + str(disk["percent"])
+    
+    #Add system metric
+    db_sys_metric = SystemMetrics(machine_name=metric["machine_name"],timestamp=metric["collection_time"],cpu_usage=sys_cpu,ram_usage=sys_ram,disk_usage=disk_perc,disk_read=metric["disk_bytes_read"],disk_write=metric["disk_bytes_written"],network_usage=metric["network_percent"])
+    db.session.add(db_sys_metric)
 
-  for app in obj["app_metrics"]:
-    db_metric = AppMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],app_name=app["name"],app_cpu=app["cpu"],app_ram=app["ram"])
-    db.session.add(db_metric)
+    db.session.commit()
 
-  sys_cpu = obj["system_metrics"][0]["cpu"]
-  sys_ram = obj["system_metrics"][1]["ram"]
+  #for app in obj["app_metrics"]:
+  #  db_metric = AppMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],app_name=app["name"],app_cpu=app["cpu"],app_ram=app["ram"])
+  #  db.session.add(db_metric)
 
-  first_disk = True
-  disks = ""
-  disk_perc = ""
-  for disk in obj["disk_metrics"]:
-    if first_disk:
-      first_disk = False
-      disks += disk["device"]
-      disk_perc += str(disk["percent"])
-    else:
-      disks += "," + str(disk["device"])
-      disk_perc += "," + str(disk["percent"])
+  #sys_cpu = obj["system_metrics"][0]["cpu"]
+  #sys_ram = obj["system_metrics"][1]["ram"]
+
+  # first_disk = True
+  # disks = ""
+  # disk_perc = ""
+  # for disk in obj["disk_metrics"]:
+  #   if first_disk:
+  #     first_disk = False
+  #     disks += disk["device"]
+  #     disk_perc += str(disk["percent"])
+  #   else:
+  #     disks += "," + str(disk["device"])
+  #     disk_perc += "," + str(disk["percent"])
   
   #Add system metric
-  db_sys_metric = SystemMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],cpu_usage=sys_cpu,ram_usage=sys_ram,disk_usage=disk_perc,disk_read=obj["disk_bytes_read"],disk_write=obj["disk_bytes_written"],network_usage=obj["network_percent"])
-  db.session.add(db_sys_metric)
+  #db_sys_metric = SystemMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],cpu_usage=sys_cpu,ram_usage=sys_ram,disk_usage=disk_perc,disk_read=obj["disk_bytes_read"],disk_write=obj["disk_bytes_written"],network_usage=obj["network_percent"])
+  #db.session.add(db_sys_metric)
 
-  print(disks)
-  db.session.commit()
+  #db.session.commit()
 
   return "New Metrics Successfully added"
 
@@ -98,7 +122,7 @@ def get_metrics():
   return "Metrics received!!"
 
 #Route: used for personal testing (brock) to run custom SQL queries
-@test_routes.route("/brocktest", methods=["GET"])
+@test_routes.route("/brock/test", methods=["GET"])
 def brockTest():
   result = db.session.execute('SELECT * FROM app_metrics WHERE app_name = :aname LIMIT :start,:limit', {'aname': "python", "start": 0, "limit": 2})
 
@@ -109,3 +133,27 @@ def brockTest():
 
   return jsonify({"description": "A result of app metrics with python as the name", "content": final, "rows": len(final)})
 
+#Route: personal socket command use
+#Could POST? from agent to api or server to api
+#So could go from API -> AGENT -> SERVER -> BACK TO API
+@test_routes.route("/senddetails", methods=["POST"])
+def brockSocket():
+  req = request.json
+  print(req)
+
+  return "Success"
+  #data = json.loads(req)
+  #return jsonify({"result": "File Uploaded", "fileName": req["name"], "fileContents": req["content"]})
+  # try:
+  #   sock = socket.socket()
+  #   sock.connect(("127.0.0.1",1338))
+
+  #   sendSocketData(sock, "Command")
+  #   time.sleep(2)
+  #   data = receiveSocketData(sock)
+  #   if data:
+  #     return data
+  #   else:
+  #     return "Command failed"
+  # except:
+  #   return "Command failed"

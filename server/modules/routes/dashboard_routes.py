@@ -30,7 +30,14 @@ def listClientMachines():
   finalList = []
 
   for mach in machineList:
-    finalList.append({"id": mach.id, "name": mach.machine_name, "os": mach.os_type, "address": mach.ip_address, "status": mach.status})
+    finalList.append({
+      "id": mach.id,
+      "name": mach.name,
+      "host_name": mach.host_name,
+      "os": mach.os_type,
+      "address": mach.ip_address,
+      "status": mach.status
+    })
 
   return jsonify({
     "description": "A list of all saved machines",
@@ -39,33 +46,69 @@ def listClientMachines():
 
 #Route: to add a client machine to the application
 @dashboard_routes.route('/clientmachines', methods=['POST'])
-def addNewClientMachine():
-  #Add a new machine
+def add_new_client_machine():
   #Handle the request data
-  reqData = (request.data).decode("utf-8")
-  machineData = json.loads(reqData)
-  #This will be done on the react side, not here (we just need the int)
-  convertedAddress = int(ipaddress.IPv4Address(machineData["address"]))
-  
-  #Create a new table entry object using request data
-  newMachine = ClientMachines(machine_name=machineData["name"],os_type=machineData["os"],ip_address=convertedAddress,status=machineData["status"])
+  req_data = request.json
+  resp = ""
 
-  #Commit to the DB (ClientMachines table)
-  db.session.add(newMachine)
-  db.session.commit()
+  #Check if details exist in DB
+  try:
+    machine_exists = db.session.query(ClientMachines.id).filter(ClientMachines.host_name==req_data["host_name"], ClientMachines.ip_address==req_data["ip_addr_v4"]).first() is not None
 
-  return jsonify(machineData)
+    #Add a new machines details if they don't exist
+    if not machine_exists:
+      print("Adding machine to DB")
+      #Create a new table entry object using request data
+      new_machine = ClientMachines(
+        name=req_data["host_name"],
+        host_name=req_data["host_name"],
+        os_type=req_data["os_type"],
+        os_full_version=req_data["os_details"],
+        os_release_version=req_data["os_release"],
+        ip_address=req_data["ip_addr_v4"],
+        status=1
+      )
+
+      #Commit to the DB (ClientMachines table)
+      db.session.add(new_machine)
+      db.session.commit()
+
+    return "Success"
+  except Exception as err_msg:
+    return "[Error] " + str(err_msg)
 
 #Route: to remove an existing client machine from the portal
-@dashboard_routes.route('/clientmachines', methods=['DELETE'])
-def removeClientMachine():
-  return "Dashboard remove client route"
+@dashboard_routes.route('/clientmachines/<id>', methods=['DELETE'])
+def remove_client_machine(id):
+  #Get the machine to delete
+  try:
+    machine = db.session.query(ClientMachines).filter(ClientMachines.id==id).first()
+    if machine is None:
+      return "Machine with the id (" + str(id) + ") not found."
+    else:
+      db.session.delete(machine)
+      db.session.commit()
+      return "Removed machine with name: " + str(machine.host_name)
+  except Exception as err_msg:
+    return "An error occurred: " + str(err_msg)
 
 #Route: to update an existing client machine in the portal
-@dashboard_routes.route("/clientmachines", methods=['PUT'])
-def updateClientMachine():
-  return "Dashboard update client route"
-
+@dashboard_routes.route("/clientmachines/<id>", methods=['PUT'])
+def update_client_machine(id):
+  req = request.json
+  try:
+    machine = db.session.query(ClientMachines).filter(ClientMachines.id==id).first()
+    if machine is None:
+      return "Machine with the id (" + str(id) + ") not found."
+    else:
+      machine.name = req["new_name"]
+      db.session.commit()
+      return "Machine's name has been updated to " + str(req["new_name"]) + "."
+  except (TypeError,NameError,KeyError) as err_msg:
+    return "No new name was provided to update the machine."
+  except Exception as err_msg:
+    return "An error occurred: " + str(err_msg) + "."
+    
 #Route: to get a list of system metrics for a specified machine
 @dashboard_routes.route('/clientmachinemetrics/<name>', methods=['GET'])
 def listSystemMetrics(name):
