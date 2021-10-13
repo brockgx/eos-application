@@ -65,6 +65,7 @@ const Dashboard = () => {
       const resp = await fetch('/dash/clientmachines')
       const data = await resp.json()
       if(resp.ok) {
+        console.log(data.content)
         return data;
       } else {
         throw Error(`Request rejected with status ${resp.status}`);
@@ -97,7 +98,7 @@ const Dashboard = () => {
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
               />
-              <AddMachine />
+              {/* <AddMachine /> */}
             </Top>
             <Bottom>
               <ConnectedMachines>

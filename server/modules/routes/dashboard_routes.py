@@ -110,17 +110,42 @@ def update_client_machine(id):
     return "An error occurred: " + str(err_msg) + "."
     
 #Route: to get a list of system metrics for a specified machine
-@dashboard_routes.route('/clientmachinemetrics/<name>', methods=['GET'])
-def listSystemMetrics(name):
+# @dashboard_routes.route('/clientmachinemetrics/<name>', methods=['GET'])
+# def listSystemMetrics(name):
   
-  #Get a list of metrics from the system_metrics table - filter by machine_name
-  mach = SystemMetrics.query.filter_by(machine_name=name).order_by(SystemMetrics.id.desc()).first()
-  final = []
+#   #Get a list of metrics from the system_metrics table - filter by machine_name
+#   mach = SystemMetrics.query.filter_by(machine_name=name).order_by(SystemMetrics.id.desc()).first()
+#   final = []
 
-  # for mach in result:
-  #   print(mach)
-  final.append({"id": mach.id, "name": mach.machine_name, "time": mach.timestamp, "cpu": mach.cpu_usage, "ram": mach.ram_usage,"disk": mach.disk_usage, "disk_read": mach.disk_read, "disk_write": mach.disk_write, "network": mach.network_usage})
+#   # for mach in result:
+#   #   print(mach)
+#   final.append({"id": mach.id, "name": mach.machine_name, "time": mach.timestamp, "cpu": mach.cpu_usage, "ram": mach.ram_usage,"disk": mach.disk_usage, "disk_read": mach.disk_read, "disk_write": mach.disk_write, "network": mach.network_usage})
+
+#   return jsonify({
+#     "description": "A list of system metrics for a machine",
+#     "content": final  })
+
+#Route: to get a list of all app & sys metrics for a machine
+@dashboard_routes.route('/clientmachinemetrics/<name>', methods=['GET'])
+def listAllMetrics(name):
+  
+  # Get sys metrics
+  mach = SystemMetrics.query.filter_by(machine_name=name).order_by(SystemMetrics.id.desc()).first()
+  final_sys_metrics = []
+
+  final_sys_metrics.append({"id": mach.id, "name": mach.machine_name, "time": mach.timestamp, "cpu": mach.cpu_usage, "ram": mach.ram_usage,"disk": mach.disk_usage, "disk_read": mach.disk_read, "disk_write": mach.disk_write, "network": mach.network_usage})
+  
+  # Get app metrics
+  app_metrics = AppMetrics.query.filter_by(machine_name=name).limit(5)
+  final_app_metrics = []
+
+  for app in app_metrics:
+    final_app_metrics.append({"id": app.id, "machine_name": app.machine_name, "time": app.timestamp,  "app_name": app.app_name,  "cpu": app.app_cpu, "ram": app.app_ram})
 
   return jsonify({
     "description": "A list of system metrics for a machine",
-    "content": final  })
+    "content":
+      {
+        "sysMetrics": final_sys_metrics,
+        "appMetrics": final_app_metrics
+      }})

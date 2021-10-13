@@ -5,8 +5,6 @@ import SysMetricsTable from '../components/query/SysMetricsTable';
 
 import { ColumnData } from '../components/query/ColumnData'
 
-// import '../styles/query.css';
-
 const Container = styled.div`
   flex: 10;
   background-color: #edf0f5;

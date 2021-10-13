@@ -53,7 +53,7 @@ const SysMetricsTable = ({ columns, data }) => {
                       ? column.isSortedDesc
                         ? ' ↑'
                         : ' ↓'
-                      : ''}
+                      : ' ↑↓'}
                   </span>
                 </th>
               ))}

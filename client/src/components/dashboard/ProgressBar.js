@@ -2,11 +2,13 @@ import React from 'react'
 import styled from 'styled-components';
 
 const Container = styled.div`
+margin-right: 30px;
+margin-top: 50px;
 `;
 
 const Bar = styled.div`
   height: 34px;
-  width: 100%;
+  width: 120%;
   background-color: #E7E9EF;
   border-radius: 50px;
   margin: 0px 50px;
@@ -32,13 +34,16 @@ const ProgressBar = ({ backgroundColor, completed }) => {
     <Container>
       <Bar>
         <FillBar color={backgroundColor} fill={completed}>
-          <Label color={completed}>{completed}%</Label>
+          <Label color={completed}>
+          {
+            completed === 0
+            ? " 0.0% " 
+            : `${completed}%`
+          }
+          </Label>
         </FillBar>
       </Bar>
-      
     </Container>
-    
   )
 }
-
 export default ProgressBar
