@@ -88,6 +88,9 @@ export default function Command2(){
    }
   
   
+
+
+  
   return (
   <MainContainer>
     <CssBaseline/>
@@ -131,9 +134,12 @@ export default function Command2(){
     
           </UploadFileBtn>
         </FileOption>
+        {/*
         <button onClick={handleChange}>
           Pass console.log indirectly
         </button>
+          */
+        }
         <FileDestContainer>
           Please enter the desired file destination:
           <InputWrapper>
@@ -150,10 +156,10 @@ export default function Command2(){
         </FileDestContainer>
         <BtnWrapper>
           <Button
-            fullWidth
-            onSubmit={handleSubmit}               
+            fullWidth     
             type="submit"
             variant="contained"
+            onSubmit={handleSubmit} 
           >
             Push File 
           </Button>

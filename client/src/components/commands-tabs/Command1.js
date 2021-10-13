@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import AvailApps from './AvailApps';
 import { styled } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-
+import  {useState } from 'react';
 
 const CmdAccordion = styled((props) => (
   <Accordion disableGutters elevation={0} square {...props} />
@@ -45,17 +45,28 @@ const CmdAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
 
 export default function Command1() {
   const [expanded, setExpanded] = React.useState('panel1');
-
+  const [shutDevice, restartDevice, killProcess, restartProcess] = useState('');
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
   
-  const handleClick = (onClick) => {
+  const handleClick = (event) => {
+    const value =  event.currentTarget.value;
+    event.preventDefault();
     alert(`thank you for your message`);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const value =  event.currentTarget.value;
+     alert('A command was submitted: ' + `${value}`);
+    }
+   
+
+
   return (
     <div>
+      <form onSubmit={handleSubmit}>
       <CmdAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <CmdAccordionSummary  aria-controls="panel1d-content" id="panel1d-header">
           <Typography>PRESET COMMAND OPTION 1 - SHUTDOWN DEVICE</Typography>
@@ -77,7 +88,9 @@ export default function Command1() {
             </div>
             <Button
               variant="contained"
-              onClick={handleClick}
+              type="submit"
+              onSubmit={handleSubmit}
+              value={shutDevice}
               style={{flex: 1, padding: '0px'}}
               //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
             >
@@ -109,7 +122,8 @@ export default function Command1() {
               </div>
               <Button
                 variant="contained"
-                onClick={handleClick}
+                onSubmit={handleSubmit}
+                value={restartDevice}
                 style={{flex: 1, padding: '0px'}}
                 //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
               >
@@ -145,7 +159,8 @@ export default function Command1() {
               </div>
               <Button
                 variant="contained"
-                onClick={handleClick}
+                onSubmit={handleSubmit}
+                value={killProcess}
                 style={{flex: 1, marginLeft: '20px', padding: '0px'}}
                 //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
               >
@@ -179,7 +194,8 @@ export default function Command1() {
               </div>
               <Button
                 variant="contained"
-                onClick={handleClick}
+                onSubmit={handleSubmit}
+                value={restartProcess}
                 style={{flex: 1, marginLeft: '20px', padding: '0px'}}
                 //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
               >
@@ -189,6 +205,7 @@ export default function Command1() {
           </Typography>
         </CmdAccordionDetails>
       </CmdAccordion>
+      </form>
     </div>
   );
 }
