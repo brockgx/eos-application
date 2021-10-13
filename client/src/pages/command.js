@@ -10,6 +10,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
 //import '../styles/command.css';
+import FavAppsCheckbx from '../components/commands-tabs/ThirdAppsTestChoice';
 
 const Container = styled.div`
   flex: 10;
@@ -113,13 +114,15 @@ const Commands = (props) => {
             {selectedTab === 0 && <Command1 />}
             {selectedTab === 1 && <Command2 />}
             {selectedTab === 2 && <Command3 />} 
-            {selectedTab === 3 && <CMDTWOREF />} 
+            {selectedTab === 3 && <CMDTWOREF />}
           </LeftSide>
           <RightSideOutput>
             <Paper variant="outlined" style = {{height: '90%'}}>
-              Currently you have: no commands waiting. 
-              <div>
-              
+              <div style = {{marginLeft: '10px'}} >
+                Currently you have: no commands waiting. 
+                <div style = {{marginTop: '30px'}}>
+                  <FavAppsCheckbx />
+                </div>
               </div>
             </Paper>
           </RightSideOutput>
