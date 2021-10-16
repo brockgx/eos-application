@@ -11,7 +11,7 @@ import ipaddress
 import random
 
 #Import from in house modules
-from ..database.prototype_database import db, ClientMachines, AppMetrics, SystemMetrics
+from ..database.prototype_database import db, ClientMachines, SystemMetrics, AppMetrics
 
 
 #Setup the blueprint for the dashboard routes
@@ -50,22 +50,20 @@ def listClientMachines():
 def add_new_client_machine():
   #Handle the request data
   req_data = request.json
-  resp = ""
 
   #Check if details exist in DB
   try:
-    machine_exists = db.session.query(ClientMachines.id).filter(ClientMachines.host_name==req_data["host_name"], ClientMachines.ip_address==req_data["ip_addr_v4"]).first() is not None
-
+    machine_exists = ClientMachines.query.with_entities(ClientMachines.id).filter_by(mac_address=req_data["mac_addr"]).first() is not None
+   
     #Add a new machines details if they don't exist
     if not machine_exists:
-      print("Adding machine to DB")
-      #Create a new table entry object using request data
+      #Create a new table entry object using request data\
       new_machine = ClientMachines(
         name=req_data["host_name"],
         host_name=req_data["host_name"],
         os_type=req_data["os_type"],
         os_full_version=req_data["os_details"],
-        os_release_version=req_data["os_release"],
+        mac_address=req_data["mac_addr"],
         ip_address=req_data["ip_addr_v4"],
         status=1
       )
@@ -83,7 +81,7 @@ def add_new_client_machine():
 def remove_client_machine(id):
   #Get the machine to delete
   try:
-    machine = db.session.query(ClientMachines).filter(ClientMachines.id==id).first()
+    machine = ClientMachines.query.with_entities(ClientMachines.id).filter_by(mac_address=req_data["mac_addr"]).first()
     if machine is None:
       return "Machine with the id (" + str(id) + ") not found."
     else:
@@ -99,7 +97,7 @@ def update_client_machine(id):
   req = request.json
   print(req)
   try:
-    machine = db.session.query(ClientMachines).filter(ClientMachines.id==id).first()
+    machine = ClientMachines.query.with_entities(ClientMachines.id).filter_by(mac_address=req_data["mac_addr"]).first()
     if machine is None:
       return "Machine with the id (" + str(id) + ") not found."
     else:
@@ -123,7 +121,7 @@ def listSystemMetrics(name):
 
   disks = mach.disk_usage.split(",")
   d_len = len(disks)
-  num = random.randint(0, d_len)
+  num = random.randint(0, d_len - 1)
 
 
   final_sys_metrics.append({
@@ -138,7 +136,7 @@ def listSystemMetrics(name):
     "network": mach.network_usage
   })
 
-  app_metrics = AppMetrics.query.filter_by(machine_name=name).limit(5)
+  app_metrics = AppMetrics.query.filter_by(machine_name=name).limit(5) #order desc
   final_app_metrics = []
 
   for app in app_metrics:
