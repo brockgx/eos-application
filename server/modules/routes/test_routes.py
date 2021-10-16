@@ -136,24 +136,41 @@ def brockTest():
 #Route: personal socket command use
 #Could POST? from agent to api or server to api
 #So could go from API -> AGENT -> SERVER -> BACK TO API
-@test_routes.route("/senddetails", methods=["POST"])
+@test_routes.route("/socketcmd", methods=["POST"])
 def brockSocket():
+  #req = request.json
+  #print(req)
+  #return "Success"
+
+  #Gets the body request - JSON structure for commands
   req = request.json
-  print(req)
 
-  return "Success"
-  #data = json.loads(req)
-  #return jsonify({"result": "File Uploaded", "fileName": req["name"], "fileContents": req["content"]})
-  # try:
-  #   sock = socket.socket()
-  #   sock.connect(("127.0.0.1",1338))
+  sock = socket.socket()
+  #In future get machine details from machine of the request
+  sock.connect(("2.tcp.ngrok.io", 15170))
 
-  #   sendSocketData(sock, "Command")
-  #   time.sleep(2)
+  sendSocketData(sock, "Hello, you received me")
+
+  time.sleep(10)
+
+  data = receiveSocketData(sock)
+
+  return jsonify({"desc": "Return of the message from the socket", "content": data.decode("utf-8")})
+
+    # sendSocketData(sock, jsonify(
+    #   {"type": "command",
+    #    "cmd_type": "filesend",
+    #    "contents": {"filename": "name", "file": "file"}}
+    # ))
+
+  #   #Wait until data is returned on the connection
   #   data = receiveSocketData(sock)
   #   if data:
-  #     return data
+  #     print_log_msg("Command was successful")
+  #     return jsonify({"type": "response", "content": data})
   #   else:
+  #     print_log_msg("Command didn't return")
   #     return "Command failed"
-  # except:
+  # except Exception as err_msg:
+  #   print_log_msg(str(err_msg))
   #   return "Command failed"

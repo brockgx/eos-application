@@ -8,6 +8,7 @@ from flask import Blueprint, jsonify, request
 from sqlalchemy import desc
 import json
 import ipaddress
+import random
 
 #Import from in house modules
 from ..database.prototype_database import db, ClientMachines, AppMetrics, SystemMetrics
@@ -96,6 +97,7 @@ def remove_client_machine(id):
 @dashboard_routes.route("/clientmachines/<id>", methods=['PUT'])
 def update_client_machine(id):
   req = request.json
+  print(req)
   try:
     machine = db.session.query(ClientMachines).filter(ClientMachines.id==id).first()
     if machine is None:
@@ -105,8 +107,10 @@ def update_client_machine(id):
       db.session.commit()
       return "Machine's name has been updated to " + str(req["new_name"]) + "."
   except (TypeError,NameError,KeyError) as err_msg:
+    print(str(err_msg))
     return "No new name was provided to update the machine."
   except Exception as err_msg:
+    print(str(err_msg))
     return "An error occurred: " + str(err_msg) + "."
     
 #Route: to get a list of system metrics for a specified machine
@@ -115,12 +119,42 @@ def listSystemMetrics(name):
   
   #Get a list of metrics from the system_metrics table - filter by machine_name
   mach = SystemMetrics.query.filter_by(machine_name=name).order_by(SystemMetrics.id.desc()).first()
-  final = []
+  final_sys_metrics = []
 
-  # for mach in result:
-  #   print(mach)
-  final.append({"id": mach.id, "name": mach.machine_name, "time": mach.timestamp, "cpu": mach.cpu_usage, "ram": mach.ram_usage,"disk": mach.disk_usage, "disk_read": mach.disk_read, "disk_write": mach.disk_write, "network": mach.network_usage})
+  disks = mach.disk_usage.split(",")
+  d_len = len(disks)
+  num = random.randint(0, d_len)
+
+
+  final_sys_metrics.append({
+    "id": mach.id,
+    "name": mach.machine_name,
+    "time": mach.timestamp,
+    "cpu": mach.cpu_usage,
+    "ram": mach.ram_usage,
+    "disk": disks[num],
+    "disk_read": mach.disk_read,
+    "disk_write": mach.disk_write,
+    "network": mach.network_usage
+  })
+
+  app_metrics = AppMetrics.query.filter_by(machine_name=name).limit(5)
+  final_app_metrics = []
+
+  for app in app_metrics:
+    final_app_metrics.append({
+      "id": app.id,
+      "machine_name": app.machine_name,
+      "time": app.timestamp,
+      "app_name": app.app_name,
+      "cpu": app.app_cpu,
+      "ram": app.app_ram
+    })
 
   return jsonify({
     "description": "A list of system metrics for a machine",
-    "content": final  })
+    "content": {
+      "sysMetrics": final_sys_metrics,
+      "appMetrics": final_app_metrics
+    }
+  })
