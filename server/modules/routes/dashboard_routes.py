@@ -11,7 +11,7 @@ import ipaddress
 import random
 
 #Import from in house modules
-from ..database.prototype_database import db, ClientMachines, SystemMetrics, AppMetrics
+from ..database.database_tables import db, ClientMachines, SystemMetrics
 
 
 #Setup the blueprint for the dashboard routes
@@ -65,6 +65,7 @@ def add_new_client_machine():
         os_full_version=req_data["os_details"],
         mac_address=req_data["mac_addr"],
         ip_address=req_data["ip_addr_v4"],
+        ports=",".join(req_data["port_numbers"]),
         status=1
       )
 
@@ -81,12 +82,16 @@ def add_new_client_machine():
 def remove_client_machine(id):
   #Get the machine to delete
   try:
-    machine = ClientMachines.query.with_entities(ClientMachines.id).filter_by(mac_address=req_data["mac_addr"]).first()
+    machine = ClientMachines.query.filter_by(id=id).first()
     if machine is None:
       return "Machine with the id (" + str(id) + ") not found."
     else:
       db.session.delete(machine)
       db.session.commit()
+      #Update data values - also for app
+      for metric in machine.system_metrics:
+        metric.machine_id = machine.name
+        db.session.commit()
       return "Removed machine with name: " + str(machine.host_name)
   except Exception as err_msg:
     return "An error occurred: " + str(err_msg)
