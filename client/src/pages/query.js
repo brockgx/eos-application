@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 
 import styled from 'styled-components';
-import SysMetricsTable from '../components/query/SysMetricsTable';
+import MetricsTable from '../components/query/MetricsTable';
 
 import { ColumnData } from '../components/query/ColumnData'
 
@@ -75,7 +75,7 @@ const Query = () => {
           <TopText>Query Database</TopText>
         </Top>
         <Bottom>   
-          <SysMetricsTable columns={ColumnData} data={sysMetrics.content}  />
+          <MetricsTable data={sysMetrics.content}  />
         </Bottom>
       </Wrapper>
     </Container>

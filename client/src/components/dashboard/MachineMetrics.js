@@ -28,11 +28,17 @@ const TableContainer = styled.div`
 const ChartContainer = styled.div`
   margin-left: 50px;
 `;
-const ProgressContainer = styled.div`
+const ProgressWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-content: center;
-  margin: 0px 0px 50px 0px;
+  align-items: center;
+`;
+const ProgressContainer = styled.div`
+  display: flex;
+  align-content: center;
+  align-items: center;
+  padding: 80px 0px 0px 20px;
 `;
 
 const TableWrapper = styled.div`
@@ -47,7 +53,7 @@ const Title = styled.span`
 `;
 
 const MachineMetrics = ({machineName}) => {
-  const [radialChart, setRadialChart] = useState(
+  const radialChart = (
     {
       options: {
         plotOptions: {
@@ -142,18 +148,22 @@ const MachineMetrics = ({machineName}) => {
                 </ChartContainer>
               </MetricContainer>
               <MetricContainer >
-                <ProgressContainer >
+                <ProgressWrapper >
                   <Title>
                     Disk Usage:
                   </Title>
-                  <ProgressBar backgroundColor="#7587A9" completed={metrics.disk} />
-                </ProgressContainer>
-                <ProgressContainer >
+                  <ProgressContainer>
+                    C:/{' '} <ProgressBar backgroundColor="#7587A9" completed={metrics.disk} />
+                  </ProgressContainer>
+                </ProgressWrapper>
+                <ProgressWrapper >
                   <Title>
                     Network Usage:
                   </Title>
-                  <ProgressBar backgroundColor="#7587A9" completed={metrics.network} />
-                </ProgressContainer>
+                  <ProgressContainer>
+                    <ProgressBar backgroundColor="#7587A9" completed={metrics.network} />
+                  </ProgressContainer>
+                </ProgressWrapper>
               </MetricContainer>
             </>
           );
@@ -169,7 +179,7 @@ const MachineMetrics = ({machineName}) => {
                   <TableCell>App Name</TableCell>
                   <TableCell align="center">Time</TableCell>
                   <TableCell align="center">CPU (%)</TableCell>
-                  <TableCell align="center">RAM(%)</TableCell>
+                  <TableCell align="center">RAM (%)</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

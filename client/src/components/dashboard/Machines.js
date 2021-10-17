@@ -155,9 +155,11 @@ const Machines = ({machine}) => {
   }
 
   const handleEdit = () => {
+    console.log(name)
     fetch(`/dash/clientmachines/${machine.id}`, {
       method: 'PUT',
-      body: JSON.stringify({"new_name": {name}})
+      headers: {"Content-Type": "application/json" },
+      body: JSON.stringify({"new_name": name})
     }).then(() => {
       setEdit(false)
       window.location.reload();
@@ -181,7 +183,7 @@ const Machines = ({machine}) => {
               ? <Image src={windows}/>
               : <Image src={linux}/>
             }
-            <DetailsContainer>
+            <DetailsContainer style={{marginLeft: "10px"}}>
               <MachineNameContainer>
                 <b>Name: </b> 
                 <EditName>
@@ -284,7 +286,7 @@ const Machines = ({machine}) => {
             </IconButton>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Metrics>
-                <MachineMetrics machineName={machine.name} key={machine.id} />
+                <MachineMetrics machineName={machine.host_name}/>
               </Metrics>
             </Collapse>  
           </MetricsContainer>
