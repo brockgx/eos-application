@@ -45,7 +45,7 @@ def home_route():
     user="none"
   )
 
-#Implement route module
+#Implement route modules
 app.register_blueprint(test_routes, url_prefix='/test')
 app.register_blueprint(command_routes, url_prefix='/commands')
 app.register_blueprint(dashboard_routes, url_prefix='/dash')

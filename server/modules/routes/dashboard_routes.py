@@ -13,10 +13,8 @@ import random
 #Import from in house modules
 from ..database.database_tables import db, ClientMachines, SystemMetrics
 
-
 #Setup the blueprint for the dashboard routes
 dashboard_routes = Blueprint('dashboard_routes',__name__)
-
 
 #Route: the main dashboard route
 @dashboard_routes.route('/', methods=['GET','POST','DELETE','PUT'])
@@ -92,6 +90,9 @@ def remove_client_machine(id):
       for metric in machine.system_metrics:
         metric.machine_id = machine.name
         db.session.commit()
+      for app in machine.app_details:
+        app.machine_id = machine.name
+        db.session.commit()
       return "Removed machine with name: " + str(machine.host_name)
   except Exception as err_msg:
     return "An error occurred: " + str(err_msg)
@@ -100,9 +101,8 @@ def remove_client_machine(id):
 @dashboard_routes.route("/clientmachines/<id>", methods=['PUT'])
 def update_client_machine(id):
   req = request.json
-  print(req)
   try:
-    machine = ClientMachines.query.with_entities(ClientMachines.id).filter_by(mac_address=req_data["mac_addr"]).first()
+    machine = ClientMachines.query.filter_by(id=id).first()
     if machine is None:
       return "Machine with the id (" + str(id) + ") not found."
     else:

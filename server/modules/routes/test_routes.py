@@ -47,6 +47,7 @@ def get_machines():
   })
   return result
 
+#SOON TO BE DEPRECATED - with new metric routes
 @test_routes.route("/addmetrics", methods=["POST"])
 def add_metrics():
   new_metrics = request.json
@@ -80,6 +81,7 @@ def add_metrics():
 
   return "New Metrics Successfully added"
 
+#SOON TO BE DEPRECATED - with new metric routes
 @test_routes.route("/getmetrics", methods=["GET"])
 def get_metrics():
   data = AppMetrics.query.all()
