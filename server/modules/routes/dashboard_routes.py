@@ -11,7 +11,7 @@ import ipaddress
 import random
 
 #Import from in house modules
-from ..database.database_tables import db, ClientMachines, SystemMetrics
+from ..database.database_tables import db, ClientMachines, SystemMetrics, AppMetrics
 
 #Setup the blueprint for the dashboard routes
 dashboard_routes = Blueprint('dashboard_routes',__name__)
