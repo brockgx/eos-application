@@ -84,10 +84,11 @@ const LeftSide = styled.div`
  
 const Commands = (props) => {
     const [selectedTab, setSelectedTab] = useState(0);
+    
     const handleChange = (event, newValue) => {
         setSelectedTab(newValue);
     }
-  
+    const [ machineChoice, setMachineChoice] = useState('')
 
   return (
   <Container>
@@ -110,7 +111,8 @@ const Commands = (props) => {
                   <Tab label="Custom Commands" style ={{textTransform : 'none'}}/>             
                 </Tabs>
               </TabsWrapper>
-              <CmdMachineChoice />        
+              
+              <CmdMachineChoice onChange={value => setMachineChoice(value)}/>        
             {selectedTab === 0 && <Command1 />}
             {selectedTab === 1 && <Command2 />}
             {selectedTab === 2 && <Command3 />} 

@@ -22,7 +22,8 @@ function sleep(delay = 0) {
   });
 }
 
-export default function CmdMachineChoice() {
+export default function CmdMachineChoice(props) {
+    
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
     const loading = open && options.length === 0;
@@ -86,6 +87,7 @@ export default function CmdMachineChoice() {
           value={value}
           loading={loading}
           fullWidth
+          //onChange={() => setValue(props.target.value)}
           onChange={(e, newValue) => setValue(newValue)}
           style={{marginBottom: 30}}
 
@@ -93,7 +95,7 @@ export default function CmdMachineChoice() {
             <TextField {...params} 
               variant="outlined"
               fullWidth 
-              label="Select your target machine(s)." 
+              label="Select your target machine" 
               placeholder="Machine 1, Machine 2 etc."
               InputProps={{
                 ...params.InputProps,
