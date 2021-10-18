@@ -195,7 +195,7 @@ def startServer():
         # convert to byte array
         # save to destination on client pc
         # send back success/failure
-        print(x)
+        #print(x)
         sendCommand = ''.join("FILE\n" + json.dumps(x)) # pack command into json
         sendSocketData(agentSocket, sendCommand) # send json
         time.sleep(2)
