@@ -30,9 +30,9 @@ class SystemMetrics(db.Model):
   ram_usage = db.Column(db.Float(2), nullable=False)
   disk_names = db.Column(db.String(256), nullable=False)
   disk_usage = db.Column(db.String(70), nullable=False)
-  disk_read = db.Column(db.String(20), nullable=False) #will become float
-  disk_write = db.Column(db.String(20), nullable=False) #will become float
-  network_usage = db.Column(db.Float(2), nullable=False)
+  disk_read = db.Column(db.Integer, nullable=False)
+  disk_write = db.Column(db.Integer, nullable=False)
+  network_usage = db.Column(db.Integer, nullable=False) #May be float as was a percentage
   app_metrics = db.relationship('AppMetrics', backref='system_metric')
 
 #Table: for holding details about the specific applications monitored

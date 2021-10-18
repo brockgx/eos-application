@@ -17,7 +17,44 @@ def main_metric_route():
 #   - The route is /metrics/getallmetrics
 @metric_routes.route("/getallmetrics", methods=['GET'])
 def get_all_metric_data():
-  return "All metrics returned"
+  #Return all system metric entries
+  all_metrics = SystemMetrics.query.all()
+
+  #Loop though all system metric entries
+  all_system_metrics = []
+  all_application_metrics = []
+  for sys_metric in all_metrics:
+    all_system_metrics.append({
+      "id": sys_metric.id,
+      "name": sys_metric.machine.name,
+      "mac_address": sys_metric.machine.mac_address,
+      "time": sys_metric.timestamp,
+      "cpu": sys_metric.cpu_usage,
+      "ram": sys_metric.ram_usage,
+      "disk_names": sys_metric.disk_names.split(","),
+      "disk_use": sys_metric.disk_usage.split(","),
+      "disk_read": sys_metric.disk_read,
+      "disk_write": sys_metric.disk_write,
+      "network": sys_metric.network_usage,
+    })
+
+    for app in sys_metric.app_metrics:
+      all_application_metrics.append({
+        "id": app.id,
+        "name": sys_metric.machine.name,
+        "mac_address": sys_metric.machine.mac_address,
+        "time": sys_metric.timestamp,
+        "app_name": app.application.name,
+        "app_pid": app.application.pid,
+        "app_cpu": app.cpu_usage,
+        "app_ram": app.ram_usage,
+      })
+
+  return jsonify({
+    "desc": "Object of all system and application metrics",
+    "system_metrics": all_system_metrics,
+    "application_metrics": all_application_metrics
+  })
 
 #Route: to collate and store a period of machine metrics in the DB
 #   - The route is /metrics/commitmetrics, supporting the POST method
@@ -67,9 +104,9 @@ def commit_new_metrics():
       #Loop through all app metrics per metric entry
       #Check for existence of App (add if not present)
       for app in app_metrics:
-        application = AppDetails.query.filter(AppDetails.name==app["name"], AppDetails.pid==619).first()
+        application = AppDetails.query.filter(AppDetails.name==app["name"], AppDetails.pid==app["pid"]).first()
         if application is None:
-          application = AppDetails(machine=assoc_machine,pid=619,name=app["name"])
+          application = AppDetails(machine=assoc_machine,pid=app["pid"],name=app["name"])
           db.session.add(application)
         
         #Add the individual application metric entry
