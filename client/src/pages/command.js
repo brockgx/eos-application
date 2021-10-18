@@ -5,12 +5,9 @@ import Command1 from '../components/commands-tabs/Command1';
 import Command2 from '../components/commands-tabs/Command2';
 import Command3 from '../components/commands-tabs/Command3';
 import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
-import CMDTWOREF from '../components/commands-tabs/COMMANDTWOREF';
 import React from 'react';
 import styled from 'styled-components';
-import Paper from '@material-ui/core/Paper';
 //import '../styles/command.css';
-import FavAppsCheckbx from '../components/commands-tabs/ThirdAppsTestChoice';
 
 const Container = styled.div`
   flex: 10;
@@ -18,12 +15,13 @@ const Container = styled.div`
   padding: 5px;
   align-items: center;
   flex-direction: row;
-  
+  box-sizing: border-box;
 `;
 
 const Wrapper = styled.div`
   padding: 10px;
   align-content: flex-end;
+  box-sizing: border-box;
 `;
 
 const Top = styled.div`
@@ -31,6 +29,7 @@ const Top = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px 0px 40px;
+  box-sizing: border-box;
 `;
 
 const TopText = styled.span`
@@ -38,18 +37,21 @@ const TopText = styled.span`
   font-size: 44px;
   padding-bottom: 10px;
   flex: 1;
+  box-sizing: border-box;
 `;
 
 const TabsWrapper = styled.div`
   padding: 0px;
   font-size: 44px;
   flex: 80%;
+  box-sizing: border-box;
 `;
 
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0px 40px;
+  box-sizing: border-box;
 
 `;
 
@@ -57,7 +59,7 @@ const Bottom = styled.div`
 const CommandsTab = styled.div`
   -webkit-box-shadow: 0px 0px 15px -7px rgba(0, 0, 0, 0.8);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
-  height: 85%;
+  box-sizing: border-box;
   width: 95%;
   padding: 30px;
   background-color: #ffff;
@@ -79,6 +81,7 @@ const LeftSide = styled.div`
   flex: 1;
 `;
 
+ 
 const Commands = (props) => {
     const [selectedTab, setSelectedTab] = useState(0);
     const handleChange = (event, newValue) => {
@@ -95,36 +98,27 @@ const Commands = (props) => {
       <Bottom>
         <CommandsTab>
           <LeftSide>
-          
               <TabsWrapper>
-                <Tabs 
-                  centered 
-                  className="TabOption"
+                <Tabs
+                  centered
                   value={selectedTab} 
-                  style = {{marginBottom:40, marginLeft:-20}} 
+                  style = {{marginBottom:40, marginLeft:-20, boxSizing: 'border-box'}} 
                   onChange={handleChange} 
                 >
-                  <Tab label="Command Option 1"/>
-                  <Tab label="Command Option 2"/>
-                  <Tab label="Command Option 3"/>  
-                  <Tab label="CMDTWOREF"/>              
+                  <Tab label="Preset Command Options" style ={{textTransform : 'none'}}/>
+                  <Tab label="Push a File to a Device" style ={{textTransform : 'none'}}/>
+                  <Tab label="Custom Commands" style ={{textTransform : 'none'}}/>             
                 </Tabs>
               </TabsWrapper>
               <CmdMachineChoice />        
             {selectedTab === 0 && <Command1 />}
             {selectedTab === 1 && <Command2 />}
             {selectedTab === 2 && <Command3 />} 
-            {selectedTab === 3 && <CMDTWOREF />}
           </LeftSide>
           <RightSideOutput>
-            <Paper variant="outlined" style = {{height: '90%'}}>
-              <div style = {{marginLeft: '10px'}} >
+            <div style = {{marginLeft: '10px', paddingLeft: '10px', height: '100%', border: '1px solid grey', boxSizing: 'border-box'}} >
                 Currently you have: no commands waiting. 
-                <div style = {{marginTop: '30px'}}>
-                  <FavAppsCheckbx />
-                </div>
-              </div>
-            </Paper>
+            </div>
           </RightSideOutput>
         </CommandsTab>                  
       </Bottom>

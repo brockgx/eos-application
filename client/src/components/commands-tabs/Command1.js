@@ -10,6 +10,7 @@ import { styled } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import  {useState } from 'react';
 
+
 const CmdAccordion = styled((props) => (
   <Accordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -50,12 +51,15 @@ export default function Command1() {
     setExpanded(newExpanded ? panel : false);
   };
   
+  
   const handleClick = (event) => {
-    const value =  event.currentTarget.value;
+    const name =  event.currentTarget.name;
     event.preventDefault();
-    alert(`thank you for your message`);
+    console.log(name)
+    
+    alert(`A command was submitted: ${name}`);
   };
-
+ 
   const handleSubmit = (event) => {
     event.preventDefault();
     const value =  event.currentTarget.value;
@@ -69,28 +73,34 @@ export default function Command1() {
       <form onSubmit={handleSubmit}>
       <CmdAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <CmdAccordionSummary  aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>PRESET COMMAND OPTION 1 - SHUTDOWN DEVICE</Typography>
+          <div>
+            Preset Option 1: Shutdown Device
+          </div>
         </CmdAccordionSummary>
-        <CmdAccordionDetails>
+        <CmdAccordionDetails style={{flexDirection: "column"}}>
           <div 
             className = "InputWButtonContain" 
             style={{
               display: 'flex', 
+              
+              
             }}
           >
             <div style={{
               flex: 3, 
+              
               }}
             >
-              <Typography>
-                This is command option 1 - Shutdown device. Click confirm if you would like to shutdown "deviceName". 
-              </Typography>
+              <div style={{}}>
+               Click confirm to shutdown 
+              </div>
             </div>
             <Button
               variant="contained"
               type="submit"
-              onSubmit={handleSubmit}
-              value={shutDevice}
+              name="shutDevice"
+             //value={shutDevice}
+              onClick={handleClick}
               style={{flex: 1, padding: '0px'}}
               //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
             >
@@ -102,28 +112,31 @@ export default function Command1() {
 
       <CmdAccordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
         <CmdAccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>
-            PRESET COMMAND OPTION 2 - RESTART DEVICE
-          </Typography>
+          <div>
+            Preset Option 2: Restart Device
+          </div>
         </CmdAccordionSummary>
         <CmdAccordionDetails>
             <div 
               className = "InputWButtonContain" 
               style={{
                 display: 'flex', 
+                
               }}
             >
               <div style={{
                 flex: 3, 
+                
               }}>
-              <Typography>
-                This is command option 2 - restart device. Click confirm if you would like to restart "deviceName". 
-              </Typography>
+              <div>
+                Click confirm to restart "deviceName". 
+              </div>
               </div>
               <Button
                 variant="contained"
-                onSubmit={handleSubmit}
-                value={restartDevice}
+                name="restartDevice"
+                onClick={handleClick}
+                //value={restartDevice}
                 style={{flex: 1, padding: '0px'}}
                 //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
               >
@@ -136,11 +149,13 @@ export default function Command1() {
 
       <CmdAccordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
         <CmdAccordionSummary  aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>PRESET COMMAND OPTION 3 - KILL PROCESS</Typography>
+          <div>
+            Preset Option 3: Kill Process
+          </div>
         </CmdAccordionSummary>
         <CmdAccordionDetails>
-          <Typography>
-            This is command option 3 - Kill process. Please select the application you would like to kill.
+          <div>
+            Please select the application you would like to kill then click 'confirm'.
             <div 
               className = "InputWButtonContain" 
               style={{
@@ -159,7 +174,9 @@ export default function Command1() {
               </div>
               <Button
                 variant="contained"
-                onSubmit={handleSubmit}
+                name="killProcess"
+                onClick={handleClick}
+                //onSubmit={handleSubmit}
                 value={killProcess}
                 style={{flex: 1, marginLeft: '20px', padding: '0px'}}
                 //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
@@ -167,17 +184,19 @@ export default function Command1() {
                 Confirm
               </Button>
             </div>
-          </Typography>
+          </div>
         </CmdAccordionDetails>
       </CmdAccordion>
 
       <CmdAccordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
         <CmdAccordionSummary  aria-controls="panel4d-content" id="panel4d-header">
-          <Typography>PRESET COMMAND OPTION 4 - RESTART APPLICATION</Typography>
+          <div>
+           Preset Option 4: Restart Application
+          </div>
         </CmdAccordionSummary>
         <CmdAccordionDetails>
-          <Typography>
-            This is command option 4 - Restart process. Please select the application you would like to restart.
+          <div>
+            Please select the application you would like to restart then click 'confirm'.
             <div 
               style={{
                 marginTop: 30, 
@@ -193,8 +212,10 @@ export default function Command1() {
                 <AvailApps/>
               </div>
               <Button
+                name="restartProcess"
+                onClick={handleClick}
                 variant="contained"
-                onSubmit={handleSubmit}
+                //onSubmit={handleSubmit}
                 value={restartProcess}
                 style={{flex: 1, marginLeft: '20px', padding: '0px'}}
                 //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
@@ -202,7 +223,7 @@ export default function Command1() {
                 Confirm
               </Button>
             </div> 
-          </Typography>
+          </div>
         </CmdAccordionDetails>
       </CmdAccordion>
       </form>

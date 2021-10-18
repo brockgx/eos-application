@@ -25,6 +25,7 @@ export default function AvailApps() {
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
 
+
     React.useEffect(() => {
       let active = true;
   
@@ -52,7 +53,7 @@ export default function AvailApps() {
     }, [open]);
 
     
-
+    
 
   return (
     <MainContainer>
@@ -70,18 +71,21 @@ export default function AvailApps() {
           
           isOptionEqualToValue={(option, value) => option.appID === value.appID}
           disableCloseOnSelect
+          options={options}
           getOptionLabel={(option) => option.appID}
           renderTags={() => null}
+          
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               {option.appID}
             </li>
           )}
-          options={options}
+          
           value={value}
           loading={loading}
           onChange={(e, newValue) => setValue(newValue)}
-          
+          name={value}
+            
           renderInput={(params) => (
             <TextField {...params} 
             label="Select the application you would like to kill" 
