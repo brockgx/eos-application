@@ -1,7 +1,10 @@
 from flask import Blueprint, jsonify, request
 import json
+import socket
+import time
 
 from ..database.prototype_database import db, Random, AppMetrics, SystemMetrics
+from ..sockets.socket_data_transfer import sendSocketData, receiveSocketData
 
 test_routes = Blueprint('test_routes',__name__)
 
@@ -44,43 +47,41 @@ def get_machines():
   })
   return result
 
+#SOON TO BE DEPRECATED - with new metric routes
 @test_routes.route("/addmetrics", methods=["POST"])
 def add_metrics():
-  new_metrics = request.data
-  final_metrics = new_metrics.decode("utf-8")
+  new_metrics = request.json
+  final_metrics = new_metrics["content"]
 
-  obj = json.loads(final_metrics)
+  for metric in final_metrics:
+    for app in metric["app_metrics"]:
+      db_metric = AppMetrics(machine_name=metric["machine_name"],timestamp=metric["collection_time"],app_name=app["name"],app_cpu=app["cpu"],app_ram=app["ram"])
+      db.session.add(db_metric)
+    
+    sys_cpu = metric["system_metrics"][0]["cpu"]
+    sys_ram = metric["system_metrics"][1]["ram"]
 
-  print(obj["machine_name"])
+    first_disk = True
+    disks = ""
+    disk_perc = ""
+    for disk in metric["disk_metrics"]:
+      if first_disk:
+        first_disk = False
+        disks += disk["device"]
+        disk_perc += str(disk["percent"])
+      else:
+        disks += "," + str(disk["device"])
+        disk_perc += "," + str(disk["percent"])
+    
+    #Add system metric
+    db_sys_metric = SystemMetrics(machine_name=metric["machine_name"],timestamp=metric["collection_time"],cpu_usage=sys_cpu,ram_usage=sys_ram,disk_usage=disk_perc,disk_read=metric["disk_bytes_read"],disk_write=metric["disk_bytes_written"],network_usage=metric["network_percent"])
+    db.session.add(db_sys_metric)
 
-  for app in obj["app_metrics"]:
-    db_metric = AppMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],app_name=app["name"],app_cpu=app["cpu"],app_ram=app["ram"])
-    db.session.add(db_metric)
-
-  sys_cpu = obj["system_metrics"][0]["cpu"]
-  sys_ram = obj["system_metrics"][1]["ram"]
-
-  first_disk = True
-  disks = ""
-  disk_perc = ""
-  for disk in obj["disk_metrics"]:
-    if first_disk:
-      first_disk = False
-      disks += disk["device"]
-      disk_perc += str(disk["percent"])
-    else:
-      disks += "," + str(disk["device"])
-      disk_perc += "," + str(disk["percent"])
-  
-  #Add system metric
-  db_sys_metric = SystemMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],cpu_usage=sys_cpu,ram_usage=sys_ram,disk_usage=disk_perc,disk_read=obj["disk_bytes_read"],disk_write=obj["disk_bytes_written"],network_usage=obj["network_percent"])
-  db.session.add(db_sys_metric)
-
-  print(disks)
-  db.session.commit()
+    db.session.commit()
 
   return "New Metrics Successfully added"
 
+#SOON TO BE DEPRECATED - with new metric routes
 @test_routes.route("/getmetrics", methods=["GET"])
 def get_metrics():
   data = AppMetrics.query.all()
@@ -98,7 +99,7 @@ def get_metrics():
   return "Metrics received!!"
 
 #Route: used for personal testing (brock) to run custom SQL queries
-@test_routes.route("/brocktest", methods=["GET"])
+@test_routes.route("/brock/test", methods=["GET"])
 def brockTest():
   result = db.session.execute('SELECT * FROM app_metrics WHERE app_name = :aname LIMIT :start,:limit', {'aname': "python", "start": 0, "limit": 2})
 
@@ -109,3 +110,44 @@ def brockTest():
 
   return jsonify({"description": "A result of app metrics with python as the name", "content": final, "rows": len(final)})
 
+#Route: personal socket command use
+#Could POST? from agent to api or server to api
+#So could go from API -> AGENT -> SERVER -> BACK TO API
+@test_routes.route("/socketcmd", methods=["POST"])
+def brockSocket():
+  #req = request.json
+  #print(req)
+  #return "Success"
+
+  #Gets the body request - JSON structure for commands
+  req = request.json
+
+  sock = socket.socket()
+  #In future get machine details from machine of the request
+  sock.connect(("2.tcp.ngrok.io", 15170))
+
+  sendSocketData(sock, "Hello, you received me")
+
+  time.sleep(10)
+
+  data = receiveSocketData(sock)
+
+  return jsonify({"desc": "Return of the message from the socket", "content": data.decode("utf-8")})
+
+    # sendSocketData(sock, jsonify(
+    #   {"type": "command",
+    #    "cmd_type": "filesend",
+    #    "contents": {"filename": "name", "file": "file"}}
+    # ))
+
+  #   #Wait until data is returned on the connection
+  #   data = receiveSocketData(sock)
+  #   if data:
+  #     print_log_msg("Command was successful")
+  #     return jsonify({"type": "response", "content": data})
+  #   else:
+  #     print_log_msg("Command didn't return")
+  #     return "Command failed"
+  # except Exception as err_msg:
+  #   print_log_msg(str(err_msg))
+  #   return "Command failed"

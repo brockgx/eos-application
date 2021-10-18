@@ -31,7 +31,10 @@ class SystemMetrics(db.Model):
 
 class ClientMachines(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  machine_name = db.Column(db.String(256), nullable=False)
+  name = db.Column(db.String(256), nullable=False)
+  host_name = db.Column(db.String(256), nullable=False)
   os_type = db.Column(db.String(10), nullable=False)
+  os_full_version = db.Column(db.String(256), nullable=False)
+  mac_address = db.Column(db.String(256), nullable=False)
   ip_address = db.Column(db.Integer, nullable=False)
   status = db.Column(db.Integer, nullable=False)
