@@ -47,6 +47,7 @@ def get_machines():
   })
   return result
 
+#SOON TO BE DEPRECATED - with new metric routes
 @test_routes.route("/addmetrics", methods=["POST"])
 def add_metrics():
   new_metrics = request.json
@@ -78,33 +79,9 @@ def add_metrics():
 
     db.session.commit()
 
-  #for app in obj["app_metrics"]:
-  #  db_metric = AppMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],app_name=app["name"],app_cpu=app["cpu"],app_ram=app["ram"])
-  #  db.session.add(db_metric)
-
-  #sys_cpu = obj["system_metrics"][0]["cpu"]
-  #sys_ram = obj["system_metrics"][1]["ram"]
-
-  # first_disk = True
-  # disks = ""
-  # disk_perc = ""
-  # for disk in obj["disk_metrics"]:
-  #   if first_disk:
-  #     first_disk = False
-  #     disks += disk["device"]
-  #     disk_perc += str(disk["percent"])
-  #   else:
-  #     disks += "," + str(disk["device"])
-  #     disk_perc += "," + str(disk["percent"])
-  
-  #Add system metric
-  #db_sys_metric = SystemMetrics(machine_name=obj["machine_name"],timestamp=obj["collection_time"],cpu_usage=sys_cpu,ram_usage=sys_ram,disk_usage=disk_perc,disk_read=obj["disk_bytes_read"],disk_write=obj["disk_bytes_written"],network_usage=obj["network_percent"])
-  #db.session.add(db_sys_metric)
-
-  #db.session.commit()
-
   return "New Metrics Successfully added"
 
+#SOON TO BE DEPRECATED - with new metric routes
 @test_routes.route("/getmetrics", methods=["GET"])
 def get_metrics():
   data = AppMetrics.query.all()
@@ -136,24 +113,41 @@ def brockTest():
 #Route: personal socket command use
 #Could POST? from agent to api or server to api
 #So could go from API -> AGENT -> SERVER -> BACK TO API
-@test_routes.route("/senddetails", methods=["POST"])
+@test_routes.route("/socketcmd", methods=["POST"])
 def brockSocket():
+  #req = request.json
+  #print(req)
+  #return "Success"
+
+  #Gets the body request - JSON structure for commands
   req = request.json
-  print(req)
 
-  return "Success"
-  #data = json.loads(req)
-  #return jsonify({"result": "File Uploaded", "fileName": req["name"], "fileContents": req["content"]})
-  # try:
-  #   sock = socket.socket()
-  #   sock.connect(("127.0.0.1",1338))
+  sock = socket.socket()
+  #In future get machine details from machine of the request
+  sock.connect(("2.tcp.ngrok.io", 15170))
 
-  #   sendSocketData(sock, "Command")
-  #   time.sleep(2)
+  sendSocketData(sock, "Hello, you received me")
+
+  time.sleep(10)
+
+  data = receiveSocketData(sock)
+
+  return jsonify({"desc": "Return of the message from the socket", "content": data.decode("utf-8")})
+
+    # sendSocketData(sock, jsonify(
+    #   {"type": "command",
+    #    "cmd_type": "filesend",
+    #    "contents": {"filename": "name", "file": "file"}}
+    # ))
+
+  #   #Wait until data is returned on the connection
   #   data = receiveSocketData(sock)
   #   if data:
-  #     return data
+  #     print_log_msg("Command was successful")
+  #     return jsonify({"type": "response", "content": data})
   #   else:
+  #     print_log_msg("Command didn't return")
   #     return "Command failed"
-  # except:
+  # except Exception as err_msg:
+  #   print_log_msg(str(err_msg))
   #   return "Command failed"

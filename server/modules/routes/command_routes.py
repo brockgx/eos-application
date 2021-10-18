@@ -28,6 +28,8 @@ def getAvailableMachines():
 #Route: to send a command to the agent and get a response back
 @command_routes.route("/send", methods=['POST'])
 def sendCommand():
+  req = request.json
+  console.log(req)
   return "Sending command to agent..."
 
 #Route: to send a file to the agent machine

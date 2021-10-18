@@ -33,9 +33,12 @@ const FileUpload = () => {
   let uploadFile = () => {
     if(file !== null || fileLocation === "") {
       let reader = new FileReader();
-      reader.readAsBinaryString(file);
+      reader.readAsDataURL(file);
       reader.onload = () => {
-        postFile(reader.result);
+        const final = reader.result.split(",", 2);
+        console.log(reader.result);
+        console.log(final[1]);
+        //postFile(reader.result);
       }
       console.log("File uploading");
     } else {
