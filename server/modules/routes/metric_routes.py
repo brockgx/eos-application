@@ -76,9 +76,9 @@ def commit_new_metrics():
         app_metric = AppMetrics(system_metric=db_sys_metric,application=application,cpu_usage=app["cpu"],ram_usage=app["ram"])
         db.session.add(app_metric)
 
-      #Commit new metrics entry and return success
-      db.session.commit()
-      return "Metrics added successfully"
+    #Commit new metrics entry and return success
+    db.session.commit()
+    return "Metrics added successfully"
   except Exception as err_msg:
     #Handle any errors that may occur and display message
     print("[Error] Adding Metrics: " + str(err_msg))
