@@ -8,14 +8,13 @@ from flask import Blueprint, jsonify, request
 from sqlalchemy import desc
 import json
 import ipaddress
+import random
 
 #Import from in house modules
-from ..database.prototype_database import db, ClientMachines, AppMetrics, SystemMetrics
-
+from ..database.database_tables import db, ClientMachines, SystemMetrics
 
 #Setup the blueprint for the dashboard routes
 dashboard_routes = Blueprint('dashboard_routes',__name__)
-
 
 #Route: the main dashboard route
 @dashboard_routes.route('/', methods=['GET','POST','DELETE','PUT'])
@@ -49,23 +48,22 @@ def listClientMachines():
 def add_new_client_machine():
   #Handle the request data
   req_data = request.json
-  resp = ""
 
   #Check if details exist in DB
   try:
-    machine_exists = db.session.query(ClientMachines.id).filter(ClientMachines.host_name==req_data["host_name"], ClientMachines.ip_address==req_data["ip_addr_v4"]).first() is not None
-
+    machine_exists = ClientMachines.query.with_entities(ClientMachines.id).filter_by(mac_address=req_data["mac_addr"]).first() is not None
+   
     #Add a new machines details if they don't exist
     if not machine_exists:
-      print("Adding machine to DB")
-      #Create a new table entry object using request data
+      #Create a new table entry object using request data\
       new_machine = ClientMachines(
         name=req_data["host_name"],
         host_name=req_data["host_name"],
         os_type=req_data["os_type"],
         os_full_version=req_data["os_details"],
-        os_release_version=req_data["os_release"],
+        mac_address=req_data["mac_addr"],
         ip_address=req_data["ip_addr_v4"],
+        ports=",".join(req_data["port_numbers"]),
         status=1
       )
 
@@ -82,12 +80,19 @@ def add_new_client_machine():
 def remove_client_machine(id):
   #Get the machine to delete
   try:
-    machine = db.session.query(ClientMachines).filter(ClientMachines.id==id).first()
+    machine = ClientMachines.query.filter_by(id=id).first()
     if machine is None:
       return "Machine with the id (" + str(id) + ") not found."
     else:
       db.session.delete(machine)
       db.session.commit()
+      #Update data values - also for app
+      for metric in machine.system_metrics:
+        metric.machine_id = machine.name
+        db.session.commit()
+      for app in machine.app_details:
+        app.machine_id = machine.name
+        db.session.commit()
       return "Removed machine with name: " + str(machine.host_name)
   except Exception as err_msg:
     return "An error occurred: " + str(err_msg)
@@ -97,7 +102,7 @@ def remove_client_machine(id):
 def update_client_machine(id):
   req = request.json
   try:
-    machine = db.session.query(ClientMachines).filter(ClientMachines.id==id).first()
+    machine = ClientMachines.query.filter_by(id=id).first()
     if machine is None:
       return "Machine with the id (" + str(id) + ") not found."
     else:
@@ -105,8 +110,10 @@ def update_client_machine(id):
       db.session.commit()
       return "Machine's name has been updated to " + str(req["new_name"]) + "."
   except (TypeError,NameError,KeyError) as err_msg:
+    print(str(err_msg))
     return "No new name was provided to update the machine."
   except Exception as err_msg:
+    print(str(err_msg))
     return "An error occurred: " + str(err_msg) + "."
     
 #Route: to get a list of system metrics for a specified machine
@@ -133,19 +140,40 @@ def listAllMetrics(name):
   mach = SystemMetrics.query.filter_by(machine_name=name).order_by(SystemMetrics.id.desc()).first()
   final_sys_metrics = []
 
-  final_sys_metrics.append({"id": mach.id, "name": mach.machine_name, "time": mach.timestamp, "cpu": mach.cpu_usage, "ram": mach.ram_usage,"disk": mach.disk_usage, "disk_read": mach.disk_read, "disk_write": mach.disk_write, "network": mach.network_usage})
-  
-  # Get app metrics
-  app_metrics = AppMetrics.query.filter_by(machine_name=name).limit(5)
+  disks = mach.disk_usage.split(",")
+  d_len = len(disks)
+  num = random.randint(0, d_len - 1)
+
+
+  final_sys_metrics.append({
+    "id": mach.id,
+    "name": mach.machine_name,
+    "time": mach.timestamp,
+    "cpu": mach.cpu_usage,
+    "ram": mach.ram_usage,
+    "disk": disks[num],
+    "disk_read": mach.disk_read,
+    "disk_write": mach.disk_write,
+    "network": mach.network_usage
+  })
+
+  app_metrics = AppMetrics.query.filter_by(machine_name=name).limit(5) #order desc
   final_app_metrics = []
 
   for app in app_metrics:
-    final_app_metrics.append({"id": app.id, "machine_name": app.machine_name, "time": app.timestamp,  "app_name": app.app_name,  "cpu": app.app_cpu, "ram": app.app_ram})
+    final_app_metrics.append({
+      "id": app.id,
+      "machine_name": app.machine_name,
+      "time": app.timestamp,
+      "app_name": app.app_name,
+      "cpu": app.app_cpu,
+      "ram": app.app_ram
+    })
 
   return jsonify({
     "description": "A list of system metrics for a machine",
-    "content":
-      {
-        "sysMetrics": final_sys_metrics,
-        "appMetrics": final_app_metrics
-      }})
+    "content": {
+      "sysMetrics": final_sys_metrics,
+      "appMetrics": final_app_metrics
+    }
+  })
