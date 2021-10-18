@@ -2,6 +2,12 @@ import React from 'react'
 import styled from 'styled-components';
 
 const Container = styled.div`
+ display: flex;
+ align-items: center;
+ 
+`;
+const BarContainer = styled.div`
+
 `;
 
 const Bar = styled.div`
@@ -9,7 +15,7 @@ const Bar = styled.div`
   width: 100%;
   background-color: #E7E9EF;
   border-radius: 50px;
-  margin: 0px 50px;
+  margin: 0px 100px 0px 40px;
 `;
 
 const FillBar = styled.div`
@@ -21,24 +27,28 @@ const FillBar = styled.div`
 `;
 
 const Label = styled.span`
-  padding: 10px;
-  color: ${(props) => props.color <= 0 ? 'red' : '#212D40' };
-  font-size: 14px;
-  font-weight: 500;
+  color: ${(props) => props.color >= 90 ? 'red' : '#212D40' };
+  font-size: 18px;
+  font-weight: 400;
 `;
 
 const ProgressBar = ({ backgroundColor, completed }) => {
   return (
     <Container>
-      <Bar>
-        <FillBar color={backgroundColor} fill={completed}>
-          <Label color={completed}>{completed}%</Label>
-        </FillBar>
-      </Bar>
+      <Label color={completed}>
+          {
+            completed === 0
+            ? " 0.0% " 
+            : `${completed}%`
+          }
+      </Label>
+      <BarContainer>
+        <Bar>
+          <FillBar color={backgroundColor} fill={completed} />
+        </Bar>
+      </BarContainer>
       
     </Container>
-    
   )
 }
-
 export default ProgressBar

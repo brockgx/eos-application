@@ -3,22 +3,47 @@ import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Chart from "react-apexcharts";
 import ProgressBar from './ProgressBar';
+import { Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
 
 const Container = styled.div`
+  display: flex;
+`;
+const Wrapper = styled.div`
   display: flex;
 `;
 
 const MetricContainer = styled.div`
   display: flex;
+  flex: 1;
+  margin-left: 10px;
+  flex-direction: column;
+`;
+
+const TableContainer = styled.div`
+  display: flex;
+  margin-left: 70px;
   flex-direction: column;
 `;
 
 const ChartContainer = styled.div`
-  margin-left: 80px;
+  margin-left: 50px;
 `;
-const DataContainer = styled.div`
+const ProgressWrapper = styled.div`
   display: flex;
-  margin: 20px 0px 0px 120px;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+`;
+const ProgressContainer = styled.div`
+  display: flex;
+  align-content: center;
+  align-items: center;
+  padding: 80px 0px 0px 20px;
+`;
+
+const TableWrapper = styled.div`
+  display: flex;
+  margin: 10px 0px 0px 170px;
 `;
 
 const Title = styled.span`
@@ -27,17 +52,8 @@ const Title = styled.span`
   font-weight: 400;
 `;
 
-const LabelContainer = styled.div`
-  display: flex;
-`;
-const Label = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-`;
-
-
 const MachineMetrics = ({machineName}) => {
-  const [radialChart, setRadialChart] = useState(
+  const radialChart = (
     {
       options: {
         plotOptions: {
@@ -74,7 +90,7 @@ const MachineMetrics = ({machineName}) => {
     }
   );
 
-  const [machineMetrics, setMachineMetrics] = useState({description: "default desc", content: []})
+  const [machineMetrics, setMachineMetrics] = useState({description: "default desc", content: {sysMetrics: [], appMetrics: []}})
 
   useEffect(() => {
     const getMetrics = async () => {
@@ -98,62 +114,94 @@ const MachineMetrics = ({machineName}) => {
   }
 
   return (
-    <>
-    {machineMetrics.content.map((metrics) => {
-      return (
-        <Container>
-          <MetricContainer>
-            <Title>
-              CPU Usage:
-            </Title>
-            <ChartContainer>
-              <Chart
-                key={metrics.name}
-                options={radialChart.options}
-                series={[metrics.cpu]}
-                type="radialBar"
-                width="300"
-              />
-            </ChartContainer>
-          </MetricContainer>
-          <MetricContainer>
-            <Title>
-              RAM Usage:
-            </Title>
-            <ChartContainer>
-              <Chart
-                key={metrics.name}
-                options={radialChart.options}
-                series={[metrics.ram]}
-                type="radialBar"
-                width="300"
-              />
-            </ChartContainer>
-          </MetricContainer>
-          <MetricContainer>
-            <Title>
-              Disk Usage:
-            </Title>
-            <DataContainer>
-              <ProgressBar backgroundColor="#7587A9" completed={metrics.disk} />
-            </DataContainer>
-            <Title style={{marginTop: "30px"}}>
-              Network Usage:
-            </Title>
-            <DataContainer>
-              <ProgressBar backgroundColor="#7587A9" completed={metrics.network} />
-            </DataContainer>
-          </MetricContainer>
-          <MetricContainer style={{marginLeft: "100px"}}>
-            <Title >
-              Top 5 Processes:
-            </Title>
-          </MetricContainer>
-        </Container>
-        
-      );
-    })}
-    </>
+    <Container>
+      <Wrapper>
+        {machineMetrics.content.sysMetrics.map((metrics) => {
+          return (
+            <>
+              <MetricContainer>
+                <Title>
+                  CPU Usage:
+                </Title>
+                <ChartContainer>
+                  <Chart
+                    key={metrics.name}
+                    options={radialChart.options}
+                    series={[metrics.cpu]}
+                    type="radialBar"
+                    width="300"
+                  />
+                </ChartContainer>
+              </MetricContainer>
+              <MetricContainer>
+                <Title>
+                  RAM Usage:
+                </Title>
+                <ChartContainer>
+                  <Chart
+                    key={metrics.name}
+                    options={radialChart.options}
+                    series={[metrics.ram]}
+                    type="radialBar"
+                    width="300"
+                  />
+                </ChartContainer>
+              </MetricContainer>
+              <MetricContainer >
+                <ProgressWrapper >
+                  <Title>
+                    Disk Usage:
+                  </Title>
+                  <ProgressContainer>
+                    C:/{' '} <ProgressBar backgroundColor="#7587A9" completed={metrics.disk} />
+                  </ProgressContainer>
+                </ProgressWrapper>
+                <ProgressWrapper >
+                  <Title>
+                    Network Usage:
+                  </Title>
+                  <ProgressContainer>
+                    <ProgressBar backgroundColor="#7587A9" completed={metrics.network} />
+                  </ProgressContainer>
+                </ProgressWrapper>
+              </MetricContainer>
+            </>
+          );
+        })}
+        <TableContainer>
+          <Title >
+            Top 5 Processes:
+          </Title>
+          <TableWrapper>
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>App Name</TableCell>
+                  <TableCell align="center">Time</TableCell>
+                  <TableCell align="center">CPU (%)</TableCell>
+                  <TableCell align="center">RAM (%)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {machineMetrics.content.appMetrics.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell >
+                      {row.app_name}
+                    </TableCell>
+                    <TableCell align="center">{row.time}</TableCell>
+                    <TableCell align="center">{row.cpu}</TableCell>
+                    <TableCell align="center">{row.ram}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableWrapper>
+        </TableContainer>
+      </Wrapper>
+    </Container>
   )
 }
 

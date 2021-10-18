@@ -1,10 +1,9 @@
 import {useState, useEffect} from 'react'
 
-import { DataGrid } from "@material-ui/data-grid";
-import { Columns } from '../components/query/ColumnData';
 import styled from 'styled-components';
+import MetricsTable from '../components/query/MetricsTable';
 
-// import '../styles/query.css';
+import { ColumnData } from '../components/query/ColumnData'
 
 const Container = styled.div`
   flex: 10;
@@ -15,11 +14,6 @@ const Container = styled.div`
 const Wrapper = styled.div`
   padding: 20px;
 `;
-
-// const Title = styled.h1`
-//   font-weight: 600;
-//   text-align: center;
-// `;
 
 const Top = styled.div`
   display: flex;
@@ -34,112 +28,58 @@ const TopText = styled.span`
   padding-bottom: 10px;
 `;
 
+// const Text = styled.span`
+//   font-weight: 400;
+//   font-size: 22px;
+//   padding-bottom: 10px;
+// `;
+
 const Bottom = styled.div`
   display: flex;
   flex-direction: column;
+  border-radius: 2px;
   justify-content: space-between;
-  padding: 0px 40px;
-`;
-
-const Left = styled.div`
-  flex: 1;  
-  display: flex;
-  padding: 5px;
-  flex-direction: column;
-  height: 75vh;
-`;
-const Form = styled.div`
-  border-radius: 5px;
-  padding: 30px;
   background-color: #ffffff;
   -webkit-box-shadow: 0px 0px 15px -7px rgba(0, 0, 0, 0.8);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
-  height: 100%;
 `;
 
-const Right = styled.div`
-  flex: 1;  
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
-
-  height: 75vh;
-  background-colour: white;
-`;
-
-// const BottomText = styled.span`
-//   font-weight: 400;
-//   font-size: 38px;
-//   padding-bottom: 20px;
-// `;
-
-const QueryResult = styled.div`
-  border-radius: 5px;
-  padding: 20px;
-  background-color: #ffffff;
-  height: 700px;
-  -webkit-box-shadow: 0px 0px 15px -7px rgba(0, 0, 0, 0.8);
-  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
-`;
-
-
-
-const Query = (props) => {
-    const [messages, setMessages] = useState({description: "default desc", content: []})
+const Query = () => {
+  const [sysMetrics, setMetrics] = useState({description: "default desc", content: []})
   
-    useEffect(() => {
-      const getMessages = async () => {
-        const messagesFromServer = await fetchMessages()
-        setMessages(messagesFromServer)
-      }
-  
-      getMessages()
-    }, [])
-  
-    // Fetch device data from DB
-    const fetchMessages = async () => {
-      const resp = await fetch('/test/getmetrics')
-      const data = await resp.json()
-      if(resp.ok) {
-        //console.log(data.content[4].message)
-        return data;
-      } else {
-        throw Error(`Request rejected with status ${resp.status}`);
-      }
+  // Get sys metrics from API call
+  useEffect(() => {
+    const getMetrics = async () => {
+      const data = await fetchMetrics()
+      setMetrics(data)
     }
-    
-    return (
-      <Container>
-        <Wrapper>
-          <Top>
-            <TopText>Query Database</TopText>
-          </Top>
-          <Bottom>
-            <Left>
-              
-              <Form>
-                [TODO - Query Form]
-              </Form>
-            </Left>
-            <Right>
-              <QueryResult>
-                <DataGrid
-                  className="deviceList"
-                  rows={messages.content}
-                  disableColumnMenu
-                  disableSelectionOnClick
-                  pageSize={15}
-                  rowsPerPageOptions={[15, 25, 50]}
-                  columns={Columns}
-                />
-              </QueryResult>
-            </Right>
-          </Bottom>
-          
-        </Wrapper>
+    getMetrics()
+  }, [])
 
-      </Container>
-    )
+  // Fetch data from DB
+  const fetchMetrics = async () => {
+    const resp = await fetch('/query/clientmachinemetrics')
+    const data = await resp.json()
+    if(resp.ok) {
+      console.log(data.content)
+      return data;
+    } else {
+      throw Error(`Request rejected with status ${resp.status}`);
+    }
+  }
+    
+  return (
+    <Container>
+      <Wrapper>
+        <Top>
+          <TopText>Query Database</TopText>
+        </Top>
+        <Bottom>   
+          <MetricsTable data={sysMetrics.content}  />
+        </Bottom>
+      </Wrapper>
+    </Container>
+  )
 }
 
 export { Query }

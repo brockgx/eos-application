@@ -11,7 +11,7 @@ import ipaddress
 import random
 
 #Import from in house modules
-from ..database.database_tables import db, ClientMachines, SystemMetrics
+from ..database.database_tables import db, ClientMachines, SystemMetrics, AppMetrics
 
 #Setup the blueprint for the dashboard routes
 dashboard_routes = Blueprint('dashboard_routes',__name__)
@@ -117,10 +117,26 @@ def update_client_machine(id):
     return "An error occurred: " + str(err_msg) + "."
     
 #Route: to get a list of system metrics for a specified machine
-@dashboard_routes.route('/clientmachinemetrics/<name>', methods=['GET'])
-def listSystemMetrics(name):
+# @dashboard_routes.route('/clientmachinemetrics/<name>', methods=['GET'])
+# def listSystemMetrics(name):
   
-  #Get a list of metrics from the system_metrics table - filter by machine_name
+#   #Get a list of metrics from the system_metrics table - filter by machine_name
+#   mach = SystemMetrics.query.filter_by(machine_name=name).order_by(SystemMetrics.id.desc()).first()
+#   final = []
+
+#   # for mach in result:
+#   #   print(mach)
+#   final.append({"id": mach.id, "name": mach.machine_name, "time": mach.timestamp, "cpu": mach.cpu_usage, "ram": mach.ram_usage,"disk": mach.disk_usage, "disk_read": mach.disk_read, "disk_write": mach.disk_write, "network": mach.network_usage})
+
+#   return jsonify({
+#     "description": "A list of system metrics for a machine",
+#     "content": final  })
+
+#Route: to get a list of all app & sys metrics for a machine
+@dashboard_routes.route('/clientmachinemetrics/<name>', methods=['GET'])
+def listAllMetrics(name):
+  
+  # Get sys metrics
   mach = SystemMetrics.query.filter_by(machine_name=name).order_by(SystemMetrics.id.desc()).first()
   final_sys_metrics = []
 
