@@ -286,7 +286,7 @@ const Machines = ({machine}) => {
             </IconButton>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Metrics>
-                <MachineMetrics machineName={machine.host_name}/>
+                <MachineMetrics machineName={machine.mac_address}/>
               </Metrics>
             </Collapse>  
           </MetricsContainer>
