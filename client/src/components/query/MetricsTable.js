@@ -210,6 +210,14 @@ const MetricsTable = ({ data }) => {
     <Container>
       <Top>
         <Left>
+        <Button 
+          style={{width: "220px"}}
+          variant="outlined"
+        >
+          Export .csv
+        </Button>
+        </Left>
+        <Left>
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
             filter={globalFilter}

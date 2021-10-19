@@ -16,6 +16,7 @@ const SearchText = styled.span`
 const Input = styled.input`
   font-size: 20px;
   border: none;
+  width: 500px;
   border-bottom: 1px solid black;
   background-color: inherit;
   margin-left:10px;

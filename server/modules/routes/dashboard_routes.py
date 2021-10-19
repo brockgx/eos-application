@@ -36,7 +36,8 @@ def listClientMachines():
       "mac_address": mach.mac_address,
       "os": mach.os_type,
       "address": mach.ip_address,
-      "status": mach.status
+      "status": mach.status,
+      "ports": mach.ports
     })
 
   return jsonify({

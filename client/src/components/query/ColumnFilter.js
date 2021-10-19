@@ -12,7 +12,7 @@ const Input = styled.input`
   font-size: 18px;
   font-weight: inherit;
   border: none;
-  width: 0%;
+  width: 85%;
   border-bottom: 1px solid white;
   color: white;
   background-color: inherit;
@@ -34,7 +34,7 @@ const Input = styled.input`
 `;
 const NumInput = styled.input`
   font-size: 18px;
-  width: 30%;
+  width: 50%;
   font-weight: inherit;
   border: none;
   border-bottom: 1px solid white;

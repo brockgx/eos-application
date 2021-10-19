@@ -45,23 +45,23 @@ const Bottom = styled.div`
 `;
 
 const Query = () => {
-  const [sysMetrics, setMetrics] = useState({description: "default desc", content: []})
+  const [sysMetrics, setMetrics] = useState([])
   
   // Get sys metrics from API call
   useEffect(() => {
     const getMetrics = async () => {
       const data = await fetchMetrics()
-      setMetrics(data)
+      setMetrics(data.system_metrics)
     }
     getMetrics()
   }, [])
 
   // Fetch data from DB
   const fetchMetrics = async () => {
-    const resp = await fetch('/query/clientmachinemetrics')
+    const resp = await fetch('/metrics/getallmetrics')
     const data = await resp.json()
     if(resp.ok) {
-      console.log(data.content)
+      console.log(data)
       return data;
     } else {
       throw Error(`Request rejected with status ${resp.status}`);
@@ -75,7 +75,7 @@ const Query = () => {
           <TopText>Query Database</TopText>
         </Top>
         <Bottom>   
-          <MetricsTable data={sysMetrics.content}  />
+          <MetricsTable data={sysMetrics}  />
         </Bottom>
       </Wrapper>
     </Container>

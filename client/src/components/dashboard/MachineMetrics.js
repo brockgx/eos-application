@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 
 import styled from 'styled-components';
 import Chart from "react-apexcharts";
-import ProgressBar from './ProgressBar';
+import ProgressBar from "@ramonak/react-progress-bar";
 import { Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
 
 const Container = styled.div`
@@ -112,7 +112,6 @@ const MachineMetrics = ({machineName}) => {
       throw Error(`Request rejected with status ${resp.status}`);
     }
   }
-
   return (
     <Container>
       <Wrapper>
@@ -153,7 +152,13 @@ const MachineMetrics = ({machineName}) => {
                     Disk Usage:
                   </Title>
                   <ProgressContainer>
-                    C:/{' '} <ProgressBar backgroundColor="#7587A9" completed={metrics.disk} />
+                    <ProgressBar
+                      labelAlignment="outside"
+                      labelColor="black"
+                      bgColor="#7587A9"
+                      height="30px"
+                      width="150px"
+                      completed={metrics.disk} />
                   </ProgressContainer>
                 </ProgressWrapper>
                 <ProgressWrapper >
@@ -161,7 +166,14 @@ const MachineMetrics = ({machineName}) => {
                     Network Usage:
                   </Title>
                   <ProgressContainer>
-                    <ProgressBar backgroundColor="#7587A9" completed={metrics.network} />
+                    <ProgressBar 
+                      labelAlignment="outside"
+                      labelColor="black"
+                      bgColor="#7587A9"
+                      height="30px"
+                      width="150px"
+                      completed={metrics.network} 
+                      />
                   </ProgressContainer>
                 </ProgressWrapper>
               </MetricContainer>

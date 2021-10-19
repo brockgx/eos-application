@@ -4,11 +4,14 @@ import { ColumnFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColu
 
 export const ColumnData = [
     { 
-        Header: 'Machine Name',
+        Header: 'Name',
         accessor: 'name',
         Filter: ColumnFilter,
-        
-        
+    },
+    { 
+        Header: 'MAC Address',
+        accessor: 'mac_address',
+        Filter: ColumnFilter,
     },
     { 
         Header: 'Time',
@@ -29,25 +32,30 @@ export const ColumnData = [
         filter: "between"
     },
     { 
+        Header: 'Disk Names',
+        accessor: 'disk_names',
+        Filter: ColumnFilter,
+    },
+    { 
         Header: 'Disk Usage (%)',
-        accessor: 'disk',
+        accessor: 'disk_use',
         Filter: NumberRangeColumnFilter,
         filter: "between"
     },
     { 
-        Header: 'Disk Read (MB)',
+        Header: 'Disk Read (B)',
         accessor: 'disk_read',
         Filter: NumberRangeColumnFilter,
         filter: "between"
     },
     { 
-        Header: 'Disk Write (MB)',
+        Header: 'Disk Write (B)',
         accessor: 'disk_write',
         Filter: NumberRangeColumnFilter,
         filter: "between"
     },
     { 
-        Header: 'Network Usage (%)',
+        Header: 'Network Usage (B)',
         accessor: 'network',
         Filter: NumberRangeColumnFilter,
         filter: "between"

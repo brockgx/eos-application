@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import {useHistory, Redirect} from 'react-router-dom';
 
 import { IconButton, Collapse, TextField } from '@material-ui/core'
 import styled from 'styled-components'
@@ -34,11 +34,12 @@ const Top = styled.div`
 const ColumnContainer = styled.div`
   display: flex;
   flex: 2.5;  
+  margin-top: 5px;
+
 `;
 
 const DetailsContainer = styled.div`
   display: flex;
-  padding-top: 5px;
   flex-direction: column;
   font-size: 20px;
   font-weight: 400;
@@ -49,6 +50,7 @@ const MachineNameContainer = styled.span`
   font-weight: 400;
   display: flex;
   align-items: center;
+  margin: 5px 0px;
 `;
 
 const DetailsRow = styled.span`
@@ -73,9 +75,9 @@ const Bottom = styled.div`
 
 const Image = styled.img`
   padding: 5px;
-  width: 90px;
-  height: 90px;
   margin-top: 5px;
+  width: 120px;
+  height: 120px;
   src: ${(props) => props.src };
 `;
 
@@ -92,10 +94,10 @@ const MachineStatusIcon = styled.div`
 
 const MachineStatusName = styled.span`
   margin-left: 5px;
+  
 `;
 
 const MetricsContainer = styled.div`
-  padding: 0px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -104,7 +106,7 @@ const MetricsContainer = styled.div`
 `;
 
 const Metrics = styled.div`
-  padding: 10px 0px 0px 5px;
+  padding-top: 10px;
   display: flex;
   border-top: 1px solid #687CA1;
   font-size: 22px;
@@ -114,6 +116,7 @@ const Metrics = styled.div`
 const Text = styled.span`
   font-size: 22px;
   font-weight: 600;
+  margin: 7px 0px;
 `;
 
 // handles rotation of arrow icon on drop down
@@ -210,10 +213,9 @@ const Machines = ({machine}) => {
                 }   
                 </EditName>
               </MachineNameContainer>
-              {/* <MachineInfo>
-                <b>Details:&nbsp;</b>
-                {machine.host_name} : {ip2int.toIp(machine.address)} : 1337
-              </MachineInfo> */}
+              <DetailsRow>
+                <b>Host name:&nbsp;</b>{machine.host_name}     
+              </DetailsRow>
               <DetailsRow>
                 <b>Last Update:&nbsp;</b> 
               </DetailsRow>
@@ -235,13 +237,13 @@ const Machines = ({machine}) => {
             <DetailsContainer>
               <Text>Machine Details:</Text>
               <DetailsRow>
-                <b>Host name:&nbsp;</b>{machine.host_name}     
+                <b>MAC address:&nbsp;</b>{machine.mac_address}     
               </DetailsRow>
               <DetailsRow>
                 <b>IP address:&nbsp;</b>{ip2int.toIp(machine.address)}     
               </DetailsRow>
               <DetailsRow>
-                <b>Port:&nbsp;</b>1337     
+                <b>Ports:&nbsp;</b>{machine.ports}  
               </DetailsRow>
             </DetailsContainer>
           </ColumnContainer>
