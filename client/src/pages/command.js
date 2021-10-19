@@ -7,6 +7,7 @@ import Command3 from '../components/commands-tabs/Command3';
 import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
 import React from 'react';
 import styled from 'styled-components';
+import { useEffect } from 'react';
 //import '../styles/command.css';
 
 const Container = styled.div`
@@ -84,11 +85,18 @@ const LeftSide = styled.div`
  
 const Commands = (props) => {
     const [selectedTab, setSelectedTab] = useState(0);
-    
     const handleChange = (event, newValue) => {
         setSelectedTab(newValue);
     }
     const [ machineChoice, setMachineChoice] = useState('')
+    const [ customCmd, setCustomCmd] = useState('')
+
+    console.log(machineChoice)
+    console.log(customCmd)
+    //useEffect((value) => {
+     // console.log(target.value)
+    
+    //},// [value] )
 
   return (
   <Container>
@@ -112,14 +120,17 @@ const Commands = (props) => {
                 </Tabs>
               </TabsWrapper>
               
-              <CmdMachineChoice onChange={value => setMachineChoice(value)}/>        
+              <CmdMachineChoice changeMachine={machineChoice => setMachineChoice(machineChoice)}/>        
             {selectedTab === 0 && <Command1 />}
             {selectedTab === 1 && <Command2 />}
-            {selectedTab === 2 && <Command3 />} 
+            {selectedTab === 2 && <Command3 changeCmd={customCmd => setCustomCmd(customCmd)} />} 
           </LeftSide>
           <RightSideOutput>
             <div style = {{marginLeft: '10px', paddingLeft: '10px', height: '100%', border: '1px solid grey', boxSizing: 'border-box'}} >
                 Currently you have: no commands waiting. 
+                <h1>{machineChoice}</h1>
+                <h2>{customCmd}</h2>
+                
             </div>
           </RightSideOutput>
         </CommandsTab>                  

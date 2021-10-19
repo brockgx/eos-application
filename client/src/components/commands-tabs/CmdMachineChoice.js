@@ -28,6 +28,25 @@ export default function CmdMachineChoice(props) {
     const [options, setOptions] = React.useState([]);
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
+    const [machineChoice, setMachineChoice] = useState('');
+
+    const handleChange = (event, newValue) => {
+      event.preventDefault();
+      props.changeMachine(event.target.value)
+      setMachineChoice(event.target.value)
+      setValue(newValue)
+      //console.log(machineChoice)
+    }
+
+   // console.log(props)
+
+    const handleSubmit = (event, newValue) => {
+      event.preventDefault();
+       console.log(machineChoice)
+       setMachineChoice(newValue)
+       alert('Custom command should be: ' + machineChoice);
+       
+    }
 
     React.useEffect(() => {
       let active = true;
@@ -87,8 +106,8 @@ export default function CmdMachineChoice(props) {
           value={value}
           loading={loading}
           fullWidth
-          //onChange={() => setValue(props.target.value)}
-          onChange={(e, newValue) => setValue(newValue)}
+          onChange={handleChange}
+         // onChange={(e, newValue) => setValue(newValue)}
           style={{marginBottom: 30}}
 
           renderInput={(params) => (
