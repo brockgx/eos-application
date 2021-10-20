@@ -56,21 +56,18 @@ export default function Command1() {
     const name =  event.currentTarget.name;
     event.preventDefault();
     console.log(name)
-    
     alert(`A command was submitted: ${name}`);
   };
  
   const handleSubmit = (event) => {
     event.preventDefault();
     const value =  event.currentTarget.value;
-     alert('A command was submitted: ' + `${value}`);
-    }
-   
-
+    alert('A command was submitted: ' + `${value}`);
+  }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+  <div>
+    <form onSubmit={handleSubmit}>
       <CmdAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <CmdAccordionSummary  aria-controls="panel1d-content" id="panel1d-header">
           <div>
@@ -80,26 +77,17 @@ export default function Command1() {
         <CmdAccordionDetails style={{flexDirection: "column"}}>
           <div 
             className = "InputWButtonContain" 
-            style={{
-              display: 'flex', 
-              
-              
-            }}
-          >
-            <div style={{
-              flex: 3, 
-              
-              }}
-            >
-              <div style={{}}>
-               Click confirm to shutdown 
+            style={{display: 'flex'}}>
+            <div style={{flex: 3}}>
+              <div>
+                Click confirm to shutdown 
               </div>
             </div>
             <Button
               variant="contained"
               type="submit"
               name="shutDevice"
-             //value={shutDevice}
+              //value={shutDevice}
               onClick={handleClick}
               style={{flex: 1, padding: '0px'}}
               //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
@@ -119,18 +107,11 @@ export default function Command1() {
         <CmdAccordionDetails>
             <div 
               className = "InputWButtonContain" 
-              style={{
-                display: 'flex', 
-                
-              }}
-            >
-              <div style={{
-                flex: 3, 
-                
-              }}>
-              <div>
-                Click confirm to restart "deviceName". 
-              </div>
+              style={{display: 'flex'}}>
+              <div style={{flex: 3}}>
+                <div>
+                  Click confirm to restart "deviceName". 
+                </div>
               </div>
               <Button
                 variant="contained"
@@ -158,18 +139,10 @@ export default function Command1() {
             Please select the application you would like to kill then click 'confirm'.
             <div 
               className = "InputWButtonContain" 
-              style={{
-                marginTop: 30, 
-                display: 'flex', 
-              }}
-            >
+              style={{marginTop: 30, display: 'flex'}}>
               <div 
                 className = "AvailAppsContain" 
-                style={{
-                  flex: 3, 
-                  alignContent: 'space-between', 
-                  }}
-              >
+                style={{flex: 3, alignContent: 'space-between'}}>
                 <AvailApps/>
               </div>
               <Button
@@ -191,42 +164,32 @@ export default function Command1() {
       <CmdAccordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
         <CmdAccordionSummary  aria-controls="panel4d-content" id="panel4d-header">
           <div>
-           Preset Option 4: Restart Application
+            Preset Option 4: Restart Application
           </div>
         </CmdAccordionSummary>
         <CmdAccordionDetails>
           <div>
             Please select the application you would like to restart then click 'confirm'.
-            <div 
-              style={{
-                marginTop: 30, 
-                display: 'flex', 
-              }}
+          <div style={{marginTop: 30, display: 'flex'}}>
+            <div style={{flex: 3, alignContent: 'space-between'}}>
+              <AvailApps/>
+            </div>
+            <Button
+              name="restartProcess"
+              onClick={handleClick}
+              variant="contained"
+              //onSubmit={handleSubmit}
+              value={restartProcess}
+              style={{flex: 1, marginLeft: '20px', padding: '0px'}}
+              //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
             >
-              <div 
-                style={{
-                  flex: 3, 
-                  alignContent: 'space-between', 
-                  }}
-              >
-                <AvailApps/>
-              </div>
-              <Button
-                name="restartProcess"
-                onClick={handleClick}
-                variant="contained"
-                //onSubmit={handleSubmit}
-                value={restartProcess}
-                style={{flex: 1, marginLeft: '20px', padding: '0px'}}
-                //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
-              >
-                Confirm
-              </Button>
+              Confirm
+            </Button>
             </div> 
           </div>
         </CmdAccordionDetails>
       </CmdAccordion>
-      </form>
-    </div>
+    </form>
+  </div>
   );
 }

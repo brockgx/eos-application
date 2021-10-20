@@ -91,8 +91,10 @@ const Commands = (props) => {
     const [ machineChoice, setMachineChoice] = useState('')
     const [ customCmd, setCustomCmd] = useState('')
 
-    console.log(machineChoice)
+    //console.log(machineChoice)
     console.log(customCmd)
+    console.log(machineChoice)
+   
     //useEffect((value) => {
      // console.log(target.value)
     
@@ -102,35 +104,35 @@ const Commands = (props) => {
   <Container>
     <Wrapper>
       <Top>
-        <TopText>Commands</TopText>
+        <TopText>Commands </TopText>
       </Top>
       <Bottom>
         <CommandsTab>
           <LeftSide>
-              <TabsWrapper>
-                <Tabs
-                  centered
-                  value={selectedTab} 
-                  style = {{marginBottom:40, marginLeft:-20, boxSizing: 'border-box'}} 
-                  onChange={handleChange} 
-                >
-                  <Tab label="Preset Command Options" style ={{textTransform : 'none'}}/>
-                  <Tab label="Push a File to a Device" style ={{textTransform : 'none'}}/>
-                  <Tab label="Custom Commands" style ={{textTransform : 'none'}}/>             
-                </Tabs>
-              </TabsWrapper>
+            <TabsWrapper>
+              <Tabs
+                centered
+                value={selectedTab} 
+                style = {{marginBottom:40, marginLeft:-20, boxSizing: 'border-box'}} 
+                onChange={handleChange} 
+              >
+                <Tab label="Preset Command Options" style ={{textTransform : 'none'}}/>
+                <Tab label="Push a File to a Device" style ={{textTransform : 'none'}}/>
+                <Tab label="Custom Commands" style ={{textTransform : 'none'}}/>             
+              </Tabs>
+            </TabsWrapper>
               
-              <CmdMachineChoice changeMachine={machineChoice => setMachineChoice(machineChoice)}/>        
+            <CmdMachineChoice changeMachine={machineChoice => setMachineChoice(machineChoice)} />        
             {selectedTab === 0 && <Command1 />}
             {selectedTab === 1 && <Command2 />}
             {selectedTab === 2 && <Command3 changeCmd={customCmd => setCustomCmd(customCmd)} />} 
           </LeftSide>
+
           <RightSideOutput>
             <div style = {{marginLeft: '10px', paddingLeft: '10px', height: '100%', border: '1px solid grey', boxSizing: 'border-box'}} >
-                Currently you have: no commands waiting. 
-                <h1>{machineChoice}</h1>
-                <h2>{customCmd}</h2>
-                
+              Currently you have: no commands waiting. 
+              <h1>{machineChoice}</h1>
+              <h2>{customCmd}</h2> 
             </div>
           </RightSideOutput>
         </CommandsTab>                  

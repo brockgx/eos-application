@@ -4,7 +4,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import  {useState } from 'react';
 import styled from 'styled-components';
-
+import { Button } from '@material-ui/core';
 
 const MainContainer = styled.div`
 padding: 1px;
@@ -32,8 +32,9 @@ export default function CmdMachineChoice(props) {
 
     const handleChange = (event, newValue) => {
       event.preventDefault();
-      props.changeMachine(event.target.value)
-      setMachineChoice(event.target.value)
+      const machineSelected = props.changeMachine(event.currentTarget.value)
+      console.log(machineSelected)
+      setMachineChoice( machineSelected)
       setValue(newValue)
       //console.log(machineChoice)
     }
@@ -42,9 +43,9 @@ export default function CmdMachineChoice(props) {
 
     const handleSubmit = (event, newValue) => {
       event.preventDefault();
-       console.log(machineChoice)
-       setMachineChoice(newValue)
-       alert('Custom command should be: ' + machineChoice);
+      console.log(machineChoice)
+      setMachineChoice(newValue)
+      alert('Custom command should be: ' + machineChoice);
        
     }
 
@@ -74,60 +75,65 @@ export default function CmdMachineChoice(props) {
       }
     }, [open]);
 
-    console.log(value)
-
+  console.log(value)
 
   return (
     <MainContainer>
       <AutocompleteWrapper>
-        <Autocomplete
-          id="availMachinesInput"
-          open={open}
+        <form onSubmit= { handleSubmit }> 
+          <div>
+          <Autocomplete
+            id="availMachinesInput"
+            open={open}
 
-          onOpen={() => {
-            setOpen(true);
-          }}
+            onOpen={() => {
+              setOpen(true);
+            }}
 
-          onClose={() => {
-            setOpen(false);
-          }}
+            onClose={() => {
+              setOpen(false);
+            }}
 
-          isOptionEqualToValue={(option, value) => option.machineID === value.machineID}
-          disableCloseOnSelect
-          getOptionLabel={(option) => option.machineID}
-          
-          renderOption={(props, option, { selected }) => (
-            <li {...props}>
-              {option.machineID}
-            </li>
-          )}
+            isOptionEqualToValue={(option, value) => option.machineID === value.machineID}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.machineID}
+            
+            renderOption={(props, option, { selected }) => (
+              <li {...props}>
+                {option.machineID}
+              </li>
+            )}
 
-          options={options}
-          value={value}
-          loading={loading}
-          fullWidth
-          onChange={handleChange}
-         // onChange={(e, newValue) => setValue(newValue)}
-          style={{marginBottom: 30}}
+            options={options}
+            // value={value}
+            loading={loading}
+            fullWidth
+            onChange={handleChange}
+            //onChange={(e, newValue) => props.changeMachine(newValue)}
+           // onChange={(e, newValue) => setValue(newValue)}
+            style={{marginBottom: 30}}
 
-          renderInput={(params) => (
-            <TextField {...params} 
-              variant="outlined"
-              fullWidth 
-              label="Select your target machine" 
-              placeholder="Machine 1, Machine 2 etc."
-              InputProps={{
-                ...params.InputProps,
-                endAdornment: (
-                  <React.Fragment>
-                    {loading ? <CircularProgress color="inherit" size={22} style={{marginBottom: 10, marginRight: 10}} /> : null}
-                    {params.InputProps.endAdornment}
-                  </React.Fragment>
-                ),
-              }}
-            />  
-          )} 
-        />
+            renderInput={(params) => (
+              <TextField {...params} 
+                variant="outlined"
+                fullWidth 
+                label="Select your target machine" 
+                placeholder="Machine 1, Machine 2 etc."
+                
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>
+                      {loading ? <CircularProgress color="inherit" size={22} style={{marginBottom: 10, marginRight: 10}} /> : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+              />  
+            )} 
+          />
+        </div>
+        </form>
       </AutocompleteWrapper>
     </MainContainer>
   );
