@@ -25,21 +25,18 @@ const FileOption = styled.div`
 
 const UploadFileBtn = styled.div`
       display: flex;
-      padding-top: 10px;
+      padding-top: 30px;
       padding-bottom: 10px;
       width: 100%;
 `;
 
 const FileDestContainer = styled.div`
-      padding: 10px;
       margin-top: 10px;
       margin-bottom: 20px;
 `;
 
 const InputWrapper = styled.div`
       padding: 1px;
-      margin-left: 10px;
-      margin-right: 10px;
 `;
 
 export default function Command2(){
@@ -60,7 +57,7 @@ export default function Command2(){
       <form onSubmit={handleSubmit}>
       <FormControl style={{width: "100%"}}>
       <FileOption>
-        <div style={{paddingTop: "10px", fontSize: "20px", width: "100%"}}>
+        <div style={{fontSize: "20px", width: "100%"}}>
           Click the button to select the file you would like to send:
         </div>
         
@@ -93,13 +90,7 @@ export default function Command2(){
         </UploadFileBtn>
       </FileOption>
     
-    <div style={{border: "1px solid purple", borderRadius: 5, paddingLeft: "5px"}}>
-    {
-    //this will not be in the final layout, this was just for testing
-    }
-      {file === null ? 'No file chosen.' : `selected file is: ${file.name}`} 
-    </div>
-      <FileDestContainer>
+      <FileDestContainer style = {{fontSize:'20px'}}>
         Please enter the desired file destination:
         <InputWrapper>
           <TextField
@@ -109,7 +100,7 @@ export default function Command2(){
             name="fileDest"
             value={fileDest}
             onChange={(e) => setFileDest(e.currentTarget.value)}
-            style = {{marginBottom:10, marginTop:10}}
+            style = {{marginBottom:10, marginTop:10, fontSize:'20px'}}
           />
         </InputWrapper>
       </FileDestContainer>

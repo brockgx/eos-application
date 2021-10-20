@@ -19,13 +19,24 @@ function sleep(delay = 0) {
   });
 }
 
-export default function AvailApps() {
+export default function AvailApps(props) {
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState([]);
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
+    const [appChoice, setAppChoice] = useState('');
 
+    const handleChange = (event, newValue) => {
+      event.preventDefault();
+      props.changeApp(event.target.value)
+      
+      setAppChoice(event.target.value)
+      setValue(newValue)
+      console.log(appChoice)
+      //console.log(appSelected)
+    }
 
+    console.log(props)
     React.useEffect(() => {
       let active = true;
   
@@ -81,14 +92,16 @@ export default function AvailApps() {
             </li>
           )}
           
-          value={value}
+         value={value}
           loading={loading}
-          onChange={(e, newValue) => setValue(newValue)}
-          name={value}
+          //name={value}
+          //onChange={(e, newValue) => setValue(newValue)}
+          onChange={handleChange}
+          
             
           renderInput={(params) => (
             <TextField {...params} 
-            label="Select the application you would like to kill" 
+            //label="Select the application you would like to kill" 
             variant="outlined"
             placeholder="discord.exe"
             InputProps={{

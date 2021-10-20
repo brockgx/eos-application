@@ -43,7 +43,6 @@ const TopText = styled.span`
 
 const TabsWrapper = styled.div`
   padding: 0px;
-  font-size: 44px;
   flex: 80%;
   box-sizing: border-box;
 `;
@@ -113,12 +112,12 @@ const Commands = (props) => {
               <Tabs
                 centered
                 value={selectedTab} 
-                style = {{marginBottom:40, marginLeft:-20, boxSizing: 'border-box'}} 
+                style = {{marginBottom:20, marginLeft:-20, boxSizing: 'border-box'}} 
                 onChange={handleChange} 
               >
-                <Tab label="Preset Command Options" style ={{textTransform : 'none'}}/>
-                <Tab label="Push a File to a Device" style ={{textTransform : 'none'}}/>
-                <Tab label="Custom Commands" style ={{textTransform : 'none'}}/>             
+                <Tab label="Preset Command Options" style ={{textTransform : 'none', fontSize: '20px'}}/>
+                <Tab label="Push a File to a Device" style ={{textTransform : 'none', fontSize: '20px'}}/>
+                <Tab label="Custom Commands" style ={{textTransform : 'none', fontSize: '20px'}}/>             
               </Tabs>
             </TabsWrapper>
               

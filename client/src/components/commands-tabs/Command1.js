@@ -20,7 +20,7 @@ const CmdAccordion = styled((props) => (
 
 const CmdAccordionSummary = styled((props) => (
   <AccordionSummary
-    expandIcon={<ArrowForwardIosSharp sx={{ fontSize: '0.9rem' }} />}
+    expandIcon={<ArrowForwardIosSharp style={{ fontSize: '1.1rem' }} />}
     {...props}
   />
 ))(({ theme }) => ({
@@ -44,14 +44,16 @@ const CmdAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
 }));
 
 
-export default function Command1() {
+export default function Command1(props) {
   const [expanded, setExpanded] = React.useState('panel1');
   const [shutDevice, restartDevice, killProcess, restartProcess] = useState('');
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
   
-  
+  const [appChoice, setAppChoice] = useState('');
+  console.log(appChoice)
+   
   const handleClick = (event) => {
     const name =  event.currentTarget.name;
     event.preventDefault();
@@ -69,12 +71,12 @@ export default function Command1() {
   <div>
     <form onSubmit={handleSubmit}>
       <CmdAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <CmdAccordionSummary  aria-controls="panel1d-content" id="panel1d-header">
+        <CmdAccordionSummary  aria-controls="panel1d-content" id="panel1d-header" style={{fontSize: '20px'}}>
           <div>
             Preset Option 1: Shutdown Device
           </div>
         </CmdAccordionSummary>
-        <CmdAccordionDetails style={{flexDirection: "column"}}>
+        <CmdAccordionDetails style={{flexDirection: "column", fontSize: '20px'}}>
           <div 
             className = "InputWButtonContain" 
             style={{display: 'flex'}}>
@@ -100,15 +102,15 @@ export default function Command1() {
 
       <CmdAccordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
         <CmdAccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <div>
+          <div style={{fontSize: '20px'}}>
             Preset Option 2: Restart Device
           </div>
         </CmdAccordionSummary>
-        <CmdAccordionDetails>
+        <CmdAccordionDetails style={{flexDirection: "column", fontSize: '20px'}}>
             <div 
               className = "InputWButtonContain" 
               style={{display: 'flex'}}>
-              <div style={{flex: 3}}>
+              <div style={{flexDirection:"column", flex: 3, fontSize: '20px'}}>
                 <div>
                   Click confirm to restart "deviceName". 
                 </div>
@@ -130,20 +132,21 @@ export default function Command1() {
 
       <CmdAccordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
         <CmdAccordionSummary  aria-controls="panel3d-content" id="panel3d-header">
-          <div>
+          <div style={{fontSize: '20px'}}>
             Preset Option 3: Kill Process
           </div>
         </CmdAccordionSummary>
-        <CmdAccordionDetails>
+        <CmdAccordionDetails style={{fontSize: '20px'}}>
           <div>
             Please select the application you would like to kill then click 'confirm'.
             <div 
               className = "InputWButtonContain" 
-              style={{marginTop: 30, display: 'flex'}}>
+              style={{marginTop: 30, display: 'flex', fontSize: '20px'}}>
               <div 
                 className = "AvailAppsContain" 
                 style={{flex: 3, alignContent: 'space-between'}}>
-                <AvailApps/>
+                <AvailApps changeApp={appChoice => setAppChoice(appChoice)} />
+                
               </div>
               <Button
                 variant="contained"
@@ -163,16 +166,16 @@ export default function Command1() {
 
       <CmdAccordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
         <CmdAccordionSummary  aria-controls="panel4d-content" id="panel4d-header">
-          <div>
+          <div style={{fontSize: '20px'}}>
             Preset Option 4: Restart Application
           </div>
         </CmdAccordionSummary>
-        <CmdAccordionDetails>
+        <CmdAccordionDetails style={{fontSize: '20px'}}>
           <div>
             Please select the application you would like to restart then click 'confirm'.
           <div style={{marginTop: 30, display: 'flex'}}>
             <div style={{flex: 3, alignContent: 'space-between'}}>
-              <AvailApps/>
+              <AvailApps changeApp={appChoice => setAppChoice(appChoice)}/>
             </div>
             <Button
               name="restartProcess"
