@@ -21,7 +21,7 @@ export default function Command3(props){
     event.preventDefault();
     props.changeCmd(event.target.value)
     setCustomCmd(event.target.value)
-    setValue(newValue)
+    //setValue(newValue)
    
     //console.log(customCmd)
   }

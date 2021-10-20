@@ -90,14 +90,8 @@ const Commands = (props) => {
     const [ machineChoice, setMachineChoice] = useState('')
     const [ customCmd, setCustomCmd] = useState('')
 
-    //console.log(machineChoice)
     console.log(customCmd)
     console.log(machineChoice)
-   
-    //useEffect((value) => {
-     // console.log(target.value)
-    
-    //},// [value] )
 
   return (
   <Container>

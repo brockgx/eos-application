@@ -28,15 +28,12 @@ export default function CmdMachineChoice(props) {
     const [options, setOptions] = React.useState([]);
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
-    const [machineChoice, setMachineChoice] = useState('');
+    const [machineChoice, setMachineChoice] = useState();
 
     const handleChange = (event, newValue) => {
-      event.preventDefault();
-      const machineSelected = props.changeMachine(event.currentTarget.value)
-      console.log(machineSelected)
-      setMachineChoice( machineSelected)
+      props.changeMachine(newValue.machineID)
       setValue(newValue)
-      //console.log(machineChoice)
+     // console.log(machineChoice) //console is not reading this
     }
 
    // console.log(props)
@@ -75,8 +72,8 @@ export default function CmdMachineChoice(props) {
       }
     }, [open]);
 
-  console.log(value)
-
+  //console.log(value) //console is reading this 
+ console.log(value)
   return (
     <MainContainer>
       <AutocompleteWrapper>
@@ -105,12 +102,12 @@ export default function CmdMachineChoice(props) {
             )}
 
             options={options}
-            // value={value}
+            
             loading={loading}
             fullWidth
             onChange={handleChange}
             //onChange={(e, newValue) => props.changeMachine(newValue)}
-           // onChange={(e, newValue) => setValue(newValue)}
+          // onChange={(e, newValue) => setValue(newValue)}
             style={{marginBottom: 30}}
 
             renderInput={(params) => (

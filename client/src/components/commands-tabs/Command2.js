@@ -28,6 +28,7 @@ const UploadFileBtn = styled.div`
       padding-top: 30px;
       padding-bottom: 10px;
       width: 100%;
+     
 `;
 
 const FileDestContainer = styled.div`
@@ -51,10 +52,28 @@ export default function Command2(){
     alert('File destination will be: ' + fileDest);
   }
 
+  let uploadFile = (event) => {
+    event.preventDefault();
+    if(file !== null || fileDest === "") {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const final = reader.result.split(",", 2);
+        console.log(reader.result);
+        console.log(final[1]);
+        //postFile(reader.result);
+      }
+      console.log("File uploading");
+    } else {
+      if(file !== null) { console.log("Error: no file has been uploaded"); }
+      else { console.log("Error: no file location has been entered"); }
+    }
+  }
+
   return (
   <MainContainer>
     <CmdTwoContainer>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={uploadFile}>
       <FormControl style={{width: "100%"}}>
       <FileOption>
         <div style={{fontSize: "20px", width: "100%"}}>
@@ -109,7 +128,7 @@ export default function Command2(){
           fullWidth     
           type="submit"
           variant="contained"
-          onSubmit={handleSubmit} 
+          onSubmit={uploadFile} 
         >
           Push File 
         </Button>
