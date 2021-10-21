@@ -9,6 +9,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 //import '../styles/command.css';
+import { AppsContext } from '../components/commands-tabs/appContext';
 
 const Container = styled.div`
   flex: 10;
@@ -91,10 +92,11 @@ const Commands = (props) => {
     const [ customCmd, setCustomCmd] = useState('')
     const [ file, setFile] = useState(null)
     const [fileDest, setFileDest] = useState('')
-
-    console.log(customCmd)
-    console.log(machineChoice)
-    console.log(file)
+    const [appChoice, setAppChoice] = useState('')
+    const [context, setContext] = useState('')
+    //console.log(customCmd)
+    //console.log(machineChoice)
+    //console.log(file)
 
   return (
   <Container>
@@ -119,13 +121,18 @@ const Commands = (props) => {
             </TabsWrapper>
               
             <CmdMachineChoice changeMachine={machineChoice => setMachineChoice(machineChoice)} />        
+           
+            <AppsContext.Provider value={[context, setContext]}>
             {selectedTab === 0 && <Command1 />}
             {selectedTab === 1 && <Command2 
                                     changeFile={file => setFile(file)} 
                                     changeFileDest={fileDest => setFileDest(fileDest)}
                                     />}
             {selectedTab === 2 && <Command3 changeCmd={customCmd => setCustomCmd(customCmd)} />} 
+            </AppsContext.Provider>
+           
           </LeftSide>
+
 
           <RightSideOutput>
             <div style = {{marginLeft: '10px', paddingLeft: '10px', height: '100%', border: '1px solid grey', boxSizing: 'border-box'}} >
@@ -134,6 +141,7 @@ const Commands = (props) => {
               <h2>{customCmd}</h2> 
               <h3>{file === null ? 'No file chosen.' : `${file.name}`}</h3>
               <h3>{fileDest}</h3>
+              <h4>{context.appID}</h4>
             </div>
           </RightSideOutput>
         </CommandsTab>                  

@@ -4,7 +4,6 @@ import ArrowForwardIosSharp from '@material-ui/icons/ArrowForwardIosSharp';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
 import AvailApps from './AvailApps';
 import { styled } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
@@ -46,19 +45,17 @@ const CmdAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
 
 export default function Command1(props) {
   const [expanded, setExpanded] = React.useState('panel1');
-  const [shutDevice, restartDevice, killProcess, restartProcess] = useState('');
+  const [appChoice, setAppChoice] = useState('');
+ 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-  
-  const [appChoice, setAppChoice] = useState('');
-  console.log(appChoice)
    
   const handleClick = (event) => {
     const name =  event.currentTarget.name;
     event.preventDefault();
     console.log(name)
-    alert(`A command was submitted: ${name}`);
+    alert(`A command was submitted: ${name} and the application of ${appChoice}`);
   };
  
   const handleSubmit = (event) => {
@@ -148,12 +145,13 @@ export default function Command1(props) {
                 <AvailApps changeApp={appChoice => setAppChoice(appChoice)} />
                 
               </div>
+              <h4>{appChoice}</h4>
               <Button
                 variant="contained"
                 name="killProcess"
                 onClick={handleClick}
                 //onSubmit={handleSubmit}
-                value={killProcess}
+                //value={killProcess}
                 style={{flex: 1, marginLeft: '20px', padding: '0px'}}
                 //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
               >
@@ -177,12 +175,13 @@ export default function Command1(props) {
             <div style={{flex: 3, alignContent: 'space-between'}}>
               <AvailApps changeApp={appChoice => setAppChoice(appChoice)}/>
             </div>
+            <h4>{appChoice}</h4>
             <Button
               name="restartProcess"
               onClick={handleClick}
               variant="contained"
               //onSubmit={handleSubmit}
-              value={restartProcess}
+             // value={restartProcess}
               style={{flex: 1, marginLeft: '20px', padding: '0px'}}
               //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
             >

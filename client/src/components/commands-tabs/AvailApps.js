@@ -1,9 +1,11 @@
 import React from 'react';
+import {useContext } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import  {useState } from 'react';
 import styled from 'styled-components';
+import {AppsContext} from './appContext';
 
 const MainContainer = styled.div`
 padding: 1px;
@@ -24,19 +26,16 @@ export default function AvailApps(props) {
     const [options, setOptions] = useState([]);
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
-    const [appChoice, setAppChoice] = useState('');
+    const [context, setContext] = useContext(AppsContext)
 
     const handleChange = (event, newValue) => {
       event.preventDefault();
-      props.changeApp(event.target.value)
-      
-      setAppChoice(event.target.value)
+      props.changeApp(newValue.appID)
       setValue(newValue)
-      console.log(appChoice)
       //console.log(appSelected)
     }
 
-    console.log(props)
+    //console.log(props)
     React.useEffect(() => {
       let active = true;
   
@@ -64,11 +63,18 @@ export default function AvailApps(props) {
     }, [open]);
 
     
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    
+    alert('A command was submitted: ' + `${value}`);
+  }
+
     
 
   return (
     <MainContainer>
       <AutocompleteWrapper>
+       
         <Autocomplete
           id="avail-apps-demo"
           open={open}
@@ -96,7 +102,8 @@ export default function AvailApps(props) {
           loading={loading}
           //name={value}
           //onChange={(e, newValue) => setValue(newValue)}
-          onChange={handleChange}
+          //onChange={handleChange}
+          onChange={(e, newValue)=> setContext(newValue)}
           
             
           renderInput={(params) => (
@@ -116,6 +123,7 @@ export default function AvailApps(props) {
             />  
           )} 
         />
+        
       </AutocompleteWrapper>
     </MainContainer>
   );

@@ -73,7 +73,7 @@ export default function CmdMachineChoice(props) {
     }, [open]);
 
   //console.log(value) //console is reading this 
- console.log(value)
+ //console.log(value)
   return (
     <MainContainer>
       <AutocompleteWrapper>
