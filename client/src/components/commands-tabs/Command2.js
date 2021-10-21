@@ -40,7 +40,7 @@ const InputWrapper = styled.div`
       padding: 1px;
 `;
 
-export default function Command2(){
+export default function Command2(props){
   const [file, setFile] = useState(null);
   const [fileDest, setFileDest] = useState('');
 
@@ -52,6 +52,18 @@ export default function Command2(){
     alert('File destination will be: ' + fileDest);
   }
 
+  const handleFile = (event) => {
+    event.preventDefault();
+    props.changeFile(event.target.files[0])
+    setFile(event.target.files[0])
+  }
+
+  const handleFileDest = (event) => {
+    event.preventDefault();
+    props.changeFileDest(event.target.value)
+    setFileDest(event.target.value)
+  }
+
   let uploadFile = (event) => {
     event.preventDefault();
     if(file !== null || fileDest === "") {
@@ -61,6 +73,8 @@ export default function Command2(){
         const final = reader.result.split(",", 2);
         console.log(reader.result);
         console.log(final[1]);
+        alert('A file was submitted: ' + file.name);
+        alert('File destination will be: ' + fileDest);
         //postFile(reader.result);
       }
       console.log("File uploading");
@@ -87,7 +101,8 @@ export default function Command2(){
             variant="outlined"
             style={{display: 'none'}} 
             id="fileUpload"
-            onChange={(e) => setFile(e.currentTarget.files[0])}
+           // onChange={(e) => setFile(e.currentTarget.files[0])}
+           onChange = {handleFile}
           />
           <label htmlFor="fileUpload" style={{flex: 2}}>
           <Button 
@@ -118,7 +133,8 @@ export default function Command2(){
             required
             name="fileDest"
             value={fileDest}
-            onChange={(e) => setFileDest(e.currentTarget.value)}
+            //onChange={(e) => setFileDest(e.currentTarget.value)}
+            onChange={handleFileDest}
             style = {{marginBottom:10, marginTop:10, fontSize:'20px'}}
           />
         </InputWrapper>

@@ -89,9 +89,12 @@ const Commands = (props) => {
     }
     const [ machineChoice, setMachineChoice] = useState('')
     const [ customCmd, setCustomCmd] = useState('')
+    const [ file, setFile] = useState(null)
+    const [fileDest, setFileDest] = useState('')
 
     console.log(customCmd)
     console.log(machineChoice)
+    console.log(file)
 
   return (
   <Container>
@@ -117,7 +120,10 @@ const Commands = (props) => {
               
             <CmdMachineChoice changeMachine={machineChoice => setMachineChoice(machineChoice)} />        
             {selectedTab === 0 && <Command1 />}
-            {selectedTab === 1 && <Command2 />}
+            {selectedTab === 1 && <Command2 
+                                    changeFile={file => setFile(file)} 
+                                    changeFileDest={fileDest => setFileDest(fileDest)}
+                                    />}
             {selectedTab === 2 && <Command3 changeCmd={customCmd => setCustomCmd(customCmd)} />} 
           </LeftSide>
 
@@ -126,6 +132,8 @@ const Commands = (props) => {
               Currently you have: no commands waiting. 
               <h1>{machineChoice}</h1>
               <h2>{customCmd}</h2> 
+              <h3>{file === null ? 'No file chosen.' : `${file.name}`}</h3>
+              <h3>{fileDest}</h3>
             </div>
           </RightSideOutput>
         </CommandsTab>                  

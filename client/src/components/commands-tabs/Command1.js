@@ -12,10 +12,10 @@ import  {useState } from 'react';
 
 
 const CmdAccordion = styled((props) => (
-  <Accordion disableGutters elevation={0} square {...props} />
+  <Accordion disableGutters elevation={0} {...props} />
 ))(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
- 
+
 }));
 
 const CmdAccordionSummary = styled((props) => (
@@ -28,7 +28,7 @@ const CmdAccordionSummary = styled((props) => (
   theme.palette.type === 'dark'
     ? 'rgba(255, 255, 255, .05)'
     : 'rgba(0, 0, 0, .03)',
-  
+ 
   flexDirection: 'row-reverse',
   '& .MuiAccordionSummary-expandIcon.Mui-expanded': {
     transform: 'rotate(90deg)',
@@ -71,7 +71,7 @@ export default function Command1(props) {
   <div>
     <form onSubmit={handleSubmit}>
       <CmdAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <CmdAccordionSummary  aria-controls="panel1d-content" id="panel1d-header" style={{fontSize: '20px'}}>
+        <CmdAccordionSummary aria-controls="panel1d-content" id="panel1d-header" style={{fontSize: '20px'}}>
           <div>
             Preset Option 1: Shutdown Device
           </div>
