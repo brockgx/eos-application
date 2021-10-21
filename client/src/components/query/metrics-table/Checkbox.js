@@ -1,3 +1,9 @@
+/*
+ * Name: Checkbox.js
+ * Purpose: Checkbox component for show/hide column dropdown
+ * Used by: MetricsTable.js
+ */
+
 import React from 'react'
 
 export const Checkbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {

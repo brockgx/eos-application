@@ -133,12 +133,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Machines = ({machine}) => {
+const Machines = (props) => {
+  const {machine} = props
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [edit, setEdit] = useState(false)
   const [name, setName] = useState('')
-  
+  const [childData, setChildData] = useState('')
+
+  const handleCallback = (childData) =>{
+    const time = new Date(childData * 1000).toLocaleString()
+    setChildData(time)
+    //console.log(childData.time)
+  }
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -217,7 +225,8 @@ const Machines = ({machine}) => {
                 <b>Host name:&nbsp;</b>{machine.host_name}     
               </DetailsRow>
               <DetailsRow>
-                <b>Last Update:&nbsp;</b> 
+                <b>Last Update:&nbsp;</b>
+                {childData}
               </DetailsRow>
               <DetailsRow>
                 <b>Status:&nbsp;</b>
@@ -288,7 +297,7 @@ const Machines = ({machine}) => {
             </IconButton>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Metrics>
-                <MachineMetrics machineName={machine.mac_address}/>
+                <MachineMetrics parentCallback={handleCallback} machineName={machine.mac_address}/>
               </Metrics>
             </Collapse>  
           </MetricsContainer>

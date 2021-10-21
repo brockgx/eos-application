@@ -35,6 +35,7 @@ def listClientMachines():
       "host_name": mach.host_name,
       "mac_address": mach.mac_address,
       "os": mach.os_type,
+      "os_full_version": mach.os_full_version,
       "address": mach.ip_address,
       "status": mach.status,
       "ports": mach.ports

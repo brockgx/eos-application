@@ -52,7 +52,9 @@ const Title = styled.span`
   font-weight: 400;
 `;
 
-const MachineMetrics = ({machineName}) => {
+const MachineMetrics = (props) => {
+  const {machineName} = props
+  
   const radialChart = (
     {
       options: {
@@ -96,6 +98,8 @@ const MachineMetrics = ({machineName}) => {
     const getMetrics = async () => {
       const data = await fetchMetrics()
       setMachineMetrics(data)
+      props.parentCallback(data.content.sysMetrics[0].time)
+      console.log(data.content.sysMetrics[0].time)
     }
 
     getMetrics()
@@ -106,7 +110,6 @@ const MachineMetrics = ({machineName}) => {
     const resp = await fetch(`/dash/clientmachinemetrics/${machineName}`)
     const data = await resp.json()
     if(resp.ok) {
-      console.log(data.content)
       return data;
     } else {
       throw Error(`Request rejected with status ${resp.status}`);
@@ -203,7 +206,7 @@ const MachineMetrics = ({machineName}) => {
                     <TableCell >
                       {row.app_name}
                     </TableCell>
-                    <TableCell align="center">{row.time}</TableCell>
+                    <TableCell align="center">{new Date(row.time * 1000).toLocaleString()}</TableCell>
                     <TableCell align="center">{row.cpu}</TableCell>
                     <TableCell align="center">{row.ram}</TableCell>
                   </TableRow>

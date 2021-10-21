@@ -1,9 +1,10 @@
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 
 import styled from 'styled-components';
-import MetricsTable from '../components/query/MetricsTable';
+import { Tabs, Tab } from '@material-ui/core';
 
-import { ColumnData } from '../components/query/ColumnData'
+import {SystemMetricsTable} from '../components/query/query-tabs/systemMetrics/SystemMetricsTable.js'
+import {ClientMachinesTable} from '../components/query/query-tabs/clientMachines/ClientMachinesTable.js'
 
 const Container = styled.div`
   flex: 10;
@@ -38,6 +39,8 @@ const Bottom = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 2px;
+  padding: 10px;
+  min-height: 800px;
   justify-content: space-between;
   background-color: #ffffff;
   -webkit-box-shadow: 0px 0px 15px -7px rgba(0, 0, 0, 0.8);
@@ -45,27 +48,10 @@ const Bottom = styled.div`
 `;
 
 const Query = () => {
-  const [sysMetrics, setMetrics] = useState([])
-  
-  // Get sys metrics from API call
-  useEffect(() => {
-    const getMetrics = async () => {
-      const data = await fetchMetrics()
-      setMetrics(data.system_metrics)
-    }
-    getMetrics()
-  }, [])
+  const [selectedTab, setSelectedTab] = useState(0);
 
-  // Fetch data from DB
-  const fetchMetrics = async () => {
-    const resp = await fetch('/metrics/getallmetrics')
-    const data = await resp.json()
-    if(resp.ok) {
-      console.log(data)
-      return data;
-    } else {
-      throw Error(`Request rejected with status ${resp.status}`);
-    }
+  const handleChange = (event, newValue) => {
+      setSelectedTab(newValue);
   }
     
   return (
@@ -74,8 +60,29 @@ const Query = () => {
         <Top>
           <TopText>Query Database</TopText>
         </Top>
-        <Bottom>   
-          <MetricsTable data={sysMetrics}  />
+        <Bottom>
+          <div
+            style={{display: "flex", borderRight: "2px"}}
+          >
+            <Tabs
+              orientation="vertical"
+              value={selectedTab}
+              onChange={handleChange} 
+              textColor="primary"
+              indicatorColor="primary"
+              style={{minWidth: "170px"}}
+              sx={{textColor:"red"}}
+              >
+              <Tab label="Client Machines" />
+              <Tab label="Integrated Metrics" />
+              <Tab label="System Metrics" />
+              <Tab label="App Metrics" />
+            </Tabs>
+            {selectedTab === 0 && <ClientMachinesTable />}
+            {selectedTab === 1 && <SystemMetricsTable/>}
+            {selectedTab === 2 && <SystemMetricsTable/>}
+            {selectedTab === 3 && <SystemMetricsTable/>}   
+          </div>
         </Bottom>
       </Wrapper>
     </Container>

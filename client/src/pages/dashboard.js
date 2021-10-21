@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 // import components
 import Machines from '../components/dashboard/Machines';
-import AddMachine from '../components/dashboard/AddMachine';
 import Search from '../components/search/Search';
 
 const Container = styled.div`

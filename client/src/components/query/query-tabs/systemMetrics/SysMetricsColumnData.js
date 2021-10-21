@@ -1,23 +1,20 @@
 // Column data for sys metrics table on Query.js page
 // Columns: machine_name, timestamp, cpu_usage, ram_usage, disk_usage, disk_read, disk_write, network_usage
-import { ColumnFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColumnFilter } from './ColumnFilter'
+import { ColumnFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColumnFilter } from '../../metrics-table/ColumnFilter'
 
-export const ColumnData = [
+export const SysMetricsColumnData = [
     { 
         Header: 'Name',
         accessor: 'name',
         Filter: ColumnFilter,
-    },
-    { 
-        Header: 'MAC Address',
-        accessor: 'mac_address',
-        Filter: ColumnFilter,
+        // can be equals or includes
+        filter: "includes"
     },
     { 
         Header: 'Time',
         accessor: 'time',
         Filter: DateTimeColumnFilter,
-        
+        filter: "equals"
     },
     { 
         Header: 'CPU Usage (%)',
@@ -35,6 +32,8 @@ export const ColumnData = [
         Header: 'Disk Names',
         accessor: 'disk_names',
         Filter: ColumnFilter,
+        // can be equals or includes
+        filter: "includes"
     },
     { 
         Header: 'Disk Usage (%)',
