@@ -1,7 +1,22 @@
+/*
+ * Name: ClientMachinesTable.js
+ * Purpose: Renders the Client Machines Table for the Query page tabs
+ * 
+ * Used by: query.js
+ */
+
+// Module imports here
 import {useState, useEffect, useMemo} from 'react'
+
+// Component imports here
 import MetricsTable from '../../metrics-table/MetricsTable';
+
+// Column data for the Table
 import { ClientMachinesColumnData } from './ClientMachinesColumnData'
 
+/*
+ * This is the main component for the Client Machines Table tab
+*/
 export const ClientMachinesTable = () => {
   /*
   * useMemo() hook ensures the data inst recreated on every render
@@ -10,21 +25,20 @@ export const ClientMachinesTable = () => {
   */
   const clientMachinesColumns = useMemo(() => ClientMachinesColumnData, [])
 
+  // Variable to store the data from the API call
   const [clientMachines, setclientMachines] = useState([])
 
-  /*
-   * Get client machines from API call
-   */
+  // Hook used to render the client machines returned from API call
   useEffect(() => {
     const getMachines = async () => {
-      const data = await fetchMachines()
+      const data = await fetchData()
       setclientMachines(data.content)
     }
     getMachines()
   }, [])
 
-  // Fetch data from DB
-  const fetchMachines = async () => {
+  // Function to fetch client machines from DB
+  const fetchData = async () => {
     const resp = await fetch('/dash/clientmachines')
     const data = await resp.json()
     if(resp.ok) {
@@ -33,6 +47,7 @@ export const ClientMachinesTable = () => {
       throw Error(`Request rejected with status ${resp.status}`);
     }
   }
+  
   return (
     <div>
       <MetricsTable data={clientMachines} columns={clientMachinesColumns} />

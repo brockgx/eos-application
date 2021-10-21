@@ -1,8 +1,22 @@
+/*
+ * Name: SystemMetricsTable.js
+ * Purpose: Renders the System Metrics Table for the Query page tabs
+ * 
+ * Used by: query.js
+ */
+
+// Module imports here
 import {useState, useEffect, useMemo} from 'react'
+
+// Component imports here
 import MetricsTable from '../../metrics-table/MetricsTable';
+
+// Column data for the Table
 import { SysMetricsColumnData } from './SysMetricsColumnData'
 
-
+/*
+ * This is the main component for the System Metrics Table tab
+*/
 export const SystemMetricsTable = () => {
   
   /*
@@ -12,10 +26,10 @@ export const SystemMetricsTable = () => {
   */
   const sysMetricsColumns = useMemo(() => SysMetricsColumnData, [])
   
+  // Variable to store the data from the API call
   const [sysMetrics, setMetrics] = useState([])
-  /*
-   * Get sys metrics from API call
-   */
+  
+  // Hook used to render the client machines returned from API call
   useEffect(() => {
     const getMetrics = async () => {
       const data = await fetchMetrics()
@@ -24,7 +38,7 @@ export const SystemMetricsTable = () => {
     getMetrics()
   }, [])
 
-  // Fetch data from DB
+  // Function to fetch client machines from DB
   const fetchMetrics = async () => {
     const resp = await fetch('/metrics/getallmetrics')
     const data = await resp.json()

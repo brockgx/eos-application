@@ -1,13 +1,21 @@
+/*
+ * Name: ColumnFilter.js
+ * Purpose: Implementation of various column filters
+ *
+ * Used by: ColumnData for each Metrics Table
+ */
+
+// Module imports here
 import { useState, useMemo } from 'react'
 import { useAsyncDebounce } from 'react-table'
 import styled from 'styled-components';
 
+// Styled component declarations
 const Container = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-
 const Input = styled.input`
   font-size: 18px;
   font-weight: inherit;
@@ -21,7 +29,6 @@ const Input = styled.input`
     outline: none;
     border-bottom: 2px solid #4B5E81;
   }
-
   ::placeholder,
   ::-webkit-input-placeholder {
     color: red;
@@ -45,7 +52,6 @@ const NumInput = styled.input`
     outline: none;
     border-bottom: 2px solid #4B5E81;
   }
-  
   -moz-appearance: textfield;
   appearance: textfield;
   margin: 5px; 
@@ -54,7 +60,6 @@ const NumInput = styled.input`
   ::-webkit-outer-spin-button{
     -webkit-appearance: none;
   }
-
   ::placeholder,
   ::-webkit-input-placeholder {
     color: white;
@@ -66,16 +71,23 @@ const NumInput = styled.input`
      opacity: 0.6;
      text-align: center;
   }
-
 `;
 
-export const ColumnFilter = ({ column }) => {
+/*
+ * Name: TextFilter
+ * Filter function for text-based columns
+ * Input: text box
+ */
+export const TextFilter = ({ column }) => {
   
-  // destructure column object
+  // Destructure column object
   const { filterValue, setFilter} = column
 
-  // create new value and onChange event for debouncing
+  // Variable to store value of input field
   const [value, setValue] = useState(filterValue)
+
+  // Function to handle change event of input 
+  // Debounces user input (0.5 sec)
   const onChange = useAsyncDebounce(value => {
     setFilter(value || undefined)
   }, 500 //half a second
@@ -94,18 +106,25 @@ export const ColumnFilter = ({ column }) => {
   )
 }
 
+/*
+ * Name: DateTimeColumnFilter
+ * Filter function for datetime columns
+ * Input: datetime 
+ */
 export const DateTimeColumnFilter = ({ column }) => {
   
-  // destructure column object
+  // Destructure column object
   const { filterValue, setFilter} = column
 
-  // create new value and onChange event for debouncing
+  // Variable to store value of input field
   const [value, setValue] = useState(filterValue)
+
+  // Function to handle change event of input 
+  // Debounces user input (0.5 sec)
   const onChange = useAsyncDebounce(value => {
     setFilter(value || undefined)
   }, 500 //half a second
   )
-
   return (
     <Container>
       <Input
@@ -120,10 +139,14 @@ export const DateTimeColumnFilter = ({ column }) => {
   )
 }
 
-// Select Filter
+/*
+ * Name: SelectColumnFilter  
+ * Filter function for text-based columns
+ * Input: select/dropdown 
+ */
 export const SelectColumnFilter = ({column}) => {
   
-  // destructure column object
+  // Destructure column object
   const { filterValue, setFilter, preFilteredRows, id } = column
   
   // Calculate the options for filtering
@@ -154,14 +177,17 @@ export const SelectColumnFilter = ({column}) => {
   );
 }
 
-// Filter number range
-// Uses two number boxes and filters rows to
-// ones that have values between the two
+/*
+ * Name: NumberRangeColumnFilter
+ * Filter function for number range
+ * Input: two number fields to create a range 
+ */
 export const NumberRangeColumnFilter = ({column}) => {
  
-  // destructure column object
+  // Destructure column object
   const { filterValue = [], preFilteredRows, setFilter, id } = column
 
+  // Variables for min/max values
   const [min, max] = useMemo(() => {
     let min = preFilteredRows.length ? preFilteredRows[0].values[id] : 0;
     let max = preFilteredRows.length ? preFilteredRows[0].values[id] : 0;

@@ -1,12 +1,18 @@
-// Column data for sys metrics table on Query.js page
-// Columns: machine_name, timestamp, cpu_usage, ram_usage, disk_usage, disk_read, disk_write, network_usage
-import { ColumnFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColumnFilter } from '../../metrics-table/ColumnFilter'
+/*
+ * Name: SysMetricsColumnData.js
+ * Purpose: Column data for System Metrics table
+ * 
+ * Used by: SystemMetricsTable.js
+ */
+
+// Import filter functions from ColumnFilter.js 
+import { TextFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColumnFilter } from '../../metrics-table/ColumnFilter'
 
 export const SysMetricsColumnData = [
     { 
         Header: 'Name',
         accessor: 'name',
-        Filter: ColumnFilter,
+        Filter: TextFilter,
         // can be equals or includes
         filter: "includes"
     },
@@ -31,7 +37,7 @@ export const SysMetricsColumnData = [
     { 
         Header: 'Disk Names',
         accessor: 'disk_names',
-        Filter: ColumnFilter,
+        Filter: TextFilter,
         // can be equals or includes
         filter: "includes"
     },

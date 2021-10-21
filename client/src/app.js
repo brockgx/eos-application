@@ -1,5 +1,6 @@
 // All module imports here
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import styled from 'styled-components';
 
 // All page imports here
 import { Home } from './pages/home';
@@ -13,18 +14,21 @@ import Sidebar from './components/navigation/Sidebar';
 import Topbar from './components/navigation/Topbar';
 
 // All style imports here
-import './styles/app.css';
 
 /*
  * This is the main application component for React
  * it houses the view, which is a single navbar component
  * and the various other pages, which are routed using React-Router
 */
+const Container = styled.div`
+  display: flex;
+`;
+
 function App() {
   return (   
     <Router>
       { window.location.pathname !== '/' &&  <Topbar /> }
-      <div className="content">
+      <Container>
       { window.location.pathname !== '/' &&  <Sidebar /> }
         <Switch>
           <Route path="/" exact component={ Home } />
@@ -33,11 +37,8 @@ function App() {
           <Route path="/command" exact component={Commands} />
           <Route path="/support" exact component={Support} />
         </Switch>
-      </div>
+      </Container>
     </Router>
   );
 }
-
-
-  
 export default App;

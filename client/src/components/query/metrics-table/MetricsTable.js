@@ -194,10 +194,10 @@ const MetricsTable = ({ data, columns }) => {
   // Destructure pageIndex, pageSize & globalFilter from state
   const {pageIndex, pageSize, globalFilter} = state
 
-  // Variable used to hold dropdown state
+  // Used to hold dropdown state
   const [expanded, setExpanded] = useState(false);
 
-  // Function to handle dropdown expansion
+  // Function to handle change event of dropdown
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
