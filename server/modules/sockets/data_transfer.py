@@ -1,5 +1,5 @@
 #import personal libraries
-# from ..security.AESEncryption import do_encrypt, do_decrypt
+from ..security.AESEncryption import do_encrypt, do_decrypt
 
 #Constants
 HEADERSIZE = 10
@@ -47,9 +47,6 @@ def receiveSocketData(socketConn):
         completeMsg+=splitMsg[1]
 
       if len(str(completeMsg)) == lengthMsg:
-        #Do something with the data - print example
-        print(completeMsg)
-        print("\n")
         receievedMsg = do_decrypt(completeMsg)
         receievedMsg = receievedMsg.decode()
         newMsg = True

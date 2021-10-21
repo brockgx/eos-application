@@ -36,19 +36,21 @@ def brockSocket():
   req = request.json
   sock = socket.socket()
 
-  agent_machine = ClientMachines.session.query.filter_by(id=req["machine"]).first()
-  ip = str(ipaddress.IPv4Address(agent_machine["ip_address"]))
-  port = int(agent_machine["ports"].split(",")[0])
+  agent_machine = ClientMachines.query.filter_by(id=req["machine"]).first()
+  ip = str(ipaddress.IPv4Address(agent_machine.ip_address))
+  port = int(agent_machine.ports.split(",")[0])
 
   print("IP and port coupling: " + ip + " - " + str(port))
   print(req["content"])
 
-  #sock.connect(("2.tcp.ngrok.io", 15170))
+  sock.connect((ip, port))
 
-  #sendSocketData(sock, "Hello, you received me")
+  sendSocketData(sock, json.dumps(req["content"], separators=(',', ':')))
 
-  #time.sleep(10)
+  time.sleep(10)
 
-  #data = receiveSocketData(sock) data.decode("utf-8")
+  data = receiveSocketData(sock)
 
-  return jsonify({"desc": "Return of the message from the socket", "content": "Yo"})
+  sock.close()
+
+  return jsonify({"desc": "Return of the message from the socket", "content": data})
