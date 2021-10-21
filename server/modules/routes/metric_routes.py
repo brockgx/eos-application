@@ -24,10 +24,17 @@ def get_all_metric_data():
   all_system_metrics = []
   all_application_metrics = []
   for sys_metric in all_metrics:
+    #Check machine existence
+    machine_name = sys_metric.machine_id
+    machine_mac = "Machine Removed"
+    if sys_metric.machine is not None:
+      machine_name = sys_metric.machine.name
+      machine_mac = sys_metric.machine.mac_address
+
     all_system_metrics.append({
       "id": sys_metric.id,
-      "name": sys_metric.machine.name,
-      "mac_address": sys_metric.machine.mac_address,
+      "name": machine_name,
+      "mac_address": machine_mac,
       "time": sys_metric.timestamp,
       "cpu": sys_metric.cpu_usage,
       "ram": sys_metric.ram_usage,
@@ -41,8 +48,8 @@ def get_all_metric_data():
     for app in sys_metric.app_metrics:
       all_application_metrics.append({
         "id": app.id,
-        "name": sys_metric.machine.name,
-        "mac_address": sys_metric.machine.mac_address,
+        "name": machine_name,
+        "mac_address": machine_mac,
         "time": sys_metric.timestamp,
         "app_name": app.application.name,
         "app_pid": app.application.pid,
