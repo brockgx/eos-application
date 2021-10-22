@@ -4,7 +4,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import  {useState } from 'react';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
 
 const MainContainer = styled.div`
 padding: 1px;
@@ -13,8 +12,6 @@ padding: 1px;
 const AutocompleteWrapper = styled.div`
 padding: 1px;
 `;
-
-
 
 function sleep(delay = 0) {
   return new Promise((resolve) => {
@@ -33,10 +30,7 @@ export default function CmdMachineChoice(props) {
     const handleChange = (event, newValue) => {
       props.changeMachine(newValue.machineID)
       setValue(newValue)
-     // console.log(machineChoice) //console is not reading this
     }
-
-   // console.log(props)
 
     const handleSubmit = (event, newValue) => {
       event.preventDefault();
@@ -72,8 +66,6 @@ export default function CmdMachineChoice(props) {
       }
     }, [open]);
 
-  //console.log(value) //console is reading this 
- //console.log(value)
   return (
     <MainContainer>
       <AutocompleteWrapper>
@@ -94,29 +86,22 @@ export default function CmdMachineChoice(props) {
             isOptionEqualToValue={(option, value) => option.machineID === value.machineID}
             disableCloseOnSelect
             getOptionLabel={(option) => option.machineID}
-            
             renderOption={(props, option, { selected }) => (
               <li {...props}>
                 {option.machineID}
               </li>
             )}
-
             options={options}
-            
             loading={loading}
             fullWidth
             onChange={handleChange}
-            //onChange={(e, newValue) => props.changeMachine(newValue)}
-          // onChange={(e, newValue) => setValue(newValue)}
             style={{marginBottom: 30}}
-
             renderInput={(params) => (
               <TextField {...params} 
                 variant="outlined"
                 fullWidth 
                 label="Select your target machine" 
                 placeholder="Machine 1, Machine 2 etc."
-                
                 InputProps={{
                   ...params.InputProps,
                   endAdornment: (
@@ -129,7 +114,7 @@ export default function CmdMachineChoice(props) {
               />  
             )} 
           />
-        </div>
+          </div>
         </form>
       </AutocompleteWrapper>
     </MainContainer>

@@ -1,9 +1,8 @@
 import React from 'react';
-import { TextField, CssBaseline, Input, Button, FormControl } from '@material-ui/core';
-import { AttachFile, RoundedCorner } from '@material-ui/icons';
+import { TextField, Input, Button, FormControl } from '@material-ui/core';
+import { AttachFile} from '@material-ui/icons';
 import styled from 'styled-components';
 import { useState} from 'react';
-import { borderRadius } from '@mui/system';
 
 
 const MainContainer= styled.div`
@@ -93,7 +92,6 @@ export default function Command2(props){
         <div style={{fontSize: "20px", width: "100%"}}>
           Click the button to select the file you would like to send:
         </div>
-        
         <UploadFileBtn >
           <Input     
             type="file" 
@@ -101,7 +99,6 @@ export default function Command2(props){
             variant="outlined"
             style={{display: 'none'}} 
             id="fileUpload"
-           // onChange={(e) => setFile(e.currentTarget.files[0])}
            onChange = {handleFile}
           />
           <label htmlFor="fileUpload" style={{flex: 2}}>
@@ -133,7 +130,6 @@ export default function Command2(props){
             required
             name="fileDest"
             value={fileDest}
-            //onChange={(e) => setFileDest(e.currentTarget.value)}
             onChange={handleFileDest}
             style = {{marginBottom:10, marginTop:10, fontSize:'20px'}}
           />

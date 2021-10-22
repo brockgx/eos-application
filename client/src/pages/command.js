@@ -62,7 +62,8 @@ const CommandsTab = styled.div`
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-sizing: border-box;
   width: 95%;
-  padding: 30px;
+  padding-left: 20px;
+  padding-top: 20px;
   background-color: #ffff;
   border-radius: 6px;
   height: 75vh;
@@ -74,7 +75,7 @@ const CommandsTab = styled.div`
 const RightSideOutput = styled.div`
    flex: 1;
    padding-bottom: 20px;
-   padding-left: 20px;
+   padding-left: 5px;
 `;
 
 const LeftSide = styled.div`
@@ -94,6 +95,7 @@ const Commands = (props) => {
     const [fileDest, setFileDest] = useState('')
     const [appChoice, setAppChoice] = useState('')
     const [context, setContext] = useState('')
+    const [cmdChoice, setCmdChoice] = useState('')
     //console.log(customCmd)
     //console.log(machineChoice)
     //console.log(file)
@@ -123,24 +125,31 @@ const Commands = (props) => {
             <CmdMachineChoice changeMachine={machineChoice => setMachineChoice(machineChoice)} />        
            
             <AppsContext.Provider value={[context, setContext]}>
-            {selectedTab === 0 && <Command1 />}
-            {selectedTab === 1 && <Command2 
-                                    changeFile={file => setFile(file)} 
-                                    changeFileDest={fileDest => setFileDest(fileDest)}
-                                    />}
-            {selectedTab === 2 && <Command3 changeCmd={customCmd => setCustomCmd(customCmd)} />} 
+            {selectedTab === 0 && 
+              <Command1 
+                machineChoice={machineChoice}
+               cmdChoice={cmdChoice => setCmdChoice(cmdChoice)}
+              />}
+            {selectedTab === 1 && 
+              <Command2 
+                changeFile={file => setFile(file)} 
+                changeFileDest={fileDest => setFileDest(fileDest)}
+              />}
+            {selectedTab === 2 && 
+              <Command3 
+                changeCmd={customCmd => setCustomCmd(customCmd)} />} 
             </AppsContext.Provider>
            
           </LeftSide>
 
 
           <RightSideOutput>
-            <div style = {{marginLeft: '10px', paddingLeft: '10px', height: '100%', border: '1px solid grey', boxSizing: 'border-box'}} >
-              Currently you have: no commands waiting. 
-              <h1>{machineChoice}</h1>
-              <h2>{customCmd}</h2> 
-              <h3>{file === null ? 'No file chosen.' : `${file.name}`}</h3>
-              <h3>{fileDest}</h3>
+            <div style = {{marginLeft: '10px', paddingLeft: '10px', height: '100%', borderLeft: '1px solid grey', boxSizing: 'border-box'}} >
+              <h3 style = {{paddingTop: '5px', paddingBottom: '20px'}}>Currently you have: no commands waiting.</h3> 
+              <h4>{'>'} {machineChoice === "" ? 'MACHINE: No selected machine' : `SELECTED: ${machineChoice}`}</h4>
+              <h4>{'>'} COMMAND: {customCmd === "" ? `PRESET COMMAND: ${cmdChoice}` :  `CUSTOM COMMAND: ${customCmd}`}</h4> 
+              <h4>{'>'} {file === null ? 'FILE NAME: No file chosen.' : `FILE NAME: ${file.name}`}</h4>
+              <h4>{'>'}{fileDest === ""? ' FILE DESTINATION: N/A' : ` FILE DESTINATION: ${fileDest}`}</h4>
               <h4>{context.appID}</h4>
             </div>
           </RightSideOutput>

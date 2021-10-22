@@ -32,10 +32,8 @@ export default function AvailApps(props) {
       event.preventDefault();
       props.changeApp(newValue.appID)
       setValue(newValue)
-      //console.log(appSelected)
     }
 
-    //console.log(props)
     React.useEffect(() => {
       let active = true;
   
@@ -65,7 +63,6 @@ export default function AvailApps(props) {
     
   const handleSubmit = (event) => {
     event.preventDefault();
-    
     alert('A command was submitted: ' + `${value}`);
   }
 
@@ -91,29 +88,21 @@ export default function AvailApps(props) {
           options={options}
           getOptionLabel={(option) => option.appID}
           renderTags={() => null}
-          
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               {option.appID}
             </li>
           )}
-          
-         value={value}
+          value={value}
           loading={loading}
-          //name={value}
-          //onChange={(e, newValue) => setValue(newValue)}
-          //onChange={handleChange}
           onChange={(e, newValue)=> setContext(newValue)}
-          
-            
           renderInput={(params) => (
             <TextField {...params} 
-            //label="Select the application you would like to kill" 
-            variant="outlined"
-            placeholder="discord.exe"
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
+              variant="outlined"
+              placeholder="discord.exe"
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
                   <React.Fragment>
                     {loading ? <CircularProgress color="inherit" size={22} style={{marginBottom: 10, marginRight: 10}} /> : null}
                     {params.InputProps.endAdornment}
@@ -123,7 +112,6 @@ export default function AvailApps(props) {
             />  
           )} 
         />
-        
       </AutocompleteWrapper>
     </MainContainer>
   );
