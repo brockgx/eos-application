@@ -96,6 +96,7 @@ const Commands = (props) => {
     const [appChoice, setAppChoice] = useState('')
     const [context, setContext] = useState('')
     const [cmdChoice, setCmdChoice] = useState('')
+    const [filePush, setFilePush] = useState('')
     //console.log(customCmd)
     //console.log(machineChoice)
     //console.log(file)
@@ -132,6 +133,7 @@ const Commands = (props) => {
               />}
             {selectedTab === 1 && 
               <Command2 
+                filePush={filePush => setFilePush(filePush)}
                 changeFile={file => setFile(file)} 
                 changeFileDest={fileDest => setFileDest(fileDest)}
               />}
@@ -147,10 +149,23 @@ const Commands = (props) => {
             <div style = {{marginLeft: '10px', paddingLeft: '10px', height: '100%', borderLeft: '1px solid grey', boxSizing: 'border-box'}} >
               <h3 style = {{paddingTop: '5px', paddingBottom: '20px'}}>Currently you have: no commands waiting.</h3> 
               <h4>{'>'} {machineChoice === "" ? 'MACHINE: No selected machine' : `SELECTED: ${machineChoice}`}</h4>
-              <h4>{'>'} COMMAND: {customCmd === "" ? `PRESET COMMAND: ${cmdChoice}` :  `CUSTOM COMMAND: ${customCmd}`}</h4> 
               <h4>{'>'} {file === null ? 'FILE NAME: No file chosen.' : `FILE NAME: ${file.name}`}</h4>
               <h4>{'>'}{fileDest === ""? ' FILE DESTINATION: N/A' : ` FILE DESTINATION: ${fileDest}`}</h4>
+              <h4>{'>'}{filePush === "" ? '' : `${filePush}`}</h4>
+              <h4>{''}{filePush === "" ? '' : "     "}</h4>
+              <h4>{'>'}{filePush === "" ? '' : "Press Ctrl + C to abort the command"}</h4>
+              <h4>{''}{filePush === "" ? '' : <h4>...</h4>}</h4>
+              <h4>{''}{filePush === "" ? '' : <h4>...</h4>}</h4>
+              <h4>{''}{filePush === "" ? '' : <h4>...</h4>}</h4>
+              <h4>{''}{filePush === "" ? '' : <h4>File has successfully been sent.</h4>}</h4>
+              
+              
+              {/*
+              <h4>{'>'} COMMAND: {customCmd === "" ? `PRESET COMMAND: ${cmdChoice}` :  `CUSTOM COMMAND: ${customCmd}`}</h4> 
               <h4>{context.appID}</h4>
+
+            */}
+              <h5>{'>'}</h5>
             </div>
           </RightSideOutput>
         </CommandsTab>                  

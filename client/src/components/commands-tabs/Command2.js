@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, Input, Button, FormControl } from '@material-ui/core';
-import { AttachFile} from '@material-ui/icons';
+import { AttachFile, PinDropSharp} from '@material-ui/icons';
 import styled from 'styled-components';
 import { useState} from 'react';
 
@@ -72,8 +72,9 @@ export default function Command2(props){
         const final = reader.result.split(",", 2);
         console.log(reader.result);
         console.log(final[1]);
-        alert('A file was submitted: ' + file.name);
-        alert('File destination will be: ' + fileDest);
+        props.filePush("The file: ***" + `${file.name}` + "*** has been sent to the selected machine to this directory: " + `${fileDest}`)
+       // alert('A file was submitted: ' + file.name);
+        //alert('File destination will be: ' + fileDest);
         //postFile(reader.result);
       }
       console.log("File uploading");
