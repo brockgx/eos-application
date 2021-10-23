@@ -1,9 +1,8 @@
 #Import any downloaded/third party modules and packages
-from flask import Flask, redirect, request, jsonify
-import os
-import platform
+from flask import Flask, jsonify
 
 #Import any custom made modules
+from modules.utilities.server_config import get_config_details
 from modules.routes.test_routes import test_routes
 from modules.routes.command_routes import command_routes
 from modules.routes.dashboard_routes import dashboard_routes
@@ -18,20 +17,13 @@ HTTPS_ENABLED = False
 CONTEXT = ('cert file', 'key file')
 
 #Need to setup config file for the API
-
+cfg_details = get_config_details()
 
 #Instantiate the flask application
 app = Flask(__name__)
-basedir = os.path.abspath(os.path.dirname(__file__))
-
-#Set DB path based on OS
-if platform.system() == "Windows":
-  DB_PATH = f'sqlite:///{basedir}\\modules\\database\\test.db'
-else:
-  DB_PATH = f'sqlite:////{basedir}/modules/database/test.db'
 
 #Instantiate the DB (SQLLite for testing)
-app.config["SQLALCHEMY_DATABASE_URI"] = DB_PATH
+app.config["SQLALCHEMY_DATABASE_URI"] = cfg_details["DATABASE-URI"] + cfg_details["DATABASE"]
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= False
 db.app = app
 db.init_app(app)
