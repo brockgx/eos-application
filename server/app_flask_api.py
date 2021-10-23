@@ -1,10 +1,11 @@
 #Import any downloaded/third party modules and packages
 from flask import Flask, jsonify
 from sys import exit
+import logging
 
 #Import any custom made modules
 from modules.utilities.config_setup import get_config_details
-from modules.utilities.logging_setup import server_logger
+from modules.utilities.logging_setup import server_logger, FILE_HANDLER, STREAM_HANDLER
 from modules.routes.test_routes import test_routes
 from modules.routes.command_routes import command_routes
 from modules.routes.dashboard_routes import dashboard_routes
@@ -17,9 +18,11 @@ config_dets = get_config_details()
 
 #Instantiate the flask application
 app = Flask(__name__)
+flask_logger = logging.getLogger("werkzeug")
+flask_logger.addHandler(FILE_HANDLER)
+flask_logger.addHandler(STREAM_HANDLER)
 
 if config_dets != False:
-  server_logger.info("Starting API server...")
   #Instantiate the DB (SQLLite for testing)
   try:
     DB_LOCATION = config_dets["DATABASE-DETAILS"]["DATABASE-URI"] + config_dets["DATABASE-DETAILS"]["DATABASE-NAME"]
