@@ -1,0 +1,41 @@
+[2021-10-23 16:38:15] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:38:15] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:38:28] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:38:29] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:38:29] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:38:29] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:38:45] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:38:45] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:38:50] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:38:50] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:39:06] (server_config.py|read_config_file|ln 20) [CRITICAL]: [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:40:00] (server_config.py|read_config_file|ln 20) [CRITICAL]: Config file missing - 
+[2021-10-23 16:40:11] (server_config.py|read_config_file|ln 20) [CRITICAL]: Config file missing - [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:41:21] (server_config.py|read_config_file|ln 20) [CRITICAL]: Config file missing - [Errno 2] No such file or directory: '/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml'
+[2021-10-23 16:41:43] (server_config.py|read_config_file|ln 22) [CRITICAL]: Could not load conifg file details - while scanning a simple key
+  in "/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml", line 12, column 1
+could not find expected ':'
+  in "/home/devmain/uni-work/app-resources/eos-app/server/server_config.yml", line 13, column 1
+[2021-10-23 17:01:33] (server_config.py|validate_config_details|ln 36) [ERROR]: Section YOLO is not a valid config section.
+[2021-10-23 17:01:54] (server_config.py|validate_config_details|ln 40) [ERROR]: Missing section HTTPS-DETAILS in config file.
+[2021-10-23 17:05:52] (server_config.py|validate_sections|ln 36) [ERROR]: Missing section HTTPS-DETAILS in config file.
+[2021-10-23 17:06:15] (server_config.py|validate_sections|ln 31) [ERROR]: Section YOLO is not a valid config section.
+[2021-10-23 17:25:28] (server_config.py|validate_sections|ln 31) [ERROR]: Missing section HTTPS-DETAILS in config file.
+[2021-10-23 17:49:38] (server_config.py|validate_section_details|ln 46) [ERROR]: Missing detail SERVER-PORT in config file
+[2021-10-23 17:49:38] (server_config.py|validate_section_details|ln 46) [ERROR]: Missing detail CERTIFICATE-FILE in config file
+[2021-10-23 17:49:38] (server_config.py|validate_section_details|ln 46) [ERROR]: Missing detail PASSWORD in config file
+[2021-10-23 17:51:50] (server_config.py|validate_section_details|ln 46) [ERROR]: Missing detail KEY_FILE in config file
+[2021-10-23 17:51:50] (server_config.py|validate_section_details|ln 46) [ERROR]: Missing detail DATABASE-URI in config file
+[2021-10-23 17:53:58] (server_config.py|validate_section_details|ln 46) [ERROR]: Missing detail KEY_FILE in config file
+[2021-10-23 17:54:23] (server_config.py|validate_section_details|ln 46) [ERROR]: Missing detail DATABASE-URI in config file
+[2021-10-23 18:12:56] (app_flask_api.py|<module>|ln 22) [INFO]: Starting API server...
+[2021-10-23 18:12:56] (app_flask_api.py|<module>|ln 36) [CRITICAL]: Database configuration error - 'DATABASE'
+[2021-10-23 18:13:20] (app_flask_api.py|<module>|ln 22) [INFO]: Starting API server...
+[2021-10-23 18:13:20] (app_flask_api.py|<module>|ln 37) [CRITICAL]: Database configuration error - 'DATABASE'
+[2021-10-23 18:14:39] (app_flask_api.py|<module>|ln 22) [INFO]: Starting API server...
+[2021-10-23 18:14:39] (app_flask_api.py|<module>|ln 37) [CRITICAL]: Database configuration error - 'DATABASE'
+[2021-10-23 18:15:03] (app_flask_api.py|<module>|ln 22) [INFO]: Starting API server...
+[2021-10-23 18:15:04] (app_flask_api.py|<module>|ln 22) [INFO]: Starting API server...
+[2021-10-23 18:15:15] (app_flask_api.py|<module>|ln 22) [INFO]: Starting API server...
+[2021-10-23 18:15:20] (app_flask_api.py|<module>|ln 22) [INFO]: Starting API server...
+[2021-10-23 18:15:20] (app_flask_api.py|<module>|ln 22) [INFO]: Starting API server...

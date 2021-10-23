@@ -12,4 +12,7 @@ __pycache__/
 #Encryption key file
 PassIV
 
+#Log files
+*.log
+
 #We can just add to gitignore as we go
