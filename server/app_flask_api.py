@@ -57,8 +57,7 @@ if config_dets != False:
   #Run the Flask app server
   if __name__ == '__main__':
     if config_dets["HTTPS-DETAILS"]["HTTPS-ENABLED"]:
-      print("HTTPS ENABLED")
-      #app.run(host=HOST,port=PORT,debug=True,ssl_context=CONTEXT)
+      app.run(host=config_dets["SERVER-DETAILS"]["SERVER-ADDRESS"],port=config_dets["SERVER-DETAILS"]["SERVER-PORT"],debug=True,ssl_context='adhoc')
     else:
       app.run(host=config_dets["SERVER-DETAILS"]["SERVER-ADDRESS"],port=config_dets["SERVER-DETAILS"]["SERVER-PORT"],debug=True)
 else:
