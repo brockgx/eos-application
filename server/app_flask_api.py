@@ -3,8 +3,8 @@ from flask import Flask, jsonify
 from sys import exit
 
 #Import any custom made modules
-from modules.utilities.server_config import get_config_details
-from modules.utilities.server_logging import server_logger
+from modules.utilities.config_setup import get_config_details
+from modules.utilities.logging_setup import server_logger
 from modules.routes.test_routes import test_routes
 from modules.routes.command_routes import command_routes
 from modules.routes.dashboard_routes import dashboard_routes
@@ -33,8 +33,8 @@ if config_dets != False:
     db.init_app(app)
     db.create_all()
   except Exception as err_msg:
-    server_logger.critical("Database configuration error - {}".format(str(err_msg)))
-    exit()
+    server_logger.critical("Database configuration error - {}.".format(str(err_msg)))
+    exit(1)
 
   ##CONTENT##
   @app.route('/', methods=['GET'])
@@ -59,4 +59,4 @@ if config_dets != False:
     else:
       app.run(host=config_dets["SERVER-DETAILS"]["SERVER-ADDRESS"],port=config_dets["SERVER-DETAILS"]["SERVER-PORT"],debug=True)
 else:
-  server_logger.critical("Failed to start the API server, issue with config file")
+  server_logger.critical("Failed to start the API server, issue with config file.")

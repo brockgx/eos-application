@@ -2,7 +2,7 @@ from os import path
 from platform import system
 import yaml
 
-from .server_logging import server_logger
+from .logging_setup import server_logger
 #import yaml, os, platform
 
 def read_config_file():
@@ -34,16 +34,15 @@ def validate_sections(config_dets, sections):
   return True
 
 def validate_section_details(config_dets, items, types):
-  for detail in config_dets:
-    #print(types[items.index(item)] + " : " + str(type(config_dets[item])) + " : " + item)
-    if detail in items:
-      if isinstance(config_dets[detail],types[items.index(detail)]):
+  for item in items:
+    if item in config_dets:
+      if isinstance(config_dets[item],types[items.index(item)]):
         result = True
       else:
-        server_logger.error("{} must be of type {}".format(str(config_dets[detail]), str(types[items.index(detail)])))
+        server_logger.error("{} must be of type {}".format(str(config_dets[item]), str(types[items.index(item)])))
         return False
     else:
-      server_logger.error("Missing detail {} in config file".format(str(detail)))
+      server_logger.error("Missing detail {} in config file".format(str(item)))
       return False
   return True
     
