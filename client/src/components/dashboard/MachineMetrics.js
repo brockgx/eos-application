@@ -3,7 +3,6 @@ import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Chart from "react-apexcharts";
 import ProgressBar from "@ramonak/react-progress-bar";
-import { Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
 
 const Container = styled.div`
   display: flex;
@@ -44,6 +43,43 @@ const ProgressContainer = styled.div`
 const TableWrapper = styled.div`
   display: flex;
   margin: 10px 0px 0px 170px;
+`;
+const Table = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+`;
+const TableHeader = styled.th`
+  border: 1px solid #687CA1;
+  padding: 8px;  
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  border: 1px solid white;
+  background-color: #687CA1;
+  color: white;
+  font-size: 18px;
+  font-weight: 400;
+`;
+const TableHead = styled.thead`
+`;
+const TableBody = styled.tbody`
+`;
+const TableRow = styled.tr`
+  font-size: 16px;
+  font-weight: 300;
+  text-align: center;
+
+  &:nth-child(even) {
+    background-color: #CDD3E0;
+  }
+
+  &:hover{
+    background-color: #AEB8CC;
+  }
+`;
+const TableData = styled.td`
+  border: 1px solid #687CA1;
+  padding: 8px;
 `;
 
 const Title = styled.span`
@@ -161,7 +197,7 @@ const MachineMetrics = (props) => {
                       bgColor="#7587A9"
                       height="30px"
                       width="150px"
-                      completed={metrics.disk} />
+                      completed={parseInt(metrics.disk)} />
                   </ProgressContainer>
                 </ProgressWrapper>
                 <ProgressWrapper >
@@ -175,7 +211,7 @@ const MachineMetrics = (props) => {
                       bgColor="#7587A9"
                       height="30px"
                       width="150px"
-                      completed={metrics.network} 
+                      completed={parseInt(metrics.network)} 
                       />
                   </ProgressContainer>
                 </ProgressWrapper>
@@ -191,10 +227,10 @@ const MachineMetrics = (props) => {
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
-                  <TableCell>App Name</TableCell>
-                  <TableCell align="center">Time</TableCell>
-                  <TableCell align="center">CPU (%)</TableCell>
-                  <TableCell align="center">RAM (%)</TableCell>
+                  <TableHeader>App Name</TableHeader>
+                  <TableHeader align="center">Time</TableHeader>
+                  <TableHeader align="center">CPU (%)</TableHeader>
+                  <TableHeader align="center">RAM (%)</TableHeader>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -203,12 +239,12 @@ const MachineMetrics = (props) => {
                     key={row.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell >
+                    <TableData >
                       {row.app_name}
-                    </TableCell>
-                    <TableCell align="center">{new Date(row.time * 1000).toLocaleString()}</TableCell>
-                    <TableCell align="center">{row.cpu}</TableCell>
-                    <TableCell align="center">{row.ram}</TableCell>
+                    </TableData>
+                    <TableData align="center">{new Date(row.time * 1000).toLocaleString()}</TableData>
+                    <TableData align="center">{row.cpu}</TableData>
+                    <TableData align="center">{row.ram}</TableData>
                   </TableRow>
                 ))}
               </TableBody>

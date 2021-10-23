@@ -90,6 +90,7 @@ export const TextFilter = ({ column }) => {
   // Debounces user input (0.5 sec)
   const onChange = useAsyncDebounce(value => {
     setFilter(value || undefined)
+    console.log(filterValue)
   }, 500 //half a second
   )
 
@@ -111,7 +112,7 @@ export const TextFilter = ({ column }) => {
  * Filter function for datetime columns
  * Input: datetime 
  */
-export const DateTimeColumnFilter = ({ column }) => {
+export const DateColumnFilter = ({ column }) => {
   
   // Destructure column object
   const { filterValue, setFilter} = column
@@ -123,12 +124,46 @@ export const DateTimeColumnFilter = ({ column }) => {
   // Debounces user input (0.5 sec)
   const onChange = useAsyncDebounce(value => {
     setFilter(value || undefined)
+    console.log(filterValue)
   }, 500 //half a second
   )
   return (
     <Container>
       <Input
-        type="datetime-local"
+        type="date"
+        value={value || ''}
+        onChange={(e) => {
+          setValue(e.target.value)
+          onChange(e.target.value)
+        }}
+      />
+    </Container>
+  )
+}
+/*
+ * Name: DateTimeColumnFilter
+ * Filter function for datetime columns
+ * Input: datetime 
+ */
+export const TimeColumnFilter = ({ column }) => {
+  
+  // Destructure column object
+  const { filterValue, setFilter} = column
+
+  // Variable to store value of input field
+  const [value, setValue] = useState(filterValue)
+
+  // Function to handle change event of input 
+  // Debounces user input (0.5 sec)
+  const onChange = useAsyncDebounce(value => {
+    setFilter(value || undefined)
+    console.log(filterValue)
+  }, 500 //half a second
+  )
+  return (
+    <Container>
+      <Input
+        type="time"
         value={value || ''}
         onChange={(e) => {
           setValue(e.target.value)

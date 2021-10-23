@@ -226,7 +226,9 @@ const Machines = (props) => {
               </DetailsRow>
               <DetailsRow>
                 <b>Last Update:&nbsp;</b>
-                {childData}
+                { childData === ""
+                ? "pending"
+                : childData }
               </DetailsRow>
               <DetailsRow>
                 <b>Status:&nbsp;</b>

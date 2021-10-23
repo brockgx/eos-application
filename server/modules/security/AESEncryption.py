@@ -1,4 +1,4 @@
-# from Crypto.Cipher import AES
+from Crypto.Cipher import AES
 import secrets, os
 from platform import system
 global fileSecret

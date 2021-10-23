@@ -2,7 +2,7 @@
  * Name: dashboard.js
  * Purpose: Renders various components that make up the 'Dashboard Page' 
  * 
- * Used by: App.js to render the Query page
+ * Used by: App.js to render the Support page
  */
 
 // Module imports here
@@ -11,7 +11,7 @@ import styled from 'styled-components';
 
 // Component imports here
 import Machines from '../components/dashboard/Machines';
-import Search from '../components/search/Search';
+import Search from '../components/dashboard/Search';
 
 // Styled component declarations
 const Container = styled.div`
@@ -31,12 +31,12 @@ const Top = styled.div`
 const TopText = styled.span`
   font-weight: 500;
   font-size: 44px;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 `;
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0px 40px;
+  padding: 0px 10px;
 `;
 const ConnectedMachines = styled.div`
   display: flex;
@@ -45,8 +45,8 @@ const ConnectedMachines = styled.div`
 `;
 
 /*
- * This is the main component for the Dashboard page
-*/
+ * This is the main implementation for the "Dashboard" page
+ */
 const Dashboard = () => {
   
   // Used to store the client machines returned from the API
@@ -101,6 +101,7 @@ const Dashboard = () => {
         </Top>
         <Bottom>
           <ConnectedMachines>
+            {/* Map the client machines from the DB to the "Machines" component */}
             {filteredMachines.map((machine) => (
               <Machines machine={machine} key={machine.mac_address} />
             ))}

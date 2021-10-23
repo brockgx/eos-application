@@ -11,7 +11,8 @@ import styled from 'styled-components';
 
 // Component imports here
 import { Tabs, Tab } from '@material-ui/core';
-import {SystemMetricsTable} from '../components/query/query-tabs/systemMetrics/SystemMetricsTable.js'
+import {SysMetricsTable} from '../components/query/query-tabs/systemMetrics/SysMetricsTable.js'
+import {AppMetricsTable} from '../components/query/query-tabs/appMetrics/AppMetricsTable.js'
 import {ClientMachinesTable} from '../components/query/query-tabs/clientMachines/ClientMachinesTable.js'
 
 // Styled component declarations
@@ -44,7 +45,6 @@ const Bottom = styled.div`
   flex-direction: column;
   border-radius: 2px;
   padding: 10px;
-  min-height: 800px;
   justify-content: space-between;
   background-color: #ffffff;
   -webkit-box-shadow: 0px 0px 15px -7px rgba(0, 0, 0, 0.8);
@@ -52,7 +52,7 @@ const Bottom = styled.div`
 `;
 
 /*
- * This is the main component for the Query page
+ * This is the main implementation for the "Query" page
 */
 const Query = () => {
   
@@ -71,26 +71,29 @@ const Query = () => {
         </Top>
         <Bottom>
           <div
-            style={{display: "flex", borderRight: "2px"}}
+            style={{display: "flex"}}
           >
+            <div
+            style={{display: "flex", height: "70vh"}}
+            >
             <Tabs
               orientation="vertical"
               value={selectedTab}
               onChange={handleChange} 
               textColor="primary"
               indicatorColor="primary"
-              style={{minWidth: "170px"}}
-              sx={{textColor:"red"}}
+              style={{minWidth: "180px"}}
               >
-              <Tab label="Client Machines" />
-              <Tab label="Integrated Metrics" />
-              <Tab label="System Metrics" />
-              <Tab label="App Metrics" />
+              <Tab label="Client Machines" style={{ fontSize:"18px"}}/>
+              {/* <Tab label="Integrated Metrics" /> */}
+              <Tab label="System Metrics" style={{ fontSize:"18px"}}/>
+              <Tab label="App Metrics" style={{ fontSize:"18px"}}/>
             </Tabs>
+            </div>
             {selectedTab === 0 && <ClientMachinesTable />}
-            {selectedTab === 1 && <SystemMetricsTable/>}
-            {selectedTab === 2 && <SystemMetricsTable/>}
-            {selectedTab === 3 && <SystemMetricsTable/>}   
+            {selectedTab === 1 && <SysMetricsTable/>}
+            {selectedTab === 2 && <AppMetricsTable/>}
+            {/* {selectedTab === 3 && <SystemMetricsTable/>}    */}
           </div>
         </Bottom>
       </Wrapper>

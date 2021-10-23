@@ -6,7 +6,7 @@
  */
 
 // Import filter functions from ColumnFilter.js
-import { TextFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColumnFilter } from '../../metrics-table/ColumnFilter'
+import { TextFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColumnFilter } from '../../metrics-table/ColumnFilters'
 
 export const ClientMachinesColumnData = [
     { 

@@ -12,35 +12,35 @@ import {useState, useEffect, useMemo} from 'react'
 import MetricsTable from '../../metrics-table/MetricsTable';
 
 // Column data for the Table
-import { SysMetricsColumnData } from './SysMetricsColumnData'
+import { AppMetricsColumnData } from './AppMetricsColumnData'
 
 /*
  * This is the main component for the System Metrics Table tab
 */
-export const SystemMetricsTable = () => {
+export const AppMetricsTable = () => {
   
   /*
   * useMemo() hook ensures the data inst recreated on every render
   * otherwise react-table woulf think that it is receving new data on every render
   * it would attempt to calculate a lot of logic every time - affecting performance
   */
-  const sysMetricsColumns = useMemo(() => SysMetricsColumnData, [])
+  const appMetricsColumns = useMemo(() => AppMetricsColumnData, [])
   
   // Variable to store the data from the API call
-  const [sysMetrics, setMetrics] = useState([])
+  const [appMetrics, setMetrics] = useState([])
   
   // Hook used to render the client machines returned from API call
   useEffect(() => {
     const getMetrics = async () => {
       const data = await fetchMetrics()
-      setMetrics(data.system_metrics)
+      setMetrics(data.application_metrics)
     }
     getMetrics()
   }, [])
 
   // Function to fetch client machines from DB
   const fetchMetrics = async () => {
-    const resp = await fetch('/metrics/getallmetrics')
+    const resp = await fetch('/metrics/getallappmetrics')
     const data = await resp.json()
     if(resp.ok) {
       return data;
@@ -51,7 +51,7 @@ export const SystemMetricsTable = () => {
 
   return (
     <div>
-      <MetricsTable data={sysMetrics} columns={sysMetricsColumns} />
+      <MetricsTable data={appMetrics} columns={appMetricsColumns} />
     </div>
   )
 }
