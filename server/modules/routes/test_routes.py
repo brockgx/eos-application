@@ -51,8 +51,7 @@ def brockSocket():
     commmand_data = Command(
       #timestamp=req["timestamp"],
       machine_id = req["machine"],
-      type = req["type"],
-      command = req["command"])
+      type = req["type"])
 
     db.session.add(commmand_data)
     db.session.commit()
@@ -62,19 +61,27 @@ def brockSocket():
     print(err_msg)
 
   json_var = {}
+  parameters = {}
+
+  machine = req["machine"] 
+  type = req["type"]
+  json_var["machine"] = machine
+  json_var["type"] = type 
 
   if req["type"] == "fileupload":
     print("fileupload")
   elif req["type"] == "appshutdown":
     print("shutdown")
+    app_name = req["app_name"]
+    app_id = req["app_id"]
+    parameters["app_name"] = app_name
+    parameters["app_id"] = app_id
   elif req["type"] == "precommand":
     print("custom")
-    machine = req["machine"] 
-    type = req["type"] 
     command = req["command"]
-    json_var["machine"] = machine
-    json_var["type"] = type
-    json_var["command"] = command
+    parameters["custom_command"] = command
+
+  json_var["parameters"] = parameters
     
 
   json_data = json.dumps(json_var) 
@@ -83,11 +90,12 @@ def brockSocket():
   sendSocketData(sock, json_data)
 
 
+
   data = receiveSocketData(sock)
 
   # if data:
-  #   update(Command).where(machine_id == 5).values(result="True")
-  #   #session.query(Command).filter(machine_id.id==3, timestamp == 12).update({'result':'True'})
+  #   update(Command).where(machine_id == 1  ).values(result="True")
+  #   session.query(Command).filter(machine_id.id==3, timestamp == 12).update({'result':'True'})
   # else:
   #   print("No data received")
 
