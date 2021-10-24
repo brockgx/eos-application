@@ -53,7 +53,7 @@ const ProgressBar = ({ backgroundColor, completed }) => {
             <Label color={completed}>
             {
               completed === 0
-              ? "0%" 
+              ? "0.0%" 
               : `${completed}%`
             }
             </Label>

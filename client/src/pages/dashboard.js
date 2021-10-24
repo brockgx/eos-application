@@ -26,7 +26,7 @@ const Top = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px 20px 40px;
+  padding: 20px 0px;
 `;
 const TopText = styled.span`
   font-weight: 500;
@@ -35,8 +35,8 @@ const TopText = styled.span`
 `;
 const Bottom = styled.div`
   display: flex;
+  padding-right: 20px;
   justify-content: space-between;
-  padding: 0px 10px;
 `;
 const ConnectedMachines = styled.div`
   display: flex;

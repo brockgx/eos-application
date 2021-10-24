@@ -89,8 +89,8 @@ def get_all_sys_metrics():
       "mac_address": machine_mac,
       "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
       "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M'),
-      "cpu": sys_metric.cpu_usage,
-      "ram": sys_metric.ram_usage,
+      "cpu": str(sys_metric.cpu_usage),
+      "ram": str(sys_metric.ram_usage),
       "disk_names": sys_metric.disk_names.split(","),
       "disk_use": sys_metric.disk_usage.split(","),
       "disk_read": sys_metric.disk_read,
@@ -129,8 +129,8 @@ def get_all_app_metrics():
         "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M'),
         "app_name": app.application.name,
         "app_pid": app.application.pid,
-        "app_cpu": app.cpu_usage,
-        "app_ram": app.ram_usage,
+        "app_cpu": str(app.cpu_usage),
+        "app_ram": str(app.ram_usage),
       })
 
   return jsonify({
