@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request
 import json, ipaddress, socket, time
+from sqlalchemy import update
 
-from ..database.database_tables import db, ClientMachines
+from ..database.database_tables import db, ClientMachines, Command
 from ..sockets.data_transfer import sendSocketData, receiveSocketData
 
 test_routes = Blueprint('test_routes',__name__)
@@ -41,16 +42,40 @@ def brockSocket():
   port = int(agent_machine.ports.split(",")[0])
 
   print("IP and port coupling: " + ip + " - " + str(port))
-  print(req["content"])
 
-  sock.connect((ip, port))
+  sock.connect(("127.0.0.1", port))
 
-  sendSocketData(sock, json.dumps(req["content"], separators=(',', ':')))
+  try:
+    #Create a new table entry object using request data
+    commmand_data = Command(
+      #timestamp=req["timestamp"],
+      machine_id = req["machine"],
+      type = req["type"],
+      command = req["command"])
+
+    db.session.add(commmand_data)
+    db.session.commit()
+
+    print("Command Data saved to database")
+  except Exception as err_msg:
+    print(err_msg)
+
+
+  sendSocketData(sock, commmand_data)
 
   time.sleep(10)
 
   data = receiveSocketData(sock)
 
-  sock.close()
+  # if data:
+  #   update(Command).where(machine_id == 5).values(result="True")
+  #   #session.query(Command).filter(machine_id.id==3, timestamp == 12).update({'result':'True'})
+  # else:
+  #   print("No data received")
 
-  return jsonify({"desc": "Return of the message from the socket", "content": data})
+
+  # if statement which verifies when the data is recevied to store in database and that the command is executed . query to update result to TRUE
+  
+
+
+  return jsonify({"desc": "Return of the message from the socket", "content":data})
