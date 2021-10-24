@@ -1,8 +1,8 @@
 /*
- * Name: search.js
+ * Name: Search.js
  * Purpose: Renders a search bar component 
  * 
- * Used by: dashboard.js for Global Filter input
+ * Usage: dashboard.js for Global Filter input
  */
 
 // Module imports here

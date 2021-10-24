@@ -1,9 +1,9 @@
 /*
- * Name: home.js
+ * Name: Home.js
  * Purpose: Renders various components that make up the 'Home Page' 
  * Source: https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/sign-in-side
 
- * Used by: App.js to render the Home page
+ * Usage: App.js to render the Home page
  */
 
 // Module imports here

@@ -5,7 +5,7 @@
  * Sources: https://blog.logrocket.com/complete-guide-building-smart-data-table-react/
  *          https://github.com/gopinav/React-Table-Tutorials/tree/master/react-table-demo/
  * 
- * Used by: Various tables rendered in 'query-tabs' subfolder
+ * Usage: Various tables rendered in 'query-tabs' subfolder
  */
 
 // Module imports here

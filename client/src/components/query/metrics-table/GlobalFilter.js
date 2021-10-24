@@ -3,7 +3,7 @@
  * Purpose: A global filter function to search
  *          all columns of the Metrics Tables 
  * 
- * Used by: MetricTable.js
+ * Usage: MetricTable.js
  */
 
 // Module imports here

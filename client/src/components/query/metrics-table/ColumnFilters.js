@@ -2,7 +2,7 @@
  * Name: ColumnFilter.js
  * Purpose: Implementation of various column filters
  *
- * Used by: ColumnData for each Metrics Table
+ * Usage: ColumnData for each Metrics Table
  */
 
 // Module imports here

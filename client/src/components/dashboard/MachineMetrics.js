@@ -1,29 +1,39 @@
-import {useState, useEffect} from 'react';
+/*
+ * Name: MachineMetrics.js
+ * Purpose: Renders various graphs & tables that make up the 'Machine Metrics' dropdown
+ * 
+ * Usage: Child of "Machines.js"
+ *          Takes machine_name as a prop to get machien metrics from DB
+ */
 
+// Module imports here
+import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Chart from "react-apexcharts";
-import ProgressBar from "@ramonak/react-progress-bar";
 
+
+// Component imports here
+// import ProgressBar from "@ramonak/react-progress-bar";
+import ProgressBar from "./ProgressBar";
+
+// Styled component declarations
 const Container = styled.div`
   display: flex;
 `;
 const Wrapper = styled.div`
   display: flex;
 `;
-
 const MetricContainer = styled.div`
   display: flex;
   flex: 1;
   margin-left: 10px;
   flex-direction: column;
 `;
-
 const TableContainer = styled.div`
   display: flex;
   margin-left: 70px;
   flex-direction: column;
 `;
-
 const ChartContainer = styled.div`
   margin-left: 50px;
 `;
@@ -39,7 +49,6 @@ const ProgressContainer = styled.div`
   align-items: center;
   padding: 80px 0px 0px 20px;
 `;
-
 const TableWrapper = styled.div`
   display: flex;
   margin: 10px 0px 0px 170px;
@@ -81,16 +90,22 @@ const TableData = styled.td`
   border: 1px solid #687CA1;
   padding: 8px;
 `;
-
 const Title = styled.span`
   margin-top: 5px;
   font-size: 22px;
   font-weight: 400;
 `;
 
+/*
+ * This is the main implementation for the Machine Metrics component
+ * Fetches machine metrics from API and renders graphs & tables
+ */
 const MachineMetrics = (props) => {
+  
+  // destructure machine name from props
   const {machineName} = props
   
+  // Object to define characteristics of Radial Chart components
   const radialChart = (
     {
       options: {
@@ -128,20 +143,21 @@ const MachineMetrics = (props) => {
     }
   );
 
+  // Variable used to store the machines metrics returned from the API
   const [machineMetrics, setMachineMetrics] = useState({description: "default desc", content: {sysMetrics: [], appMetrics: []}})
 
+  // Hook used to render the machine metrics returned from API call
+  // Implements "callback" to pass collection time of metrics to parent component ("Machines.js")
   useEffect(() => {
     const getMetrics = async () => {
       const data = await fetchMetrics()
       setMachineMetrics(data)
       props.parentCallback(data.content.sysMetrics[0].time)
-      console.log(data.content.sysMetrics[0].time)
     }
-
     getMetrics()
   }, [])
 
-  // Fetch device data from DB
+  // Function to fetch machine metrics from DB
   const fetchMetrics = async () => {
     const resp = await fetch(`/dash/clientmachinemetrics/${machineName}`)
     const data = await resp.json()
@@ -196,8 +212,10 @@ const MachineMetrics = (props) => {
                       labelColor="black"
                       bgColor="#7587A9"
                       height="30px"
+                      backgroundColor="#7587A9"
                       width="150px"
-                      completed={parseInt(metrics.disk)} />
+                      completed={parseInt(metrics.disk)}
+                    />
                   </ProgressContainer>
                 </ProgressWrapper>
                 <ProgressWrapper >
@@ -211,6 +229,7 @@ const MachineMetrics = (props) => {
                       bgColor="#7587A9"
                       height="30px"
                       width="150px"
+                      backgroundColor="#7587A9"
                       completed={parseInt(metrics.network)} 
                       />
                   </ProgressContainer>
@@ -255,5 +274,4 @@ const MachineMetrics = (props) => {
     </Container>
   )
 }
-
 export default MachineMetrics

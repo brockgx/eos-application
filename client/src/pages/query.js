@@ -1,8 +1,8 @@
 /*
- * Name: query.js
+ * Name: Query.js
  * Purpose: Renders various components that make up the 'Query Page' 
  * 
- * Used by: App.js to render the Query page
+ * Usage: App.js to render the Query page
  */
 
 // Module imports here

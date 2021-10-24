@@ -2,7 +2,7 @@
  * Name: SysMetricsTable.js
  * Purpose: Renders the System Metrics Table for the Query page tabs
  * 
- * Used by: query.js
+ * Usage: Query.js
  */
 
 // Module imports here

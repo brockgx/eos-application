@@ -1,14 +1,14 @@
 /*
- * Name: SysMetricsColumnData.js
- * Purpose: Column data for System Metrics table
+ * Name: IntegratedMetricsColumnData.js
+ * Purpose: Column data for Integrated Metrics Table
  * 
- * Usage: SysMetricsTable.js
+ * Usage: IntegratedMetricsTable.js
  */
 
-// Import filter functions from ColumnFilter.js 
-import { TextFilter, SelectColumnFilter, NumberRangeColumnFilter,  DateColumnFilter, TimeColumnFilter} from '../../metrics-table/ColumnFilters'
+// Import filter functions from ColumnFilter.js
+import { TextFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColumnFilter } from '../../metrics-table/ColumnFilters'
 
-export const SysMetricsColumnData = [
+export const IntegratedMetricsColumnData = [
     { 
         Header: 'Name',
         accessor: 'name',

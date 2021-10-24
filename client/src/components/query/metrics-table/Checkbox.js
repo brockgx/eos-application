@@ -1,7 +1,8 @@
 /*
  * Name: Checkbox.js
  * Purpose: Checkbox component for show/hide column dropdown
- * Used by: MetricsTable.js
+ * 
+ * Usage: MetricsTable.js
  */
 
 import React from 'react'

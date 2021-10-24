@@ -2,7 +2,7 @@
  * Name: ClientMachinesColumnData.js
  * Purpose: Column data for Client Machines table
  * 
- * Used by: ClientMachinesTable.js
+ * Usage: ClientMachinesTable.js
  */
 
 // Import filter functions from ColumnFilter.js

@@ -1,8 +1,9 @@
 /*
  * Name: AppMetricsColumnData.js
+ *
  * Purpose: Column data for Applicatoion Metrics table
  * 
- * Used by: AppMetricsTable.js
+ * Usage: AppMetricsTable.js
  */
 
 // Import filter functions from ColumnFilter.js 

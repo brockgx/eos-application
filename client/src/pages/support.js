@@ -1,8 +1,8 @@
 /*
- * Name: support.js
+ * Name: Support.js
  * Purpose: Renders various components that make up the 'Support Page' 
  * 
- * Used by: App.js to render the Support page
+ * Usage: App.js to render the Support page
  */
 
 // Module imports here

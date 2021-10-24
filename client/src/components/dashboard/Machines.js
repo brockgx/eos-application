@@ -1,19 +1,30 @@
+/*
+ * Name: Machines.js
+ * Purpose: Renders various components that make up the 'Machine Tiles' 
+ * 
+ * Usage: Dashboard.js - maps an array of machines to this tile component
+ */
+
+// Module imports here
 import {useState} from 'react';
 import {useHistory, Redirect} from 'react-router-dom';
-
-import { IconButton, Collapse, TextField } from '@material-ui/core'
-import styled from 'styled-components'
 import { makeStyles } from "@material-ui/core/styles";
+import styled from 'styled-components'
 import clsx from "clsx";
+import ip2int from 'ip2integer'
+
+// Component imports here
+import MachineMetrics from './MachineMetrics';
+import { IconButton, Collapse, TextField } from '@material-ui/core'
+
+// Icon and assset imports here
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import * as FaIcons from 'react-icons/fa';
 import * as IoIcons from 'react-icons/io';
-import MachineMetrics from './MachineMetrics';
-
-import ip2int from 'ip2integer'
 import windows from '../../assets/windows.png'
 import linux from '../../assets/linux.png'
 
+// Styled component declarations
 const Container = styled.div`
   padding-bottom: 10px;
 `;
@@ -26,25 +37,20 @@ const Wrapper = styled.div`
   -webkit-box-shadow: 0px 0px 1px -5px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 0px 1px -5px rgba(0,0,0,0.75);
 `;
-
 const Top = styled.div`
   display: flex;
 `;
-
 const ColumnContainer = styled.div`
   display: flex;
   flex: 2.5;  
   margin-top: 5px;
-
 `;
-
 const DetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 20px;
   font-weight: 400;
 `;
-
 const MachineNameContainer = styled.span`
   font-size: 28px;
   font-weight: 400;
@@ -52,7 +58,6 @@ const MachineNameContainer = styled.span`
   align-items: center;
   margin: 5px 0px;
 `;
-
 const DetailsRow = styled.span`
   display: flex;
   margin-top: 5px;
@@ -60,7 +65,6 @@ const DetailsRow = styled.span`
   font-weight: 300;
   align-items: center;
 `;
-
 const RightContainer = styled.div`
   flex: 2;  
   display: flex;
@@ -69,10 +73,8 @@ const RightContainer = styled.div`
   font-weight: 300;
   margin: 5px 10px;;
 `;
-
 const Bottom = styled.div`
 `;
-
 const Image = styled.img`
   padding: 5px;
   margin-top: 5px;
@@ -80,23 +82,18 @@ const Image = styled.img`
   height: 120px;
   src: ${(props) => props.src };
 `;
-
 const EditName = styled.span`
   margin-left: 10px;
 `;
-
 const MachineStatusIcon = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background-color: ${(props) => props.color === 1 ? 'green' : 'red' };
 `;
-
 const MachineStatusName = styled.span`
   margin-left: 5px;
-  
 `;
-
 const MetricsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -104,7 +101,6 @@ const MetricsContainer = styled.div`
   font-size: 20px;
   font-weight: 300;
 `;
-
 const Metrics = styled.div`
   padding-top: 10px;
   display: flex;
@@ -112,14 +108,13 @@ const Metrics = styled.div`
   font-size: 22px;
   font-weight: 300;
 `;
-
 const Text = styled.span`
   font-size: 22px;
   font-weight: 600;
   margin: 7px 0px;
 `;
 
-// handles rotation of arrow icon on drop down
+// Use Material UI styles to handles rotation of arrow icon on drop down
 const useStyles = makeStyles((theme) => ({
   expand: {
     transform: "rotate(0deg)",
@@ -133,26 +128,47 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/*
+ * This is the main implementation for the Machines component
+ * Renders a machine tile with an expandable Metrics dropdown
+ * Dropdown passess machine_name to the MachienMetrics component
+ */
 const Machines = (props) => {
+  
+  // destructure machine objecct from props
   const {machine} = props
+
+  // Instantiate useHistory hook to navigate to other pages
+  const history = useHistory();
+
+  // Instantiate useStyles for material UI animation
   const classes = useStyles();
+
+  // Variable to handle expansion of metrics container
   const [expanded, setExpanded] = useState(false);
+
+  // Variables to handle the change of nickname on the UI
   const [edit, setEdit] = useState(false)
   const [name, setName] = useState('')
+
+  // Variable to receive data from child component (MachineMetrics.js)
   const [childData, setChildData] = useState('')
 
+  // Function to handle callback from child component
+  // Receives timestamp from latest data metrics
+  // Converts timestamp to datetime using "Date" function
   const handleCallback = (childData) =>{
     const time = new Date(childData * 1000).toLocaleString()
     setChildData(time)
-    //console.log(childData.time)
   }
 
+  // Function to handle the click event of the dropdown arrow
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const history = useHistory();
-
+  // Function to send a DELETE rquest to the API
+  // Remove a client machine from the DB
   const handleDelete = () => {
     fetch(`/dash/clientmachines/${machine.id}`, {
       method: 'DELETE',
@@ -161,12 +177,14 @@ const Machines = (props) => {
     })
   };
 
+  // Function to handle state of editable name field
   const changeEditMode = () => {
     setEdit(!edit)
   }
 
+  // Function to send PUT request to API
+  // Updates nickname in DB using user input from editable field
   const handleEdit = () => {
-    console.log(name)
     fetch(`/dash/clientmachines/${machine.id}`, {
       method: 'PUT',
       headers: {"Content-Type": "application/json" },
@@ -177,9 +195,14 @@ const Machines = (props) => {
     })
   };
 
+  // Redirect functions to navigate to "Commands page"
+  // [TODO]: pass data to prefill commands form with "machine name"
   const redirect_command = () =>{
     history.push('/command')
   }
+  
+  // Redirect functions to navigate to "Query page"
+  // [TODO]: pass data to prefill query filter with "machine name"
   const redirect_query = () =>{
     history.push('/query')
   }
@@ -187,6 +210,12 @@ const Machines = (props) => {
   return (
     <Container>
       <Wrapper>
+        {/*
+          * "Top" renders top half of Machine Tile
+          * Includes machine connection information
+          * plus in depth machine details
+          * and common functions w/ delete functionality 
+          */}
         <Top>
           <ColumnContainer>
             {
@@ -285,6 +314,13 @@ const Machines = (props) => {
             />
           </RightContainer>
         </Top>
+
+        {/*
+          * "Bottom" renders expandable Metrics section
+          * Pass machine name To "MachineMetrics" component
+          * which gets metrics from API and renders up to date
+          * machine metric tables & graphs
+          */}
         <Bottom>
           <MetricsContainer>
             <IconButton
@@ -293,9 +329,9 @@ const Machines = (props) => {
               })}
               onClick={handleExpandClick}
               aria-expanded={expanded}
-              aria-label="show more"
+              aria-label="Show More"
             >
-              <ExpandMoreIcon />
+              <ExpandMoreIcon/>
             </IconButton>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Metrics>
@@ -308,5 +344,4 @@ const Machines = (props) => {
     </Container>
   )
 }
-
 export default Machines
