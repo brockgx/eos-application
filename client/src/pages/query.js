@@ -11,6 +11,7 @@ import styled from 'styled-components';
 
 // Component imports here
 import { Tabs, Tab } from '@material-ui/core';
+import {IntegratedMetricsTable} from '../components/query/query-tabs/integratedMetrics/IntegratedMetricsTable.js'
 import {SysMetricsTable} from '../components/query/query-tabs/systemMetrics/SysMetricsTable.js'
 import {AppMetricsTable} from '../components/query/query-tabs/appMetrics/AppMetricsTable.js'
 import {ClientMachinesTable} from '../components/query/query-tabs/clientMachines/ClientMachinesTable.js'
@@ -82,17 +83,18 @@ const Query = () => {
               onChange={handleChange} 
               textColor="primary"
               indicatorColor="primary"
-              style={{minWidth: "180px"}}
+              style={{minWidth: "200px"}}
               >
               <Tab label="Client Machines" style={{ fontSize:"18px"}}/>
-              {/* <Tab label="Integrated Metrics" /> */}
+              <Tab label="Integrated Metrics" style={{ fontSize:"18px"}}/>
               <Tab label="System Metrics" style={{ fontSize:"18px"}}/>
               <Tab label="App Metrics" style={{ fontSize:"18px"}}/>
             </Tabs>
             </div>
             {selectedTab === 0 && <ClientMachinesTable />}
-            {selectedTab === 1 && <SysMetricsTable/>}
-            {selectedTab === 2 && <AppMetricsTable/>}
+            {selectedTab === 1 && <IntegratedMetricsTable/>}
+            {selectedTab === 2 && <SysMetricsTable/>}
+            {selectedTab === 3 && <AppMetricsTable/>}
             {/* {selectedTab === 3 && <SystemMetricsTable/>}    */}
           </div>
         </Bottom>

@@ -6,12 +6,26 @@
  */
 
 // Import filter functions from ColumnFilter.js
-import { TextFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColumnFilter } from '../../metrics-table/ColumnFilters'
+import { TextFilter, SelectColumnFilter, NumberRangeColumnFilter, DateColumnFilter, TimeColumnFilter } from '../../metrics-table/ColumnFilters'
 
 export const IntegratedMetricsColumnData = [
     { 
+        Header: 'Type',
+        accessor: 'type',
+        Filter: TextFilter,
+        // can be equals or includes
+        filter: "equals"
+    },
+    { 
         Header: 'Name',
         accessor: 'name',
+        Filter: TextFilter,
+        // can be equals or includes
+        filter: "includes"
+    },
+    { 
+        Header: 'MAC Address',
+        accessor: 'mac_address',
         Filter: TextFilter,
         // can be equals or includes
         filter: "includes"

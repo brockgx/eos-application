@@ -39,7 +39,7 @@ export const IntegratedMetricsTable = () => {
 
   // Function to fetch client machines from DB
   const fetchData = async () => {
-    const resp = await fetch('/dash/clientmachines')
+    const resp = await fetch('/metrics/getallmetrics')
     const data = await resp.json()
     if(resp.ok) {
       return data;

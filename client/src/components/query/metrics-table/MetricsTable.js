@@ -11,6 +11,7 @@
 // Module imports here
 import { useMemo,useState } from 'react'
 import { useTable, useSortBy, useFilters, useGlobalFilter, usePagination, useRowSelect } from 'react-table'
+import { CSVLink, CSVDownload } from "react-csv";
 import styled from 'styled-components';
 
 // Component imports here
@@ -197,10 +198,33 @@ const MetricsTable = ({ data, columns }) => {
   // Used to hold dropdown state
   const [expanded, setExpanded] = useState(false);
 
+  const [csvData, setCSVData] = useState("");
+
   // Function to handle change event of dropdown
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  // const handleExport = () => {
+    
+  //   const data = selectedFlatRows.map((row) => row.original)
+    
+  //   console.log(data)
+
+  //   const fields = "{"
+
+  //   //This loop will extract the label from 1st index of on array
+  //   for (var index in data[0]) {
+  //     //Now convert each value to string and comma-seprated
+  //     fields += '"' + index + '": ' + '"' + index + '"' + ",";
+  //   }
+
+  //   fields += "}"
+  //   console.log(fields) 
+
+  //   var filename = "reprot_" + new Date().toLocaleDateString() + ""
+  //   saveAsCsv({ data, fields, filename })
+  // };
 
   return (
     <Container>
@@ -211,12 +235,18 @@ const MetricsTable = ({ data, columns }) => {
       */}
       <Top>
         <Left>
-        <Button 
-          style={{width: "220px"}}
-          variant="outlined"
+        <CSVLink
+          data={selectedFlatRows.map((row) => row.original)}
+          filename={"reprot_" + new Date().toLocaleDateString() + ".csv"}
+          target="_blank"
         >
-          Export .csv
-        </Button>
+          <Button 
+            style={{width: "220px"}}
+            variant="outlined"
+          >
+            Export .csv
+          </Button>
+        </CSVLink>
         </Left>
         <Middle>
           <GlobalFilter
@@ -340,18 +370,7 @@ const MetricsTable = ({ data, columns }) => {
           </Button>
         </PageButtons>
       </Pagination>
-      
-      {/* <code>
-        {JSON.stringify(
-          {
-            selectedRows: selectedFlatRows.map((row) => row.original),
-          },
-          null,
-          2
-        )}
-      </code> */}
     </Container>
   )
 }
-
 export default MetricsTable

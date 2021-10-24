@@ -22,8 +22,7 @@ def get_all_metric_data():
   all_metrics = SystemMetrics.query.all()
 
   #Loop though all system metric entries
-  all_system_metrics = []
-  all_application_metrics = []
+  metrics = []
   for sys_metric in all_metrics:
     #Check machine existence
     machine_name = sys_metric.machine_id
@@ -32,11 +31,12 @@ def get_all_metric_data():
       machine_name = sys_metric.machine.name
       machine_mac = sys_metric.machine.mac_address
 
-    all_system_metrics.append({
-      "id": sys_metric.id,
+    metrics.append({
       "name": machine_name,
       "mac_address": machine_mac,
-      "time": str(sys_metric.timestamp),
+      "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
+      "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M%p'),
+      # "time": str(sys_metric.timestamp),
       "cpu": str(sys_metric.cpu_usage),
       "ram": str(sys_metric.ram_usage),
       "disk_names": sys_metric.disk_names.split(","),
@@ -44,25 +44,28 @@ def get_all_metric_data():
       "disk_read": sys_metric.disk_read,
       "disk_write": sys_metric.disk_write,
       "network": sys_metric.network_usage,
+      "type": "system"
     })
 
     for app in sys_metric.app_metrics:
-      all_application_metrics.append({
-        "id": app.id,
-        "name": machine_name,
+      metrics.append({
+        "name": app.application.name,
         "mac_address": machine_mac,
         "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
         "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M%p'),
-        "app_name": app.application.name,
-        "app_pid": app.application.pid,
-        "app_cpu": str(app.cpu_usage),
-        "app_ram": str(app.ram_usage),
+        "cpu": str(app.cpu_usage),
+        "ram": str(app.ram_usage),
+        "disk_names": "null",
+        "disk_use": "null",
+        "disk_read": "null",
+        "disk_write": "null",
+        "network": "null",
+        "type": "app"
       })
 
   return jsonify({
     "desc": "Object of all system and application metrics",
-    "system_metrics": all_system_metrics,
-    "application_metrics": all_application_metrics
+    "content": metrics,
   })
 
 #Route: to get all system metrics and return them as JSON
@@ -84,7 +87,6 @@ def get_all_sys_metrics():
       machine_mac = sys_metric.machine.mac_address
 
     all_system_metrics.append({
-      "id": sys_metric.id,
       "name": machine_name,
       "mac_address": machine_mac,
       "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
@@ -122,7 +124,6 @@ def get_all_app_metrics():
 
     for app in sys_metric.app_metrics:
       all_application_metrics.append({
-        "id": app.id,
         "name": machine_name,
         "mac_address": machine_mac,
         "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
