@@ -1,3 +1,4 @@
+from platform import machine
 from flask import Blueprint, jsonify, request
 import json, ipaddress, socket, time
 from sqlalchemy import update
@@ -60,10 +61,27 @@ def brockSocket():
   except Exception as err_msg:
     print(err_msg)
 
+  json_var = {}
 
-  sendSocketData(sock, commmand_data)
+  if req["type"] == "fileupload":
+    print("fileupload")
+  elif req["type"] == "appshutdown":
+    print("shutdown")
+  elif req["type"] == "precommand":
+    print("custom")
+    machine = req["machine"] 
+    type = req["type"] 
+    command = req["command"]
+    json_var["machine"] = machine
+    json_var["type"] = type
+    json_var["command"] = command
+    
 
-  time.sleep(10)
+  json_data = json.dumps(json_var) 
+
+
+  sendSocketData(sock, json_data)
+
 
   data = receiveSocketData(sock)
 
