@@ -1,45 +1,55 @@
-// Columns for device grid
-export const Columns = [
+// Column data for sys metrics table on Query.js page
+// Columns: machine_name, timestamp, cpu_usage, ram_usage, disk_usage, disk_read, disk_write, network_usage
+import { ColumnFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColumnFilter } from './ColumnFilter'
+
+export const ColumnData = [
     { 
-        field: "id",
-        headerName: " ID",
-        width: 100,
-        headerAlign: 'center',
-        align: 'center',
+        Header: 'Machine Name',
+        accessor: 'name',
+        Filter: ColumnFilter,
+        
+        
     },
     { 
-        field: "machine_name",
-        headerName: "Machine Name",
-        width: 180,
-        headerAlign: 'center',
-        align: 'center',
+        Header: 'Time',
+        accessor: 'time',
+        Filter: DateTimeColumnFilter,
+        
     },
     { 
-        field: "time",
-        headerName: "Time", 
-        width: 160,
-        headerAlign: 'center', 
-        align: 'center',
+        Header: 'CPU Usage (%)',
+        accessor: 'cpu',
+        Filter: NumberRangeColumnFilter,
+        filter: "between"
     },
     { 
-        field: "app_name",
-        headerName: "Application", 
-        width: 160,
-        headerAlign: 'center', 
-        align: 'center',
+        Header: 'RAM Usage (%)',
+        accessor: 'ram',
+        Filter: NumberRangeColumnFilter,
+        filter: "between"
     },
     { 
-        field: "app_cpu",
-        headerName: "CPU (%)", 
-        width: 160,
-        headerAlign: 'center', 
-        align: 'center',
+        Header: 'Disk Usage (%)',
+        accessor: 'disk',
+        Filter: NumberRangeColumnFilter,
+        filter: "between"
     },
     { 
-        field: "app_ram",
-        headerName: "RAM (%)", 
-        width: 160,
-        headerAlign: 'center', 
-        align: 'center',
+        Header: 'Disk Read (MB)',
+        accessor: 'disk_read',
+        Filter: NumberRangeColumnFilter,
+        filter: "between"
+    },
+    { 
+        Header: 'Disk Write (MB)',
+        accessor: 'disk_write',
+        Filter: NumberRangeColumnFilter,
+        filter: "between"
+    },
+    { 
+        Header: 'Network Usage (%)',
+        accessor: 'network',
+        Filter: NumberRangeColumnFilter,
+        filter: "between"
     }
 ]

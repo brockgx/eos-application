@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import {useHistory} from 'react-router-dom';
 import { Modal, TextField, FormControl, Select, MenuItem, InputLabel } from '@material-ui/core';
 
 import styled from 'styled-components';
@@ -76,7 +75,6 @@ const defaultValues = {
 };
 
 const AddMachine = ({userInput}) => {
-  const history = useHistory();
   const [open, setOpen] = useState(false);
 
   const [newMachine, setNewMachine] = useState(defaultValues);
@@ -97,9 +95,9 @@ const AddMachine = ({userInput}) => {
       body: JSON.stringify(newMachine)
     }).then(() => {
       setOpen(false)
+      window.location.reload();
     })
   };
-  
 
   return (
     <Container>
@@ -154,9 +152,6 @@ const AddMachine = ({userInput}) => {
                     value={newMachine.os}
                     onChange={handleInputChange}
                   >
-                    <MenuItem key="mac" value="mac">
-                      Mac
-                    </MenuItem>
                     <MenuItem key="windows" value="windows">
                       Windows
                     </MenuItem>

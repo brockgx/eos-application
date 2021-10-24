@@ -1,23 +1,23 @@
 import {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 
-import { IconButton, Collapse } from '@material-ui/core'
+import { IconButton, Collapse, TextField } from '@material-ui/core'
 import styled from 'styled-components'
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
 import * as FaIcons from 'react-icons/fa';
-
+import * as IoIcons from 'react-icons/io';
 import MachineMetrics from './MachineMetrics';
 
+import ip2int from 'ip2integer'
 import windows from '../../assets/windows.png'
 import linux from '../../assets/linux.png'
 
 const Container = styled.div`
   padding-bottom: 10px;
 `;
-const MachinesWrapper = styled.div`
+const Wrapper = styled.div`
   background-color: white;
   padding: 10px;
   border-radius: 2px;
@@ -27,29 +27,45 @@ const MachinesWrapper = styled.div`
   -moz-box-shadow: 0px 0px 1px -5px rgba(0,0,0,0.75);
 `;
 
-const DetailsLeft = styled.div`
-  display: flex;  
-  flex: 1;
-`;
-const DetailsMiddle = styled.div`
+const Top = styled.div`
   display: flex;
-  justify-content: flex-start; 
-  flex: 1;
+`;
+
+const ColumnContainer = styled.div`
+  display: flex;
+  flex: 2.5;  
+`;
+
+const DetailsContainer = styled.div`
+  display: flex;
+  padding-top: 5px;
+  flex-direction: column;
   font-size: 20px;
   font-weight: 400;
 `;
 
-const DetailsRight = styled.div`
+const MachineNameContainer = styled.span`
+  font-size: 28px;
+  font-weight: 400;
   display: flex;
-  flex: 1;
+  align-items: center;
+`;
+
+const DetailsRow = styled.span`
+  display: flex;
+  margin-top: 5px;
+  font-size: 20px;
+  font-weight: 300;
+  align-items: center;
+`;
+
+const RightContainer = styled.div`
+  flex: 2;  
+  display: flex;
   justify-content: flex-end;
   font-size: 22px;
   font-weight: 300;
   margin: 5px 10px;;
-`;
-
-const Top = styled.div`
-  display: flex;
 `;
 
 const Bottom = styled.div`
@@ -63,40 +79,22 @@ const Image = styled.img`
   src: ${(props) => props.src };
 `;
 
-const Details = styled.div`
-  padding: 0px 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-`;
-
-const MachineName = styled.span`
-  font-size: 28px;
-  font-weight: 400;
-`;
-
-const MachineTime = styled.span`
-  font-size: 18px;
-  font-weight: 400;
-`;
-
-const MachineStatus = styled.div`
-  display: flex;
-  justify-contet: space-around;
+const EditName = styled.span`
+  margin-left: 10px;
 `;
 
 const MachineStatusIcon = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: ${(props) => props.color === "Connected" ? 'green' : 'red' };
+  background-color: ${(props) => props.color === 1 ? 'green' : 'red' };
 `;
 
 const MachineStatusName = styled.span`
   margin-left: 5px;
 `;
 
-const MoreDetails = styled.div`
+const MetricsContainer = styled.div`
   padding: 0px 10px;
   display: flex;
   flex-direction: column;
@@ -105,7 +103,7 @@ const MoreDetails = styled.div`
   font-weight: 300;
 `;
 
-const MachineDetails = styled.div`
+const Metrics = styled.div`
   padding: 10px 0px 0px 5px;
   display: flex;
   border-top: 1px solid #687CA1;
@@ -113,46 +111,12 @@ const MachineDetails = styled.div`
   font-weight: 300;
 `;
 
-const MachineInfo = styled.span`
-  margin-top: 5px;
-  font-size: 22px;
-  font-weight: 300;
-`;
-
 const Text = styled.span`
   font-size: 22px;
-  font-weight: 300;
+  font-weight: 600;
 `;
 
-const TagsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 10px;
-  border-top: 1px solid #687CA1;
-`;
-
-const Tags = styled.div`
-  font-size: 18px;
-  font-weight: 400;
-  display: flex;
-  padding: 10px 0px;
-`;
-
-const AddTags = styled.button`
-  font-size: 16px;
-  font-weight: 400;
-  border-radius: 5px;
-  border-color: #8B9AB7;
-  background-color: #8B9AB7;
-  color: #f8f7ff;
-  cursor: pointer;
-  &:hover {
-    border-color: #AEB8CC;
-    background-color: #AEB8CC;
-  }
-  width: 75px;
-`;
-
+// handles rotation of arrow icon on drop down
 const useStyles = makeStyles((theme) => ({
   expand: {
     transform: "rotate(0deg)",
@@ -169,7 +133,9 @@ const useStyles = makeStyles((theme) => ({
 const Machines = ({machine}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-
+  const [edit, setEdit] = useState(false)
+  const [name, setName] = useState('')
+  
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -177,59 +143,137 @@ const Machines = ({machine}) => {
   const history = useHistory();
 
   const handleDelete = () => {
-    fetch('/dash/clientmachines', {
+    fetch(`/dash/clientmachines/${machine.id}`, {
       method: 'DELETE',
     }).then(() => {
-        history.push('/dashboard')
+      window.location.reload();
     })
   };
 
+  const changeEditMode = () => {
+    setEdit(!edit)
+  }
+
   const handleEdit = () => {
-    history.push('/dashboard')
+    console.log(name)
+    fetch(`/dash/clientmachines/${machine.id}`, {
+      method: 'PUT',
+      headers: {"Content-Type": "application/json" },
+      body: JSON.stringify({"new_name": name})
+    }).then(() => {
+      setEdit(false)
+      window.location.reload();
+    })
   };
+
+  const redirect_command = () =>{
+    history.push('/command')
+  }
+  const redirect_query = () =>{
+    history.push('/query')
+  }
 
   return (
     <Container>
-      <MachinesWrapper>
+      <Wrapper>
         <Top>
-          <DetailsLeft>
+          <ColumnContainer>
             {
-              machine.machine_type === "windows"
+              machine.os.toLowerCase() === "windows"
               ? <Image src={windows}/>
               : <Image src={linux}/>
             }
-            <Details>
-              <MachineName>
-                <b>Name:</b> {machine.machine_name}  
-                <MachineInfo> ({machine.ip_address})</MachineInfo>
-              </MachineName>
-              <MachineTime>
-                <b>Last Update:</b> {machine.time}
-              </MachineTime>
-              <MachineStatus>
+            <DetailsContainer style={{marginLeft: "10px"}}>
+              <MachineNameContainer>
+                <b>Name: </b> 
+                <EditName>
+                {
+                  edit === true ?
+                    <div>
+                      <TextField
+                        type="text"
+                        placeholder="Edit nickname"
+                        required
+                        id="name"
+                        name="name"
+                        onChange={(e) => setName(e.target.value)}
+                        value={name}
+                      />
+                      <FaIcons.FaTimes size={20} style={{color: "red", cursor: "pointer"}} onClick={changeEditMode}/>
+                      <FaIcons.FaCheck size={20} style={{margin: "0px 5px", color: "green", cursor: "pointer"}} onClick={handleEdit}/>
+                    </div>
+                  :
+                    <div>
+                      {machine.name}
+                      <FaIcons.FaPen size={16} style={{ margin: "0px 5px", color: "#2C374B", cursor: "pointer"}} onClick={changeEditMode}/>
+                    </div>
+                }   
+                </EditName>
+              </MachineNameContainer>
+              {/* <MachineInfo>
+                <b>Details:&nbsp;</b>
+                {machine.host_name} : {ip2int.toIp(machine.address)} : 1337
+              </MachineInfo> */}
+              <DetailsRow>
+                <b>Last Update:&nbsp;</b> 
+              </DetailsRow>
+              <DetailsRow>
+                <b>Status:&nbsp;</b>
                 <MachineStatusIcon color={machine.status} />
-                <MachineStatusName>{machine.status}</MachineStatusName>
-              </MachineStatus>
-            </Details>
-          </DetailsLeft>
-          <DetailsMiddle>
-            Common Functions: <br/>
-            - Restart <br/>
-            - Shut Down
-          </DetailsMiddle>
-          <DetailsRight>
-            <FaIcons.FaEdit
-              onClick={handleEdit}
-              style={{color: "#4A5A76", padding: "5px", cursor: "pointer"}}
-            />
+                <MachineStatusName>
+                {
+                  machine.status === 1
+                  ? "Connected"
+                  : "Disconnected"
+                }
+                </MachineStatusName>
+              </DetailsRow>
+            </DetailsContainer>
+          </ColumnContainer>
+
+          <ColumnContainer>
+            <DetailsContainer>
+              <Text>Machine Details:</Text>
+              <DetailsRow>
+                <b>Host name:&nbsp;</b>{machine.host_name}     
+              </DetailsRow>
+              <DetailsRow>
+                <b>IP address:&nbsp;</b>{ip2int.toIp(machine.address)}     
+              </DetailsRow>
+              <DetailsRow>
+                <b>Port:&nbsp;</b>1337     
+              </DetailsRow>
+            </DetailsContainer>
+          </ColumnContainer>
+
+          <ColumnContainer>
+            <DetailsContainer>
+              <Text>Common Functions:</Text>
+              <DetailsRow>
+                <IoIcons.IoMdPower
+                  onClick={redirect_command}
+                  style={{color: "#A53C27", padding: "3px 10px 0px 0px", cursor: "pointer"}}
+                />
+                <b>Power</b>
+              </DetailsRow>
+              <DetailsRow>
+                <FaIcons.FaDatabase
+                  onClick={redirect_query}
+                  style={{color: "#4A5A76", padding: "3px 10px 0px 0px", cursor: "pointer"}}
+                />
+                <b>Query</b>
+              </DetailsRow>   
+            </DetailsContainer>      
+          </ColumnContainer>
+          <RightContainer>
             <FaIcons.FaRegTrashAlt 
               onClick={handleDelete}
               style={{color: "#A53C27", padding: "5px", cursor: "pointer"}}
             />
-          </DetailsRight>
+          </RightContainer>
         </Top>
         <Bottom>
-          <MoreDetails>
+          <MetricsContainer>
             <IconButton
               className={clsx(classes.expand, {
                 [classes.expandOpen]: expanded
@@ -241,20 +285,13 @@ const Machines = ({machine}) => {
               <ExpandMoreIcon />
             </IconButton>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <MachineDetails>
-                <MachineMetrics machine={machine} />
-              </MachineDetails>
-              <TagsWrapper>
-                <Text>Tags:</Text>
-                <Tags>
-                Tag1, Tag2, Tag3
-                </Tags>
-                <AddTags>Add Tags</AddTags>
-              </TagsWrapper>
+              <Metrics>
+                <MachineMetrics machineName={machine.mac_address}/>
+              </Metrics>
             </Collapse>  
-          </MoreDetails>
+          </MetricsContainer>
         </Bottom>
-      </MachinesWrapper>
+      </Wrapper>
     </Container>
   )
 }

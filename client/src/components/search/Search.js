@@ -17,6 +17,7 @@ const Search = ({ searchQuery, setSearchQuery }) => {
       autoComplete="off"
     >
     <input
+      className="searchBar"
       value={searchQuery}
       onInput={(e) => setSearchQuery(e.target.value)}
       type="text"
