@@ -159,7 +159,7 @@ const Commands = (props) => {
               <h4>{''}{filePush === "" ? '' : <h4>...</h4>}</h4>
               <h4>{''}{filePush === "" ? '' : <h4>File has successfully been sent.</h4>}</h4>
               
-              {context.appID !== null &&
+              {context.appID !== "" &&
               <h4>{''}{`Selected app: ${context.appID}`}</h4>
             }
               {/*

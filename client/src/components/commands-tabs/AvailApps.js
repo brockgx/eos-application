@@ -98,7 +98,7 @@ export default function AvailApps(props) {
           )}
           value={value}
           loading={loading}
-          onChange={(e, newValue)=> setContext(newValue)}
+          onChange={(e, newValue)=> setContext(newValue || "")}
           renderInput={(params) => (
             <TextField {...params} 
               variant="outlined"
