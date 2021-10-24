@@ -32,6 +32,9 @@ export default function AvailApps(props) {
       event.preventDefault();
       props.changeApp(newValue.appID)
       setValue(newValue)
+      if (newValue === null){
+        return "No application chosen."
+      }
     }
 
     React.useEffect(() => {
