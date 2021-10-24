@@ -35,9 +35,9 @@ def get_all_metric_data():
       "id": sys_metric.id,
       "name": machine_name,
       "mac_address": machine_mac,
-      "time": sys_metric.timestamp,
-      "cpu": sys_metric.cpu_usage,
-      "ram": sys_metric.ram_usage,
+      "time": str(sys_metric.timestamp),
+      "cpu": str(sys_metric.cpu_usage),
+      "ram": str(sys_metric.ram_usage),
       "disk_names": sys_metric.disk_names.split(","),
       "disk_use": sys_metric.disk_usage.split(","),
       "disk_read": sys_metric.disk_read,
@@ -50,11 +50,11 @@ def get_all_metric_data():
         "id": app.id,
         "name": machine_name,
         "mac_address": machine_mac,
-        "time": sys_metric.timestamp,
+        "time": str(sys_metric.timestamp),
         "app_name": app.application.name,
         "app_pid": app.application.pid,
-        "app_cpu": app.cpu_usage,
-        "app_ram": app.ram_usage,
+        "app_cpu": str(app.cpu_usage),
+        "app_ram": str(app.ram_usage),
       })
 
   return jsonify({
