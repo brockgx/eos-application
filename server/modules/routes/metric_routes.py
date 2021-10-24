@@ -36,9 +36,9 @@ def get_all_metric_data():
       "id": sys_metric.id,
       "name": machine_name,
       "mac_address": machine_mac,
-      "time": sys_metric.timestamp,
-      "cpu": sys_metric.cpu_usage,
-      "ram": sys_metric.ram_usage,
+      "time": str(sys_metric.timestamp),
+      "cpu": str(sys_metric.cpu_usage),
+      "ram": str(sys_metric.ram_usage),
       "disk_names": sys_metric.disk_names.split(","),
       "disk_use": sys_metric.disk_usage.split(","),
       "disk_read": sys_metric.disk_read,
@@ -55,8 +55,8 @@ def get_all_metric_data():
         "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M%p'),
         "app_name": app.application.name,
         "app_pid": app.application.pid,
-        "app_cpu": app.cpu_usage,
-        "app_ram": app.ram_usage,
+        "app_cpu": str(app.cpu_usage),
+        "app_ram": str(app.ram_usage),
       })
 
   return jsonify({
@@ -65,10 +65,11 @@ def get_all_metric_data():
     "application_metrics": all_application_metrics
   })
 
-#Route: to get all metrics and return them as JSON
-#   - The route is /metrics/getallmetrics
+#Route: to get all system metrics and return them as JSON
+#   - The route is /metrics/getallsysmetrics
 @metric_routes.route("/getallsysmetrics", methods=['GET'])
 def get_all_sys_metrics():
+  
   #Return all system metric entries
   all_metrics = SystemMetrics.query.all()
 
@@ -101,10 +102,11 @@ def get_all_sys_metrics():
     "desc": "Object of all system and application metrics",
     "system_metrics": all_system_metrics,
   })
-#Route: to get all metrics and return them as JSON
-#   - The route is /metrics/getallmetrics
+#Route: to get all application metrics and return them as JSON
+#   - The route is /metrics/getallappmetrics
 @metric_routes.route("/getallappmetrics", methods=['GET'])
 def get_all_app_metrics():
+
   #Return all system metric entries
   all_metrics = SystemMetrics.query.all()
 
@@ -123,7 +125,8 @@ def get_all_app_metrics():
         "id": app.id,
         "name": machine_name,
         "mac_address": machine_mac,
-        "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%d/%m/%Y, %H:%M:%S'),
+        "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
+        "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M'),
         "app_name": app.application.name,
         "app_pid": app.application.pid,
         "app_cpu": app.cpu_usage,
