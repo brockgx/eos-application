@@ -1,9 +1,11 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import {useContext } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import  {useState } from 'react';
 import styled from 'styled-components';
+import {AppsContext} from './appContext';
 
 const MainContainer = styled.div`
 padding: 1px;
@@ -23,19 +25,22 @@ export default function CmdMachineChoice(props) {
     
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
+    const [context, setContext] = useContext(AppsContext)
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
     const [machineChoice, setMachineChoice] = useState();
+    
 
     const handleChange = (event, newValue) => {
-      props.changeMachine(newValue.machineID)
-      setValue(newValue)
+      //props.changeMachine(newValue.machineID || "")
+      setValue(newValue || "")
+      props.changeMachine(newValue.machineID || "")
     }
 
     const handleSubmit = (event, newValue) => {
       event.preventDefault();
       console.log(machineChoice)
-      setMachineChoice(newValue)
+      setMachineChoice(newValue || "")
       alert('Custom command should be: ' + machineChoice);
        
     }
@@ -94,7 +99,9 @@ export default function CmdMachineChoice(props) {
             options={options}
             loading={loading}
             fullWidth
-            onChange={handleChange}
+            onChange={(e, newValue)=> setContext(newValue || "")}
+           // onChange={handleChange}
+           //onChange ={(e, newValue) => {props.changeMachine(newValue.machineID || ""); setValue(newValue || "")}}
             style={{marginBottom: 30}}
             renderInput={(params) => (
               <TextField {...params} 

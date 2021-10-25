@@ -1,5 +1,5 @@
 import  {useState } from 'react';
-
+import { Button } from '@material-ui/core';
 import { Tabs, Tab } from '@material-ui/core';
 import Command1 from '../components/commands-tabs/Command1';
 import Command2 from '../components/commands-tabs/Command2';
@@ -123,9 +123,10 @@ const Commands = (props) => {
               </Tabs>
             </TabsWrapper>
               
-            <CmdMachineChoice changeMachine={machineChoice => setMachineChoice(machineChoice)} />        
+                   
            
             <AppsContext.Provider value={[context, setContext]}>
+            <CmdMachineChoice changeMachine={machineChoice => setMachineChoice(machineChoice)} /> 
             {selectedTab === 0 && 
               <Command1 
                 machineChoice={machineChoice}
@@ -141,14 +142,24 @@ const Commands = (props) => {
               <Command3 
                 changeCmd={customCmd => setCustomCmd(customCmd)} />} 
             </AppsContext.Provider>
-           
+            <Button
+              name="restartProcess"
+             // onClick={handleClick}
+              //onClick={handleClick}
+              value="RestartProcess"
+              variant="contained"
+              style={{flex: 1, padding: '0px'}}
+              //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
+            >
+              Confirm
+            </Button>
           </LeftSide>
 
 
           <RightSideOutput>
             <div style = {{marginLeft: '10px', paddingLeft: '10px', height: '100%', borderLeft: '1px solid grey', boxSizing: 'border-box'}} >
               <h3 style = {{paddingTop: '5px', paddingBottom: '20px'}}>Currently you have: no commands waiting.</h3> 
-              <h4>{'>'} {machineChoice === "" ? 'MACHINE: No selected machine' : `SELECTED: ${machineChoice}`}</h4>
+             
               <h4>{'>'} {file === null ? 'FILE NAME: No file chosen.' : `FILE NAME: ${file.name}`}</h4>
               <h4>{'>'}{fileDest === ""? ' FILE DESTINATION: N/A' : ` FILE DESTINATION: ${fileDest}`}</h4>
               <h4>{'>'}{filePush === "" ? '' : `${filePush}`}</h4>
@@ -159,14 +170,17 @@ const Commands = (props) => {
               <h4>{''}{filePush === "" ? '' : <h4>...</h4>}</h4>
               <h4>{''}{filePush === "" ? '' : <h4>File has successfully been sent.</h4>}</h4>
               
-              {context.appID !== "" &&
+              {(context.appID !== "" && context.appID !== undefined) &&
               <h4>{''}{`Selected app: ${context.appID}`}</h4>
             }
-              {/*
+             {(context.machineID !== "" && context.machineID !== undefined) &&
+              <h4>{'>'} {`SELECTED MACHINE: ${context.machineID}`}</h4>
+              }
+           
               <h4>{'>'} COMMAND: {customCmd === "" ? `PRESET COMMAND: ${cmdChoice}` :  `CUSTOM COMMAND: ${customCmd}`}</h4> 
               
 
-            */}
+          
               <h5>{'>'}</h5>
             </div>
           </RightSideOutput>
