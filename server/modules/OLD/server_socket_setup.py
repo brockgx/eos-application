@@ -2,6 +2,8 @@
 import socket
 import time
 import ipaddress
+import json
+import base64
 import requests
 from sys import exit
 
@@ -118,7 +120,7 @@ def startServer():
     while connectedSuccessfully:
       #Continuously gather user input
       cmd = input(f"[{agentDetails[0]} : {agentDetails[1]}]> ")
-      
+      print(cmd)
       #Check input against functionality and run a particular process
       #if exit is input, command loop will break and user can reconnect
 
@@ -139,6 +141,67 @@ def startServer():
         time.sleep(2)
         client_response = receiveSocketData(agentSocket)
         requests.post("http://localhost:5000/test/addmetrics", data=client_response)
+        print(client_response)
+      elif cmd.startswith("cmd"): # find "cmd" in string
+        command = cmd.find(' ')+1 # find first space
+        left, right = cmd[:command], cmd[command:] # remove "cmd " from start
+        x = {
+            "TYPE": "command",
+            "ATTRIBUTE": right
+        }
+        sendCommand = ''.join("CMD\n" + json.dumps(x)) # pack command into json
+        sendSocketData(agentSocket, sendCommand) # send json
+        time.sleep(2)
+        client_response = receiveSocketData(agentSocket) # receive response from client
+        print(client_response)
+      elif cmd.startswith("shell"): # find "shell" in string
+        command = cmd.find(' ')+1 # find first space
+        left, right = cmd[:command], cmd[command:] # remove "shell " from start
+        x = {
+            "TYPE": "shell",
+            "ATTRIBUTE": right
+        }
+        sendCommand = ''.join("SHELL\n" + json.dumps(x)) # pack command into json
+        sendSocketData(agentSocket, sendCommand) # send json
+        time.sleep(2)
+        client_response = receiveSocketData(agentSocket) # receive response from client
+        print(client_response)
+      elif cmd.startswith("file"): # Send File
+        # # https://docs.python.org/3/library/base64.html
+        # To add:
+        #   Overwrite Y/N (default Y?)
+        #
+        #
+        #
+        fileData = cmd.split()
+        fileToSend = fileData[1] # File to load and send via json
+        destination = fileData[2] # Save destination on client PC
+        
+        # Open File
+        # Convert to base64
+        fileHandle = open(fileToSend, "rb")
+        file = fileHandle.read()
+        fileHandle.close()
+        b64File = base64.b64encode(file)
+        base64_string = b64File.decode("ascii")
+        x = {
+            "TYPE": "file",
+            "FILE": base64_string,
+            "DESTINATION": destination
+        }
+        # Put in json
+        # Send to client
+        # ---Client---
+        # Receive json
+        # Take out base64 string
+        # convert to byte array
+        # save to destination on client pc
+        # send back success/failure
+        #print(x)
+        sendCommand = ''.join("FILE\n" + json.dumps(x)) # pack command into json
+        sendSocketData(agentSocket, sendCommand) # send json
+        time.sleep(2)
+        client_response = receiveSocketData(agentSocket) # receive response from client
         print(client_response)
         requests.post("http://localhost:5000/test/addmetrics", data=client_response)
       elif cmd == "exit":
