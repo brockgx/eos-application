@@ -41,7 +41,7 @@ def brockSocket():
   agent_machine = ClientMachines.query.filter_by(id=req["machine"]).first()
   ip = str(ipaddress.IPv4Address(agent_machine.ip_address))
   port = int(agent_machine.ports.split(",")[0])
-
+  
   print("IP and port coupling: " + ip + " - " + str(port))
 
   sock.connect(("127.0.0.1", port))
@@ -50,7 +50,8 @@ def brockSocket():
     #Create a new table entry object using request data
     commmand_data = Command(
       #timestamp=req["timestamp"],
-      machine_id = req["machine"],
+      machine_id = req["machine_id"],
+      machine_name = req["machine_name"],
       type = req["type"])
 
     db.session.add(commmand_data)
@@ -63,23 +64,41 @@ def brockSocket():
   json_var = {}
   parameters = {}
 
-  machine = req["machine"] 
+  machine_id = req["machine_id"] 
+  machine_name = req["machine_name"]
   type = req["type"]
-  json_var["machine"] = machine
+  json_var["machine_id"] = machine_id
+  json_var["machine_name"] = machine_name
   json_var["type"] = type 
 
   if req["type"] == "fileupload":
     print("fileupload")
+    file = req["file"]
+    destination = req["destination"]
+    parameters["file"] = file
+    parameters["destination"] = destination
   elif req["type"] == "appshutdown":
     print("shutdown")
     app_name = req["app_name"]
     app_id = req["app_id"]
     parameters["app_name"] = app_name
     parameters["app_id"] = app_id
-  elif req["type"] == "precommand":
-    print("custom")
-    command = req["command"]
+  elif req["type"] == "restartmachine":
+    print("restartmachine")
+  elif req["type"] == "shutdownmachine":
+    print("shutdownmachine")
+  elif req["type"] == "restartapp":
+    print("restartapp")
+    app_name = req["app_name"]
+    app_id = req["app_id"]
+    parameters["app_name"] = app_name
+    parameters["app_id"] = app_id
+  elif req["type"] == "custom":
+    print("custom_command")
+    command = req["custom_command"]
     parameters["custom_command"] = command
+  
+  
 
   json_var["parameters"] = parameters
     
