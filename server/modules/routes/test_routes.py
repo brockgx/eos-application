@@ -46,10 +46,11 @@ def brockSocket():
 
   sock.connect(("127.0.0.1", port))
 
+  print(time.time())
   try:
     #Create a new table entry object using request data
     commmand_data = Command(
-      #timestamp=req["timestamp"],
+      timestamp= time.time(),
       machine_id = req["machine_id"],
       machine_name = req["machine_name"],
       type = req["type"])
@@ -86,28 +87,23 @@ def brockSocket():
     print("custom_command")
   
   
-
   json_var["parameters"] = params_send
     
-
   json_data = json.dumps(json_var) 
-
 
   sendSocketData(sock, json_data)
 
-
-
   data = receiveSocketData(sock)
 
-  # if data:
-  #   update(Command).where(machine_id == 1  ).values(result="True")
-  #   session.query(Command).filter(machine_id.id==3, timestamp == 12).update({'result':'True'})
-  # else:
-  #   print("No data received")
-
-
-  # if statement which verifies when the data is recevied to store in database and that the command is executed . query to update result to TRUE
+  if data:
+    # commanddata = Command.query.filter_by(id=id).first()
+      commmand_data.result = True
+      db.session.commit()
+  else:
+    print("No data received")
   
 
-
   return jsonify({"desc": "Return of the message from the socket", "content":data})
+
+
+   
