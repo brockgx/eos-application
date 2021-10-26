@@ -38,7 +38,7 @@ def brockSocket():
   req = request.json
   sock = socket.socket()
 
-  agent_machine = ClientMachines.query.filter_by(id=req["machine"]).first()
+  agent_machine = ClientMachines.query.filter_by(id=req["machine_id"]).first()
   ip = str(ipaddress.IPv4Address(agent_machine.ip_address))
   port = int(agent_machine.ports.split(",")[0])
   
@@ -69,38 +69,25 @@ def brockSocket():
   type = req["type"]
   json_var["machine_id"] = machine_id
   json_var["machine_name"] = machine_name
-  json_var["type"] = type 
+  json_var["type"] = type
+  params_send = req["parameters"]
 
   if req["type"] == "fileupload":
     print("fileupload")
-    file = req["file"]
-    destination = req["destination"]
-    parameters["file"] = file
-    parameters["destination"] = destination
   elif req["type"] == "appshutdown":
     print("shutdown")
-    app_name = req["app_name"]
-    app_id = req["app_id"]
-    parameters["app_name"] = app_name
-    parameters["app_id"] = app_id
   elif req["type"] == "restartmachine":
     print("restartmachine")
   elif req["type"] == "shutdownmachine":
     print("shutdownmachine")
   elif req["type"] == "restartapp":
     print("restartapp")
-    app_name = req["app_name"]
-    app_id = req["app_id"]
-    parameters["app_name"] = app_name
-    parameters["app_id"] = app_id
   elif req["type"] == "custom":
     print("custom_command")
-    command = req["custom_command"]
-    parameters["custom_command"] = command
   
   
 
-  json_var["parameters"] = parameters
+  json_var["parameters"] = params_send
     
 
   json_data = json.dumps(json_var) 
