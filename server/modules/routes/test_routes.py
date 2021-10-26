@@ -1,7 +1,9 @@
+from platform import machine
 from flask import Blueprint, jsonify, request
 import json, ipaddress, socket, time
+from sqlalchemy import update
 
-from ..database.database_tables import db, ClientMachines
+from ..database.database_tables import db, ClientMachines, Command
 from ..sockets.data_transfer import sendSocketData, receiveSocketData
 
 test_routes = Blueprint('test_routes',__name__)
@@ -36,21 +38,72 @@ def brockSocket():
   req = request.json
   sock = socket.socket()
 
-  agent_machine = ClientMachines.query.filter_by(id=req["machine"]).first()
+  agent_machine = ClientMachines.query.filter_by(id=req["machine_id"]).first()
   ip = str(ipaddress.IPv4Address(agent_machine.ip_address))
   port = int(agent_machine.ports.split(",")[0])
-
+  
   print("IP and port coupling: " + ip + " - " + str(port))
-  print(req["content"])
 
-  sock.connect((ip, port))
+  sock.connect(("127.0.0.1", port))
 
-  sendSocketData(sock, json.dumps(req["content"], separators=(',', ':')))
+  print(time.time())
+  try:
+    #Create a new table entry object using request data
+    commmand_data = Command(
+      timestamp= time.time(),
+      machine_id = req["machine_id"],
+      machine_name = req["machine_name"],
+      type = req["type"])
 
-  time.sleep(10)
+    db.session.add(commmand_data)
+    db.session.commit()
+
+    print("Command Data saved to database")
+  except Exception as err_msg:
+    print(err_msg)
+
+  json_var = {}
+  parameters = {}
+
+  machine_id = req["machine_id"] 
+  machine_name = req["machine_name"]
+  type = req["type"]
+  json_var["machine_id"] = machine_id
+  json_var["machine_name"] = machine_name
+  json_var["type"] = type
+  params_send = req["parameters"]
+
+  if req["type"] == "fileupload":
+    print("fileupload")
+  elif req["type"] == "appshutdown":
+    print("shutdown")
+  elif req["type"] == "restartmachine":
+    print("restartmachine")
+  elif req["type"] == "shutdownmachine":
+    print("shutdownmachine")
+  elif req["type"] == "restartapp":
+    print("restartapp")
+  elif req["type"] == "custom":
+    print("custom_command")
+  
+  
+  json_var["parameters"] = params_send
+    
+  json_data = json.dumps(json_var) 
+
+  sendSocketData(sock, json_data)
 
   data = receiveSocketData(sock)
 
-  sock.close()
+  if data:
+    # commanddata = Command.query.filter_by(id=id).first()
+      commmand_data.result = True
+      db.session.commit()
+  else:
+    print("No data received")
+  
 
-  return jsonify({"desc": "Return of the message from the socket", "content": data})
+  return jsonify({"desc": "Return of the message from the socket", "content":data})
+
+
+   

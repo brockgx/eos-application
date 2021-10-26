@@ -25,7 +25,7 @@ class ClientMachines(db.Model):
 class SystemMetrics(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   machine_id = db.Column(db.String(40), db.ForeignKey('client_machines.mac_address'), nullable=True)
-  timestamp = db.Column(db.Numeric(15,5), nullable=False)
+  timestamp = db.Column(db.Numeric(16,6), nullable=False)
   cpu_usage = db.Column(db.Numeric(5,2), nullable=False)
   ram_usage = db.Column(db.Numeric(5,2), nullable=False)
   disk_names = db.Column(db.String(256), nullable=False)
@@ -52,3 +52,14 @@ class AppMetrics(db.Model):
   system_metric_id = db.Column(db.Integer, db.ForeignKey('system_metrics.id'), nullable=False)
   cpu_usage = db.Column(db.Numeric(5,2), nullable=False)
   ram_usage = db.Column(db.Numeric(5,2), nullable=False)
+
+
+#Table: for holding sending commands from server
+#
+class Command(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  timestamp = db.Column(db.Numeric(16,6), nullable=False)
+  machine_id = db.Column(db.String(40), db.ForeignKey('client_machines.mac_address'), nullable=True)
+  machine_name = db.Column(db.String(50), db.ForeignKey('client_machines.mac_address'), nullable=True)
+  type =  db.Column(db.String(50), nullable=False)
+  result = db.Column(db.Boolean, nullable=False,default=False)
