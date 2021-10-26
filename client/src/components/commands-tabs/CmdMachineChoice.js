@@ -102,7 +102,7 @@ export default function CmdMachineChoice(props) {
             onChange={(e, newValue)=> setContext(newValue || "")}
            // onChange={handleChange}
            //onChange ={(e, newValue) => {props.changeMachine(newValue.machineID || ""); setValue(newValue || "")}}
-            style={{marginBottom: 30}}
+            style={{marginBottom: 0}}
             renderInput={(params) => (
               <TextField {...params} 
                 variant="outlined"

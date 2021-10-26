@@ -19,12 +19,12 @@ const BtnWrapper= styled.div`
 `;
 
 const FileOption = styled.div`
-      margin-bottom: 20px;
+      margin-bottom: 0px;
 `;
 
 const UploadFileBtn = styled.div`
       display: flex;
-      padding-top: 30px;
+      padding-top: 20px;
       padding-bottom: 10px;
       width: 100%;
      
@@ -32,7 +32,7 @@ const UploadFileBtn = styled.div`
 
 const FileDestContainer = styled.div`
       margin-top: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
 `;
 
 const InputWrapper = styled.div`
@@ -90,7 +90,7 @@ export default function Command2(props){
       <form onSubmit={uploadFile}>
       <FormControl style={{width: "100%"}}>
       <FileOption>
-        <div style={{fontSize: "20px", width: "100%"}}>
+        <div style={{fontSize: "20px", width: "100%", paddingTop: "10px"}}>
           Click the button to select the file you would like to send:
         </div>
         <UploadFileBtn >
@@ -116,7 +116,7 @@ export default function Command2(props){
           <TextField
             style={{marginLeft: '10px', flex: 7}}
             id="fileNameDisplay"
-            placeholder={file === null ? 'No file chosen.' : `${file.name}`}
+            placeholder={(file === null || file === undefined ) ? 'No file chosen.' : `${file.name}`}
             inputProps={{readOnly: true,}}
           />
         </UploadFileBtn>

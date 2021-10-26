@@ -76,7 +76,7 @@ export default function Command1(props) {
   }
 
   return (
-  <div>
+  <div style={{paddingTop: "30px"}}>
     <form onSubmit={handleSubmit}>
       <CmdAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <CmdAccordionSummary aria-controls="panel1d-content" id="panel1d-header" style={{fontSize: '20px'}}>

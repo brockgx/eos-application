@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import { useEffect } from 'react';
 //import '../styles/command.css';
 import { AppsContext } from '../components/commands-tabs/appContext';
+import { TextField } from '@material-ui/core';
+import Command1List from '../components/commands-tabs/command1list';
 
 const Container = styled.div`
   flex: 10;
@@ -44,12 +46,10 @@ const TopText = styled.span`
 
 const TabsWrapper = styled.div`
   padding: 0px;
-  flex: 80%;
   box-sizing: border-box;
 `;
 
 const Bottom = styled.div`
-  display: flex;
   justify-content: space-between;
   padding: 0px 40px;
   box-sizing: border-box;
@@ -62,28 +62,75 @@ const CommandsTab = styled.div`
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-sizing: border-box;
   width: 95%;
-  padding-left: 20px;
-  padding-top: 20px;
+  padding: 20px;
   background-color: #ffff;
   border-radius: 6px;
-  height: 75vh;
+  height: 85vh;
   font-weight: 300;
   font-size: 24px;
   display: flex;
+  flex-direction: row;
 `;
 
-const RightSideOutput = styled.div`
+const RightSide = styled.div`
+   display: flex;
    flex: 1;
-   padding-bottom: 20px;
+   margin-bottom: 20px;
    padding-left: 5px;
+   box-sizing: border-box;
+   margin-left: 0px;
+   padding-left: 20px;
+  
 `;
 
 const LeftSide = styled.div`
-  padding-right: 20px;
+  display: flex;
+  margin-right: 20px;
+  height: 100%;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+
+`;
+
+const OptionsArea = styled.div`
+  margin-right: 20px;
+  flex: 1;
+  border: 1px solid yellow;
+`;
+
+const LHCommandOptionBox = styled.div`
   flex: 1;
 `;
 
+const CommandDetailsDisplay= styled.div`
+  border: 1px solid purple;
+  padding-left: 10px;
+`;
+
+const RightSideHistory = styled.div`
+    height: 100%;
+    margin-bottom: 20px;
+    width: 90%;
+    padding-right: 20px;
+    border: 1px solid grey;
+    flex: 1;
+    
+`;
  
+const SpaceBox = styled.div`
+    flex: 3;
+`;
+
+const defaultValues = {
+  //whatever details the API/backend needs
+  name: "",
+  os: "",
+  address: "",
+  status: "0",
+};
+
+
 const Commands = (props) => {
     const [selectedTab, setSelectedTab] = useState(0);
     const handleChange = (event, newValue) => {
@@ -100,7 +147,11 @@ const Commands = (props) => {
     //console.log(customCmd)
     //console.log(machineChoice)
     //console.log(file)
-
+    const [CommandDetails, setCommandDetails] = useState(defaultValues);
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      alert('A file was submitted: ' )
+    }
   return (
   <Container>
     <Wrapper>
@@ -109,12 +160,13 @@ const Commands = (props) => {
       </Top>
       <Bottom>
         <CommandsTab>
+          <div >
           <LeftSide>
-            <TabsWrapper>
+          <TabsWrapper>
               <Tabs
                 centered
                 value={selectedTab} 
-                style = {{marginBottom:20, marginLeft:-20, boxSizing: 'border-box'}} 
+                style = {{marginLeft:-20, boxSizing: 'border-box'}} 
                 onChange={handleChange} 
               >
                 <Tab label="Preset Command Options" style ={{textTransform : 'none', fontSize: '20px'}}/>
@@ -122,16 +174,23 @@ const Commands = (props) => {
                 <Tab label="Custom Commands" style ={{textTransform : 'none', fontSize: '20px'}}/>             
               </Tabs>
             </TabsWrapper>
-              
-                   
-           
+
+            <LHCommandOptionBox>
+        
             <AppsContext.Provider value={[context, setContext]}>
             <CmdMachineChoice changeMachine={machineChoice => setMachineChoice(machineChoice)} /> 
             {selectedTab === 0 && 
-              <Command1 
+            <div>
+              {/*<Command1 
                 machineChoice={machineChoice}
                cmdChoice={cmdChoice => setCmdChoice(cmdChoice)}
-              />}
+              />
+              */}
+              <Command1List
+              cmdChoice={cmdChoice => setCmdChoice(cmdChoice)}
+              />
+            </div>
+              }
             {selectedTab === 1 && 
               <Command2 
                 filePush={filePush => setFilePush(filePush)}
@@ -142,48 +201,47 @@ const Commands = (props) => {
               <Command3 
                 changeCmd={customCmd => setCustomCmd(customCmd)} />} 
             </AppsContext.Provider>
-            <Button
-              name="restartProcess"
-             // onClick={handleClick}
-              //onClick={handleClick}
-              value="RestartProcess"
-              variant="contained"
-              style={{flex: 1, padding: '0px'}}
-              //when it is clicked, it puts the input into a json object, and displays on the right hand side saying "Application to kill: x"
-            >
-              Confirm
-            </Button>
-          </LeftSide>
-
-
-          <RightSideOutput>
-            <div style = {{marginLeft: '10px', paddingLeft: '10px', height: '100%', borderLeft: '1px solid grey', boxSizing: 'border-box'}} >
-              <h3 style = {{paddingTop: '5px', paddingBottom: '20px'}}>Currently you have: no commands waiting.</h3> 
-             
-              <h4>{'>'} {file === null ? 'FILE NAME: No file chosen.' : `FILE NAME: ${file.name}`}</h4>
-              <h4>{'>'}{fileDest === ""? ' FILE DESTINATION: N/A' : ` FILE DESTINATION: ${fileDest}`}</h4>
-              <h4>{'>'}{filePush === "" ? '' : `${filePush}`}</h4>
-              <h4>{''}{filePush === "" ? '' : "     "}</h4>
-              <h4>{'>'}{filePush === "" ? '' : "Press Ctrl + C to abort the command"}</h4>
-              <h4>{''}{filePush === "" ? '' : <h4>...</h4>}</h4>
-              <h4>{''}{filePush === "" ? '' : <h4>...</h4>}</h4>
-              <h4>{''}{filePush === "" ? '' : <h4>...</h4>}</h4>
-              <h4>{''}{filePush === "" ? '' : <h4>File has successfully been sent.</h4>}</h4>
-              
-              {(context.appID !== "" && context.appID !== undefined) &&
-              <h4>{''}{`Selected app: ${context.appID}`}</h4>
-            }
-             {(context.machineID !== "" && context.machineID !== undefined) &&
-              <h4>{'>'} {`SELECTED MACHINE: ${context.machineID}`}</h4>
-              }
            
-              <h4>{'>'} COMMAND: {customCmd === "" ? `PRESET COMMAND: ${cmdChoice}` :  `CUSTOM COMMAND: ${customCmd}`}</h4> 
-              
-
+            
+          </LHCommandOptionBox>
+          <SpaceBox style={{border: "1px solid grey"}}>
+          SpaceBox
+          </SpaceBox>
+          <CommandDetailsDisplay style={{ flexGrow: 2}}>
+              <h3 style = {{paddingTop: '5px'}}>COMMAND DETAILS</h3> 
+             
+              <h4>{'FILE NAME:'}{(file === null || file === undefined) ? ' No file chosen.' : ` ${file.name}`}</h4>
+              <h4>{ 'FILE DESTINATION:'} {fileDest === ""? ' N/A' : ` FILE DESTINATION: ${fileDest}`}</h4>
+              <h4>{filePush === "" ? '' : `${filePush}`}</h4>
+              {(context.appID !== "" && context.appID !== undefined) &&
+              <h4>{`Selected app: ${context.appID}`}</h4>
+             }
+             {(context.machineID !== "" && context.machineID !== undefined) &&
+              <h4>{`SELECTED MACHINE: ${context.machineID}`}</h4>
+              }
+              <h4> COMMAND: {customCmd === "" ? `PRESET COMMAND: ${cmdChoice}` :  `CUSTOM COMMAND: ${customCmd}`}</h4> 
+              <h5></h5>
+              <Button
+              style={{marginTop: "50px"}}
+              fullWidth    
+              variant="contained"
+              onClick={handleSubmit}
+              >
+                {"Confirm & Send"}
+                
+              </Button>
+          </CommandDetailsDisplay>
+          </LeftSide>
           
-              <h5>{'>'}</h5>
-            </div>
-          </RightSideOutput>
+          {
+          /*<RightSide>
+           </RightSide>*/
+          }
+         
+          </div>
+            <RightSideHistory>
+            <h3 style = {{paddingTop: '5px', paddingBottom: '20px', marginBottom: "10px", marginRight: "10px"}}>COMMAND HISTORY</h3> 
+            </RightSideHistory>
         </CommandsTab>                  
       </Bottom>
     </Wrapper>

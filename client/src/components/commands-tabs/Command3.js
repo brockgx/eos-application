@@ -5,11 +5,16 @@ import { Button } from '@material-ui/core';
 import { useState} from 'react';
 
 const CmdThreeContainer = styled.div`
-padding: 1px;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
 `;
 
+
 const CustomInputWrapper = styled.div`
-padding: 1px;
+padding: 0px;
+width: 100%;
 `;
 
 
@@ -33,15 +38,17 @@ export default function Command3(props){
   
   return (
     <CmdThreeContainer>
-      <div>
+      <div style={{paddingTop: "10px", width: "100%", fontSize:'20px'}}>
       Custom Commands. Enter Command(s) to run.
       </div>
+      <form onSubmit={handleSubmit}>
       <CustomInputWrapper>
-        <form onSubmit={handleSubmit}>
+          <div style={{width: "100%"}}>
           <TextField
             id="customCmd"
             name="customCmd"
             multiline
+            style={{paddingTop: "10px"}}
             minRows={4}
             placeholder="eg. schtasks /run /tn <taskname> [/s <computer> [/u [<domain>\]<user> [/p <password>]]]"
             variant="outlined"
@@ -52,15 +59,19 @@ export default function Command3(props){
             onChange={handleChange}
           >
           </TextField>
+          </div>
+          </CustomInputWrapper>
+          <div style={{display: "flex", justifyContent: "left", alignItems: "center", paddingTop: "20px"}}>
           <Button
-            fullWidth
+            style={{width: "50%"}} 
             type="submit"
             variant="contained"
           >
             Push Command
           </Button>
+          </div>
         </form>
-      </CustomInputWrapper>
+      
     </CmdThreeContainer>
   )
 }
