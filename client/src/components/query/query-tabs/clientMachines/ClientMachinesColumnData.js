@@ -6,56 +6,56 @@
  */
 
 // Import filter functions from ColumnFilter.js
-import { TextFilter, SelectColumnFilter, NumberRangeColumnFilter, DateTimeColumnFilter } from '../../metrics-table/ColumnFilters'
+import { TextFilter } from '../../metrics-table/ColumnFilters'
 
 export const ClientMachinesColumnData = [
     { 
         Header: 'Name',
         accessor: 'name',
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        // can be equals or includes
         filter: "includes"
     },
     { 
         Header: 'Host Name',
         accessor: 'host_name',
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        // can be equals or includes
         filter: "includes"
     },
     { 
         Header: 'MAC Address',
         accessor: 'mac_address',
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        // can be equals or includes
         filter: "includes"
     },
     { 
         Header: 'IP Address',
         accessor: 'address',
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        // can be equals or includes
         filter: "includes"
     },
     { 
         Header: 'Ports',
         accessor: 'ports',
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        // can be equals or includes
         filter: "includes"
     },
     { 
         Header: 'OS',
         accessor: 'os',
-        Filter: TextFilter,
-        // can be equals or includes
+        // can interchange with SelectColumnFilter
+        Filter: TextFilter,        
         filter: "includes"
     },
     { 
         Header: 'OS Version',
         accessor: 'os_full_version',
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        // can be equals or includes
         filter: "includes"
     },
 ]

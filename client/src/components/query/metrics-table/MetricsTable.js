@@ -11,7 +11,7 @@
 // Module imports here
 import { useMemo,useState } from 'react'
 import { useTable, useSortBy, useFilters, useGlobalFilter, usePagination, useRowSelect } from 'react-table'
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 import styled from 'styled-components';
 
 // Component imports here
@@ -130,7 +130,7 @@ function DefaultColumnFilter({
 /*
  * This is the main component for the Metrics Table
 */
-const MetricsTable = ({ data, columns }) => {
+const MetricsTable = ({ data, columns, machineName }) => {
 
   const defaultColumn = useMemo(() => {
     return{
@@ -198,33 +198,10 @@ const MetricsTable = ({ data, columns }) => {
   // Used to hold dropdown state
   const [expanded, setExpanded] = useState(false);
 
-  const [csvData, setCSVData] = useState("");
-
   // Function to handle change event of dropdown
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
-  // const handleExport = () => {
-    
-  //   const data = selectedFlatRows.map((row) => row.original)
-    
-  //   console.log(data)
-
-  //   const fields = "{"
-
-  //   //This loop will extract the label from 1st index of on array
-  //   for (var index in data[0]) {
-  //     //Now convert each value to string and comma-seprated
-  //     fields += '"' + index + '": ' + '"' + index + '"' + ",";
-  //   }
-
-  //   fields += "}"
-  //   console.log(fields) 
-
-  //   var filename = "reprot_" + new Date().toLocaleDateString() + ""
-  //   saveAsCsv({ data, fields, filename })
-  // };
 
   return (
     <Container>
@@ -253,6 +230,7 @@ const MetricsTable = ({ data, columns }) => {
             preGlobalFilteredRows={preGlobalFilteredRows}
             filter={globalFilter}
             setFilter={setGlobalFilter}
+            prefill={machineName}
           />
         </Middle>
         <HideColumns>

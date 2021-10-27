@@ -33,6 +33,11 @@ const TopText = styled.span`
   font-size: 44px;
   padding-bottom: 15px;
 `;
+const Text = styled.span`
+  font-weight: 300;
+  font-size: 24px;
+  padding-bottom: 15px;
+`;
 const Bottom = styled.div`
   display: flex;
   padding-right: 20px;
@@ -50,7 +55,7 @@ const ConnectedMachines = styled.div`
 const Dashboard = () => {
   
   // Used to store the client machines returned from the API
-  const [machines, setMachines] = useState({description: "default desc", content: []})
+  const [machines, setMachines] = useState({description: "waiting", content: []})
 
   // Hook used to render the client machines returned from API call
   useEffect(() => {
@@ -102,9 +107,12 @@ const Dashboard = () => {
         <Bottom>
           <ConnectedMachines>
             {/* Map the client machines from the DB to the "Machines" component */}
-            {filteredMachines.map((machine) => (
-              <Machines machine={machine} key={machine.mac_address} />
-            ))}
+            {machines.description === "waiting"
+            ? <Text>No connected machines to display.</Text>
+            : filteredMachines.map((machine) => (
+                <Machines machine={machine} key={machine.mac_address} />
+              ))
+            }
           </ConnectedMachines>
         </Bottom>
       </Wrapper>

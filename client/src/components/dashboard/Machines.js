@@ -7,7 +7,7 @@
 
 // Module imports here
 import {useState} from 'react';
-import {useHistory, Redirect} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import styled from 'styled-components'
 import clsx from "clsx";
@@ -196,15 +196,24 @@ const Machines = (props) => {
   };
 
   // Redirect functions to navigate to "Commands page"
-  // [TODO]: pass data to prefill commands form with "machine name"
   const redirect_command = () =>{
-    history.push('/command')
+    //set the pathname to update the sidebar selection
+    window.location.pathname = '/command';
+
+    // Pass data to prefill commands form with "machine name"
+    history.push({
+      pathname: '/command',
+      state:{machine_name: machine.name}
+    })
   }
   
   // Redirect functions to navigate to "Query page"
-  // [TODO]: pass data to prefill query filter with "machine name"
   const redirect_query = () =>{
-    history.push('/query')
+    // Pass data to prefill query filter with "machine name"
+    history.push({
+      pathname: '/query',
+      state:{machine_name: machine.name}
+    })
   }
 
   return (

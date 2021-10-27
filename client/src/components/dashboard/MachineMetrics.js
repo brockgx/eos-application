@@ -95,6 +95,11 @@ const Title = styled.span`
   font-size: 22px;
   font-weight: 400;
 `;
+const Text = styled.span`
+  padding: 5px;
+  font-size: 22px;
+  font-weight: 300;
+`;
 
 /*
  * This is the main implementation for the Machine Metrics component
@@ -144,7 +149,7 @@ const MachineMetrics = (props) => {
   );
 
   // Variable used to store the machines metrics returned from the API
-  const [machineMetrics, setMachineMetrics] = useState({description: "default desc", content: {sysMetrics: [], appMetrics: []}})
+  const [machineMetrics, setMachineMetrics] = useState({description: "waiting", content: {sysMetrics: [], appMetrics: []}})
 
   // Hook used to render the machine metrics returned from API call
   // Implements "callback" to pass collection time of metrics to parent component ("Machines.js")
@@ -169,108 +174,111 @@ const MachineMetrics = (props) => {
   }
   return (
     <Container>
-      <Wrapper>
-        {machineMetrics.content.sysMetrics.map((metrics) => {
-          return (
-            <>
-              <MetricContainer>
-                <Title>
-                  CPU Usage:
+        {machineMetrics.description === "waiting"
+          ? <Text>No machine metrics to display.</Text>
+          : <Wrapper>
+              {machineMetrics.content.sysMetrics.map((metrics) => {
+                return (
+                  <>
+                    <MetricContainer>
+                      <Title>
+                        CPU Usage:
+                      </Title>
+                      <ChartContainer>
+                        <Chart
+                          key={metrics.name}
+                          options={radialChart.options}
+                          series={[metrics.cpu]}
+                          type="radialBar"
+                          width="300"
+                        />
+                      </ChartContainer>
+                    </MetricContainer>
+                    <MetricContainer>
+                      <Title>
+                        RAM Usage:
+                      </Title>
+                      <ChartContainer>
+                        <Chart
+                          key={metrics.name}
+                          options={radialChart.options}
+                          series={[metrics.ram]}
+                          type="radialBar"
+                          width="300"
+                        />
+                      </ChartContainer>
+                    </MetricContainer>
+                    <MetricContainer >
+                      <ProgressWrapper >
+                        <Title>
+                          Disk Usage:
+                        </Title>
+                        <ProgressContainer>
+                          <ProgressBar
+                            labelAlignment="outside"
+                            labelColor="black"
+                            bgColor="#7587A9"
+                            height="30px"
+                            backgroundColor="#7587A9"
+                            width="150px"
+                            completed={parseInt(metrics.disk)}
+                          />
+                        </ProgressContainer>
+                      </ProgressWrapper>
+                      <ProgressWrapper >
+                        <Title>
+                          Network Usage:
+                        </Title>
+                        <ProgressContainer>
+                          <ProgressBar 
+                            labelAlignment="outside"
+                            labelColor="black"
+                            bgColor="#7587A9"
+                            height="30px"
+                            width="150px"
+                            backgroundColor="#7587A9"
+                            completed={parseInt(metrics.network)} 
+                            />
+                        </ProgressContainer>
+                      </ProgressWrapper>
+                    </MetricContainer>
+                  </>
+                );
+              })}
+              <TableContainer>
+                <Title >
+                  Top 5 Processes:
                 </Title>
-                <ChartContainer>
-                  <Chart
-                    key={metrics.name}
-                    options={radialChart.options}
-                    series={[metrics.cpu]}
-                    type="radialBar"
-                    width="300"
-                  />
-                </ChartContainer>
-              </MetricContainer>
-              <MetricContainer>
-                <Title>
-                  RAM Usage:
-                </Title>
-                <ChartContainer>
-                  <Chart
-                    key={metrics.name}
-                    options={radialChart.options}
-                    series={[metrics.ram]}
-                    type="radialBar"
-                    width="300"
-                  />
-                </ChartContainer>
-              </MetricContainer>
-              <MetricContainer >
-                <ProgressWrapper >
-                  <Title>
-                    Disk Usage:
-                  </Title>
-                  <ProgressContainer>
-                    <ProgressBar
-                      labelAlignment="outside"
-                      labelColor="black"
-                      bgColor="#7587A9"
-                      height="30px"
-                      backgroundColor="#7587A9"
-                      width="150px"
-                      completed={parseInt(metrics.disk)}
-                    />
-                  </ProgressContainer>
-                </ProgressWrapper>
-                <ProgressWrapper >
-                  <Title>
-                    Network Usage:
-                  </Title>
-                  <ProgressContainer>
-                    <ProgressBar 
-                      labelAlignment="outside"
-                      labelColor="black"
-                      bgColor="#7587A9"
-                      height="30px"
-                      width="150px"
-                      backgroundColor="#7587A9"
-                      completed={parseInt(metrics.network)} 
-                      />
-                  </ProgressContainer>
-                </ProgressWrapper>
-              </MetricContainer>
-            </>
-          );
-        })}
-        <TableContainer>
-          <Title >
-            Top 5 Processes:
-          </Title>
-          <TableWrapper>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-              <TableHead>
-                <TableRow>
-                  <TableHeader>App Name</TableHeader>
-                  <TableHeader align="center">Time</TableHeader>
-                  <TableHeader align="center">CPU (%)</TableHeader>
-                  <TableHeader align="center">RAM (%)</TableHeader>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {machineMetrics.content.appMetrics.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableData >
-                      {row.app_name}
-                    </TableData>
-                    <TableData align="center">{new Date(row.time * 1000).toLocaleString()}</TableData>
-                    <TableData align="center">{row.cpu}</TableData>
-                    <TableData align="center">{row.ram}</TableData>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableWrapper>
-        </TableContainer>
-      </Wrapper>
+                <TableWrapper>
+                  <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                    <TableHead>
+                      <TableRow>
+                        <TableHeader>App Name</TableHeader>
+                        <TableHeader align="center">Time</TableHeader>
+                        <TableHeader align="center">CPU (%)</TableHeader>
+                        <TableHeader align="center">RAM (%)</TableHeader>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {machineMetrics.content.appMetrics.map((row) => (
+                        <TableRow
+                          key={row.id}
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                          <TableData >
+                            {row.app_name}
+                          </TableData>
+                          <TableData align="center">{new Date(row.time * 1000).toLocaleString()}</TableData>
+                          <TableData align="center">{row.cpu}</TableData>
+                          <TableData align="center">{row.ram}</TableData>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableWrapper>
+              </TableContainer>
+            </Wrapper>
+        }
     </Container>
   )
 }

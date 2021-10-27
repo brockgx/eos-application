@@ -18,9 +18,9 @@ const BarContainer = styled.div`
 const Bar = styled.div`
   height: 34px;
   width: 100%;
+  min-width: 185px;
   background-color: #E7E9EF;
   border-radius: 5px;
-  margin: 0px 100px 0px 40px;
 `;
 const FillBar = styled.div`
   height: 100%;
@@ -51,11 +51,7 @@ const ProgressBar = ({ backgroundColor, completed }) => {
         <Bar>
           <FillBar color={backgroundColor} fill={completed} >
             <Label color={completed}>
-            {
-              completed === 0
-              ? "0.0%" 
-              : `${completed}%`
-            }
+              {completed}%
             </Label>
           </FillBar>
         </Bar>

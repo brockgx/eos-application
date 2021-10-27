@@ -55,7 +55,7 @@ const Bottom = styled.div`
 /*
  * This is the main implementation for the "Query" page
 */
-const Query = () => {
+const Query = (props) => {
   
   // Used to store state of Tab component
   const [selectedTab, setSelectedTab] = useState(0);
@@ -64,6 +64,9 @@ const Query = () => {
   const handleChange = (event, newValue) => {
       setSelectedTab(newValue);
   }
+
+  const machineName = props.location.state ? props.location.state.machine_name : ""
+
   return (
     <Container>
       <Wrapper>
@@ -85,17 +88,16 @@ const Query = () => {
               indicatorColor="primary"
               style={{minWidth: "200px"}}
               >
-              <Tab label="Client Machines" style={{ fontSize:"18px"}}/>
               <Tab label="Integrated Metrics" style={{ fontSize:"18px"}}/>
               <Tab label="System Metrics" style={{ fontSize:"18px"}}/>
               <Tab label="App Metrics" style={{ fontSize:"18px"}}/>
+              <Tab label="Client Machines" style={{ fontSize:"18px"}}/>
             </Tabs>
             </div>
-            {selectedTab === 0 && <ClientMachinesTable />}
-            {selectedTab === 1 && <IntegratedMetricsTable/>}
-            {selectedTab === 2 && <SysMetricsTable/>}
-            {selectedTab === 3 && <AppMetricsTable/>}
-            {/* {selectedTab === 3 && <SystemMetricsTable/>}    */}
+            {selectedTab === 0 && <IntegratedMetricsTable machineName={machineName}/>}
+            {selectedTab === 1 && <SysMetricsTable />}
+            {selectedTab === 2 && <AppMetricsTable />}
+            {selectedTab === 3 && <ClientMachinesTable />}
           </div>
         </Bottom>
       </Wrapper>

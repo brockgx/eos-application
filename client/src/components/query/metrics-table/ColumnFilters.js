@@ -72,6 +72,12 @@ const NumInput = styled.input`
      text-align: center;
   }
 `;
+const Select = styled.select`
+  margin-top: 15px;
+  min-width: 200px;
+  background-color: #F3F4F7;
+  border: 1px solid white;
+`;
 
 /*
  * Name: TextFilter
@@ -196,7 +202,7 @@ export const SelectColumnFilter = ({column}) => {
 
   // Render a multi-select box
   return (
-    <select
+    <Select
       value={filterValue}
       onChange={(e) => {
         setFilter(e.target.value || undefined);
@@ -208,7 +214,7 @@ export const SelectColumnFilter = ({column}) => {
           {option}
         </option>
       ))}
-    </select>
+    </Select>
   );
 }
 

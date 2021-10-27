@@ -6,31 +6,31 @@
  */
 
 // Import filter functions from ColumnFilter.js
-import { TextFilter, SelectColumnFilter, NumberRangeColumnFilter, DateColumnFilter, TimeColumnFilter } from '../../metrics-table/ColumnFilters'
+import { TextFilter, NumberRangeColumnFilter, DateColumnFilter, TimeColumnFilter, SelectColumnFilter } from '../../metrics-table/ColumnFilters'
 
 export const IntegratedMetricsColumnData = [
-    { 
+    {
         Header: 'Type',
         accessor: 'type',
-        Filter: TextFilter,
-        // can be equals or includes
+        // can interchange with TextFilter
+        Filter: SelectColumnFilter,
         filter: "equals"
     },
-    { 
+    {
         Header: 'Name',
         accessor: 'name',
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        // can be equals or includes
+        filter: "equals"
+    },
+    {
+        Header: 'Machine',
+        accessor: 'machine_name',
+        // can interchange with TextFilter
+        Filter: TextFilter,
         filter: "includes"
     },
-    { 
-        Header: 'MAC Address',
-        accessor: 'mac_address',
-        Filter: TextFilter,
-        // can be equals or includes
-        filter: "includes"
-    },
-    { 
+    {
         Header: 'Date',
         accessor: 'date',
         Filter: DateColumnFilter,
@@ -57,9 +57,9 @@ export const IntegratedMetricsColumnData = [
     { 
         Header: 'Disk Names',
         accessor: 'disk_names',
-        Filter: TextFilter,
-        // can be equals or includes
-        filter: "includes"
+        // can interchange with SelectColumnFilter
+        Filter: SelectColumnFilter,
+        filter: "equals"
     },
     { 
         Header: 'Disk Usage (%)',

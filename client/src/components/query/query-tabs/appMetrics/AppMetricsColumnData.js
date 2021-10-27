@@ -13,8 +13,8 @@ export const AppMetricsColumnData = [
     { 
         Header: 'Machine Name',
         accessor: 'name',
-        Filter: TextFilter,
-        // can be equals or includes
+        // can interchange with TextFilter
+        Filter: SelectColumnFilter,
         filter: "includes"
     },
     { 
@@ -32,15 +32,15 @@ export const AppMetricsColumnData = [
     { 
         Header: 'App Name',
         accessor: 'app_name',
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        // can be equals or includes
         filter: "includes"
     },
     { 
         Header: 'App PID',
         accessor: 'app_pid',
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        // can be equals or includes
         filter: "includes"
     },
     { 

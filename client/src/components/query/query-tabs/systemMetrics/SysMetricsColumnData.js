@@ -6,14 +6,14 @@
  */
 
 // Import filter functions from ColumnFilter.js 
-import { TextFilter, SelectColumnFilter, NumberRangeColumnFilter,  DateColumnFilter, TimeColumnFilter} from '../../metrics-table/ColumnFilters'
+import { TextFilter, NumberRangeColumnFilter,  DateColumnFilter, TimeColumnFilter, SelectColumnFilter} from '../../metrics-table/ColumnFilters'
 
 export const SysMetricsColumnData = [
     { 
-        Header: 'Name',
+        Header: 'Machine Name',
         accessor: 'name',
-        Filter: TextFilter,
-        // can be equals or includes
+        // can interchange with TextFilter
+        Filter: SelectColumnFilter,
         filter: "includes"
     },
     { 
@@ -43,8 +43,8 @@ export const SysMetricsColumnData = [
     { 
         Header: 'Disk Names',
         accessor: 'disk_names',
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        // can be equals or includes
         filter: "includes"
     },
     { 

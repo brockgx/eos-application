@@ -17,7 +17,7 @@ import { IntegratedMetricsColumnData } from './IntegratedMetricsColumnData'
 /*
  * This is the main component for the Integrated Metrics Table tab
 */
-export const IntegratedMetricsTable = () => {
+export const IntegratedMetricsTable = (props) => {
   /*
   * useMemo() hook ensures the data inst recreated on every render
   * otherwise react-table woulf think that it is receving new data on every render
@@ -47,10 +47,10 @@ export const IntegratedMetricsTable = () => {
       throw Error(`Request rejected with status ${resp.status}`);
     }
   }
-  
+    
   return (
     <div>
-      <MetricsTable data={metrics} columns={integratedMetricsColumns} />
+      <MetricsTable data={metrics} columns={integratedMetricsColumns} machineName={props.machineName}/>
     </div>
   )
 }
