@@ -33,6 +33,7 @@ def listClientMachines():
       "id": mach.id,
       "name": mach.name,
       "host_name": mach.host_name,
+      "mac_address": mach.mac_address,
       "os": mach.os_type,
       "address": mach.ip_address,
       "status": mach.status
@@ -133,47 +134,47 @@ def update_client_machine(id):
 #     "content": final  })
 
 #Route: to get a list of all app & sys metrics for a machine
-@dashboard_routes.route('/clientmachinemetrics/<name>', methods=['GET'])
-def listAllMetrics(name):
+@dashboard_routes.route('/clientmachinemetrics/<mac>', methods=['GET'])
+def listAllMetrics(mac):
   
   # Get sys metrics
-  mach = SystemMetrics.query.filter_by(machine_name=name).order_by(SystemMetrics.id.desc()).first()
+  mach = SystemMetrics.query.filter_by(machine_id=mac).order_by(SystemMetrics.id.desc()).first()
   final_sys_metrics = []
 
   disks = mach.disk_usage.split(",")
-  d_len = len(disks)
-  num = random.randint(0, d_len - 1)
 
 
   final_sys_metrics.append({
     "id": mach.id,
-    "name": mach.machine_name,
+    "name": mach.machine.name,
     "time": mach.timestamp,
     "cpu": mach.cpu_usage,
     "ram": mach.ram_usage,
-    "disk": disks[num],
+    "disk": disks[0],
     "disk_read": mach.disk_read,
     "disk_write": mach.disk_write,
-    "network": mach.network_usage
+    "network": mach.network_usage / 100
   })
 
-  app_metrics = AppMetrics.query.filter_by(machine_name=name).limit(5) #order desc
   final_app_metrics = []
 
-  for app in app_metrics:
+  for app in mach.app_metrics:
     final_app_metrics.append({
       "id": app.id,
-      "machine_name": app.machine_name,
-      "time": app.timestamp,
-      "app_name": app.app_name,
-      "cpu": app.app_cpu,
-      "ram": app.app_ram
+      "machine_name": mach.machine.name,
+      "time": mach.timestamp,
+      "app_name": app.application.name,
+      "cpu": app.cpu_usage,
+      "ram": app.ram_usage
     })
+  
+  #Sort app metrics by top CPU & then top RAM usage (in return get first 5 entries)
+  final_app_metrics.sort(key=lambda met: (met["cpu"], met["ram"]), reverse=True)
 
   return jsonify({
     "description": "A list of system metrics for a machine",
     "content": {
       "sysMetrics": final_sys_metrics,
-      "appMetrics": final_app_metrics
+      "appMetrics": final_app_metrics[0:5]
     }
   })

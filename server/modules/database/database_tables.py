@@ -25,14 +25,14 @@ class ClientMachines(db.Model):
 class SystemMetrics(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   machine_id = db.Column(db.String(40), db.ForeignKey('client_machines.mac_address'), nullable=True)
-  timestamp = db.Column(db.Float(6), nullable=False)
-  cpu_usage = db.Column(db.Float(2), nullable=False)
-  ram_usage = db.Column(db.Float(2), nullable=False)
+  timestamp = db.Column(db.Numeric(16,6), nullable=False)
+  cpu_usage = db.Column(db.Numeric(5,2), nullable=False)
+  ram_usage = db.Column(db.Numeric(5,2), nullable=False)
   disk_names = db.Column(db.String(256), nullable=False)
   disk_usage = db.Column(db.String(70), nullable=False)
-  disk_read = db.Column(db.String(20), nullable=False) #will become float
-  disk_write = db.Column(db.String(20), nullable=False) #will become float
-  network_usage = db.Column(db.Float(2), nullable=False)
+  disk_read = db.Column(db.Integer, nullable=False)
+  disk_write = db.Column(db.Integer, nullable=False)
+  network_usage = db.Column(db.Integer, nullable=False) #May be float as was a percentage
   app_metrics = db.relationship('AppMetrics', backref='system_metric')
 
 #Table: for holding details about the specific applications monitored
@@ -50,5 +50,16 @@ class AppMetrics(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   app_id = db.Column(db.Integer, db.ForeignKey('app_details.id'), nullable=False)
   system_metric_id = db.Column(db.Integer, db.ForeignKey('system_metrics.id'), nullable=False)
-  cpu_usage = db.Column(db.Float(2), nullable=False)
-  ram_usage = db.Column(db.Float(2), nullable=False)
+  cpu_usage = db.Column(db.Numeric(5,2), nullable=False)
+  ram_usage = db.Column(db.Numeric(5,2), nullable=False)
+
+
+#Table: for holding sending commands from server
+#
+class Command(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  timestamp = db.Column(db.Numeric(16,6), nullable=False)
+  machine_id = db.Column(db.String(40), db.ForeignKey('client_machines.mac_address'), nullable=True)
+  machine_name = db.Column(db.String(50), db.ForeignKey('client_machines.mac_address'), nullable=True)
+  type =  db.Column(db.String(50), nullable=False)
+  result = db.Column(db.Boolean, nullable=False,default=False)

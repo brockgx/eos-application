@@ -1,38 +1,12 @@
+from platform import machine
 from flask import Blueprint, jsonify, request
-import json
-import socket
-import time
+import json, ipaddress, socket, time
+from sqlalchemy import update
 
-from ..database.prototype_database import db, Random, AppMetrics, SystemMetrics
-from ..sockets.socket_data_transfer import sendSocketData, receiveSocketData
+from ..database.database_tables import db, ClientMachines, Command
+from ..sockets.data_transfer import sendSocketData, receiveSocketData
 
 test_routes = Blueprint('test_routes',__name__)
-
-@test_routes.route("/testone", methods=['POST'])
-def test_one():
-  new_data = request.data
-  print(new_data.decode("utf-8"))
-  test_one = Random(msg=new_data.decode("utf-8"))
-
-  db.session.add(test_one)
-  db.session.commit()
-
-  return "Data added successfully"
-
-@test_routes.route("/testget")
-def test_get():
-  data = Random.query.all()
-
-  final = []
-  first = True
-  for d in data:
-    final.append({"id": d.id, "message": d.msg})
-
-
-  return jsonify({
-    "description": "Random Messages",
-    "content": final
-  })
 
 @test_routes.route("/getmachines")
 def get_machines():
@@ -47,107 +21,89 @@ def get_machines():
   })
   return result
 
-#SOON TO BE DEPRECATED - with new metric routes
-@test_routes.route("/addmetrics", methods=["POST"])
-def add_metrics():
-  new_metrics = request.json
-  final_metrics = new_metrics["content"]
-
-  for metric in final_metrics:
-    for app in metric["app_metrics"]:
-      db_metric = AppMetrics(machine_name=metric["machine_name"],timestamp=metric["collection_time"],app_name=app["name"],app_cpu=app["cpu"],app_ram=app["ram"])
-      db.session.add(db_metric)
-    
-    sys_cpu = metric["system_metrics"][0]["cpu"]
-    sys_ram = metric["system_metrics"][1]["ram"]
-
-    first_disk = True
-    disks = ""
-    disk_perc = ""
-    for disk in metric["disk_metrics"]:
-      if first_disk:
-        first_disk = False
-        disks += disk["device"]
-        disk_perc += str(disk["percent"])
-      else:
-        disks += "," + str(disk["device"])
-        disk_perc += "," + str(disk["percent"])
-    
-    #Add system metric
-    db_sys_metric = SystemMetrics(machine_name=metric["machine_name"],timestamp=metric["collection_time"],cpu_usage=sys_cpu,ram_usage=sys_ram,disk_usage=disk_perc,disk_read=metric["disk_bytes_read"],disk_write=metric["disk_bytes_written"],network_usage=metric["network_percent"])
-    db.session.add(db_sys_metric)
-
-    db.session.commit()
-
-  return "New Metrics Successfully added"
-
-#SOON TO BE DEPRECATED - with new metric routes
-@test_routes.route("/getmetrics", methods=["GET"])
-def get_metrics():
-  data = AppMetrics.query.all()
-
-  final = []
-  for d in data:
-    final.append({"id": d.id, "machine_name": d.machine_name, "time": d.timestamp, "app_name": d.app_name, "app_cpu": d.app_cpu, "app_ram": d.app_ram})
-
-
-  return jsonify({
-    "description": "Application Machine Metrics",
-    "content": final
-  })
-
-  return "Metrics received!!"
-
 #Route: used for personal testing (brock) to run custom SQL queries
 @test_routes.route("/brock/test", methods=["GET"])
 def brockTest():
-  result = db.session.execute('SELECT * FROM app_metrics WHERE app_name = :aname LIMIT :start,:limit', {'aname': "python", "start": 0, "limit": 2})
+  #result = db.session.execute('SELECT * FROM app_metrics WHERE app_name = :aname LIMIT :start,:limit', {'aname': "python", "start": 0, "limit": 2})
 
-  final = []
-  for r in result:
-    print(r)
-    final.append({"id": r.id, "name": r.machine_name, "time": r.timestamp, "cpu": r.app_cpu})
-
-  return jsonify({"description": "A result of app metrics with python as the name", "content": final, "rows": len(final)})
+  return "Test"
 
 #Route: personal socket command use
 #Could POST? from agent to api or server to api
 #So could go from API -> AGENT -> SERVER -> BACK TO API
 @test_routes.route("/socketcmd", methods=["POST"])
 def brockSocket():
-  #req = request.json
-  #print(req)
-  #return "Success"
-
   #Gets the body request - JSON structure for commands
+  #Structure {"desc": "something", "machine": id, "content": {"type": "commandType", "details": {"msg": "Send this please"}}}
   req = request.json
-
   sock = socket.socket()
-  #In future get machine details from machine of the request
-  sock.connect(("2.tcp.ngrok.io", 15170))
 
-  sendSocketData(sock, "Hello, you received me")
+  agent_machine = ClientMachines.query.filter_by(id=req["machine_id"]).first()
+  ip = str(ipaddress.IPv4Address(agent_machine.ip_address))
+  port = int(agent_machine.ports.split(",")[0])
+  
+  print("IP and port coupling: " + ip + " - " + str(port))
 
-  time.sleep(10)
+  sock.connect(("127.0.0.1", port))
+
+  print(time.time())
+  try:
+    #Create a new table entry object using request data
+    commmand_data = Command(
+      timestamp= time.time(),
+      machine_id = req["machine_id"],
+      machine_name = req["machine_name"],
+      type = req["type"])
+
+    db.session.add(commmand_data)
+    db.session.commit()
+
+    print("Command Data saved to database")
+  except Exception as err_msg:
+    print(err_msg)
+
+  json_var = {}
+  parameters = {}
+
+  machine_id = req["machine_id"] 
+  machine_name = req["machine_name"]
+  type = req["type"]
+  json_var["machine_id"] = machine_id
+  json_var["machine_name"] = machine_name
+  json_var["type"] = type
+  params_send = req["parameters"]
+
+  if req["type"] == "fileupload":
+    print("fileupload")
+  elif req["type"] == "appshutdown":
+    print("shutdown")
+  elif req["type"] == "restartmachine":
+    print("restartmachine")
+  elif req["type"] == "shutdownmachine":
+    print("shutdownmachine")
+  elif req["type"] == "restartapp":
+    print("restartapp")
+  elif req["type"] == "custom":
+    print("custom_command")
+  
+  
+  json_var["parameters"] = params_send
+    
+  json_data = json.dumps(json_var) 
+
+  sendSocketData(sock, json_data)
 
   data = receiveSocketData(sock)
 
-  return jsonify({"desc": "Return of the message from the socket", "content": data.decode("utf-8")})
+  if data:
+    # commanddata = Command.query.filter_by(id=id).first()
+      commmand_data.result = True
+      db.session.commit()
+  else:
+    print("No data received")
+  
 
-    # sendSocketData(sock, jsonify(
-    #   {"type": "command",
-    #    "cmd_type": "filesend",
-    #    "contents": {"filename": "name", "file": "file"}}
-    # ))
+  return jsonify({"desc": "Return of the message from the socket", "content":data})
 
-  #   #Wait until data is returned on the connection
-  #   data = receiveSocketData(sock)
-  #   if data:
-  #     print_log_msg("Command was successful")
-  #     return jsonify({"type": "response", "content": data})
-  #   else:
-  #     print_log_msg("Command didn't return")
-  #     return "Command failed"
-  # except Exception as err_msg:
-  #   print_log_msg(str(err_msg))
-  #   return "Command failed"
+
+   
