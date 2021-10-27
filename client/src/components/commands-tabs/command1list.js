@@ -6,16 +6,17 @@ import  {useState } from 'react';
 import Box from '@material-ui/core/Box';
 
 export default function Command1List(props) {
-    const [cmdChoice, setCmdChoice] = useState('');
+   
     const [appChoice, setAppChoice] = useState('');
 
       const handleSubmit = (event) => {
         event.preventDefault();
         const value =  event.currentTarget.value;
         props.cmdChoice(event.currentTarget.value);
+        
        // alert('A command was submitted: ' + `${value}`);
       }
-
+      
     return (
     <Box sx={{ width: '100%'}}>
     <form onSubmit={handleSubmit}>
@@ -56,12 +57,15 @@ export default function Command1List(props) {
                 <div style={{flex: 1}}>
                 Kill Process
                 </div>
+                <div style={{flex: 2}}>
+                </div>
+                {/*
                 <div 
                     className = "AvailAppsContain" 
                     style={{flex: 2}}>
                     <AvailApps changeApp={appChoice => setAppChoice(appChoice)} />
                 </div>
-               
+                */}
                 <Button
                 variant="contained"
                 value="Kill Process"
@@ -76,11 +80,16 @@ export default function Command1List(props) {
                 <div style={{flex: 1}}>
                 Restart Application
                 </div>
+                <div style={{flex: 2}}>
+                </div>
+
+                {/* 
                 <div 
                     className = "AvailAppsContain" 
                     style={{flex: 2}}>
                     <AvailApps changeApp={appChoice => setAppChoice(appChoice)} />
                 </div>
+                */}
                 <Button
                     onClick={handleSubmit}
                     value="Restart Process"

@@ -74,55 +74,48 @@ export default function CmdMachineChoice(props) {
   return (
     <MainContainer>
       <AutocompleteWrapper>
-        <form onSubmit= { handleSubmit }> 
-          <div>
-          <Autocomplete
-            id="availMachinesInput"
-            open={open}
-
-            onOpen={() => {
-              setOpen(true);
-            }}
-
-            onClose={() => {
-              setOpen(false);
-            }}
-
-            isOptionEqualToValue={(option, value) => option.machineID === value.machineID}
-            disableCloseOnSelect
-            getOptionLabel={(option) => option.machineID}
-            renderOption={(props, option, { selected }) => (
-              <li {...props}>
-                {option.machineID}
-              </li>
-            )}
-            options={options}
-            loading={loading}
-            fullWidth
-            onChange={(e, newValue)=> setContext(newValue || "")}
-           // onChange={handleChange}
-           //onChange ={(e, newValue) => {props.changeMachine(newValue.machineID || ""); setValue(newValue || "")}}
-            style={{marginBottom: 0}}
-            renderInput={(params) => (
-              <TextField {...params} 
-                variant="outlined"
-                fullWidth 
-                label="Select your target machine" 
-                placeholder="Machine 1, Machine 2 etc."
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <React.Fragment>
-                      {loading ? <CircularProgress color="inherit" size={22} style={{marginBottom: 10, marginRight: 10}} /> : null}
-                      {params.InputProps.endAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-              />  
-            )} 
-          />
-          </div>
-        </form>
+        <Autocomplete
+          id="availMachinesInput"
+          open={open}
+          onOpen={() => {
+            setOpen(true);
+          }}
+          onClose={() => {
+            setOpen(false);
+          }}
+          isOptionEqualToValue={(option, value) => option.machineID === value.machineID}
+          disableCloseOnSelect
+          getOptionLabel={(option) => option.machineID}
+          renderOption={(props, option, { selected }) => (
+            <li {...props}>
+              {option.machineID}
+            </li>
+          )}
+          options={options}
+          loading={loading}
+          fullWidth
+        
+          onChange={(e, newValue)=> setContext(newValue || "")}
+          style={{marginBottom: 0}}
+          renderInput={(params) => (
+            <TextField {...params} 
+              variant="outlined"
+              fullWidth 
+              label="Select your target machine" 
+              placeholder="Machine 1, Machine 2 etc."
+              required
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <React.Fragment>
+                    {loading ? <CircularProgress color="inherit" size={22} style={{marginBottom: 10, marginRight: 10}} /> : null}
+                    {params.InputProps.endAdornment}
+                  </React.Fragment>
+                ),
+              }}
+            />  
+          )} 
+        />
       </AutocompleteWrapper>
     </MainContainer>
   );

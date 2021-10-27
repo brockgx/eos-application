@@ -50,7 +50,7 @@ export default function Command3(props){
             multiline
             style={{paddingTop: "10px"}}
             minRows={4}
-            placeholder="eg. schtasks /run /tn <taskname> [/s <computer> [/u [<domain>\]<user> [/p <password>]]]"
+            placeholder="eg. ls "
             variant="outlined"
             required
             margin="normal"

@@ -10,11 +10,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../assets/logo.png';
+
 /*
 This Sign In page is based on the free log in template found at the below link:
 https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/sign-in-side
 */
-//I originally thought this would be a component, but now I think it's probably best a page
 
 const useStyles = makeStyles((theme) => ({
   root: {

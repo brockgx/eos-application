@@ -43,6 +43,7 @@ export default function Command2(props){
   const [file, setFile] = useState(null);
   const [fileDest, setFileDest] = useState('');
 
+  {/** 
   console.log(file)
   console.log(fileDest)
   const handleSubmit = (event) => {
@@ -50,7 +51,7 @@ export default function Command2(props){
     alert('A file was submitted: ' + file.name);
     alert('File destination will be: ' + fileDest);
   }
-
+*/}
   const handleFile = (event) => {
     event.preventDefault();
     props.changeFile(event.target.files[0])
@@ -65,7 +66,7 @@ export default function Command2(props){
 
   let uploadFile = (event) => {
     event.preventDefault();
-    if(file !== null || fileDest === "") {
+    if(file !== null) {
       let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
@@ -73,7 +74,7 @@ export default function Command2(props){
         console.log(reader.result);
         console.log(final[1]);
         props.filePush("The file: ***" + `${file.name}` + "*** has been sent to the selected machine to this directory: " + `${fileDest}`)
-       // alert('A file was submitted: ' + file.name);
+        //alert('A file was submitted: ' + file.name);
         //alert('File destination will be: ' + fileDest);
         //postFile(reader.result);
       }
@@ -87,7 +88,7 @@ export default function Command2(props){
   return (
   <MainContainer>
     <CmdTwoContainer>
-      <form onSubmit={uploadFile}>
+      
       <FormControl style={{width: "100%"}}>
       <FileOption>
         <div style={{fontSize: "20px", width: "100%", paddingTop: "10px"}}>
@@ -141,13 +142,14 @@ export default function Command2(props){
           fullWidth     
           type="submit"
           variant="contained"
-          onSubmit={uploadFile} 
+         // onSubmit={uploadFile} 
+         onClick={uploadFile}
         >
           Push File 
         </Button>
       </BtnWrapper>
       </FormControl>
-      </form>
+     
     </CmdTwoContainer>
   </MainContainer>
   )
