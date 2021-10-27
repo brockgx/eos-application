@@ -44,7 +44,7 @@ def brockSocket():
   
   print("IP and port coupling: " + ip + " - " + str(port))
 
-  sock.connect(("127.0.0.1", port))
+  sock.connect((ip, port))
 
   print(time.time())
   try:
