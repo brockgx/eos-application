@@ -29,8 +29,7 @@ export default function Command1List(props) {
                 <Button
                     variant="contained"
                     type="submit"
-                    name="shutDevice"
-                    value="shutdownDevice"
+                    value="Shutdown Device"
                     onClick={handleSubmit}
                     style={{flex: 1, padding: '0px'}}
                 >
@@ -45,9 +44,8 @@ export default function Command1List(props) {
             </div>
                 <Button
                     variant="contained"
-                    name="restartDevice"
                     onClick={handleSubmit}
-                    value="RestartDevice"
+                    value="Restart Device"
                     style={{flex: 1, padding: '0px'}}
                 >
                 Select
@@ -66,8 +64,7 @@ export default function Command1List(props) {
                
                 <Button
                 variant="contained"
-                name="killProcess"
-                value="kill Process"
+                value="Kill Process"
                 onClick={handleSubmit}
                 style={{flex: 1, padding: '0px'}}
                 >
@@ -85,9 +82,8 @@ export default function Command1List(props) {
                     <AvailApps changeApp={appChoice => setAppChoice(appChoice)} />
                 </div>
                 <Button
-                    name="restartProcess"
                     onClick={handleSubmit}
-                    value="RestartProcess"
+                    value="Restart Process"
                     variant="contained"
                     style={{flex: 1, padding: '0px'}}
                     >
