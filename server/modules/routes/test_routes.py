@@ -63,7 +63,6 @@ def brockSocket():
     print(err_msg)
 
   json_var = {}
-  parameters = {}
 
   machine_id = req["machine_id"] 
   machine_name = req["machine_name"]
@@ -73,18 +72,7 @@ def brockSocket():
   json_var["type"] = type
   params_send = req["parameters"]
 
-  if req["type"] == "fileupload":
-    print("fileupload")
-  elif req["type"] == "appshutdown":
-    print("shutdown")
-  elif req["type"] == "restartmachine":
-    print("restartmachine")
-  elif req["type"] == "shutdownmachine":
-    print("shutdownmachine")
-  elif req["type"] == "restartapp":
-    print("restartapp")
-  elif req["type"] == "custom":
-    print("custom_command")
+  print(req["type"])
   
   
   json_var["parameters"] = params_send
@@ -96,7 +84,6 @@ def brockSocket():
   data = receiveSocketData(sock)
 
   if data:
-    # commanddata = Command.query.filter_by(id=id).first()
       commmand_data.result = True
       db.session.commit()
   else:
@@ -104,6 +91,3 @@ def brockSocket():
   
 
   return jsonify({"desc": "Return of the message from the socket", "content":data})
-
-
-   
