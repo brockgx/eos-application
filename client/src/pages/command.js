@@ -1,20 +1,18 @@
 import  {useState } from 'react';
 import { Button } from '@material-ui/core';
 import { Tabs, Tab } from '@material-ui/core';
-import Command1 from '../components/commands-tabs/Command1';
+import Command1List from '../components/commands-tabs/command1list';
 import Command2 from '../components/commands-tabs/Command2';
 import Command3 from '../components/commands-tabs/Command3';
+import BasicSelect from '../components/commands-tabs/osSelect';
 import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
+import AvailApps from '../components/commands-tabs/AvailApps';
+import { AppsContext } from '../components/commands-tabs/appContext';
 import React from 'react';
 import styled from 'styled-components';
-import { useEffect } from 'react';
-//import '../styles/command.css';
-import { AppsContext } from '../components/commands-tabs/appContext';
-import { TextField } from '@material-ui/core';
-import Command1List from '../components/commands-tabs/command1list';
-import AvailApps from '../components/commands-tabs/AvailApps';
-import DataTable from '../components/commands-tabs/commandhistory';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+
+//import DataTable from '../components/commands-tabs/commandhistory';
+
 
 const Container = styled.div`
   flex: 10;
@@ -160,6 +158,8 @@ const Commands = (props) => {
     const [context, setContext] = useState('')
     const [cmdChoice, setCmdChoice] = useState('')
     const [filePush, setFilePush] = useState('')
+    const [osChoice, setOsChoice] = useState('')
+    
     //console.log(customCmd)
     //console.log(machineChoice)
     //console.log(file)
@@ -168,9 +168,10 @@ const Commands = (props) => {
     const handleSubmit = (event) => {
       event.preventDefault();
       console.log(context.machineID);
-      console.log(appChoice.appID);
+      console.log(fileDest);
       console.log(file);
-
+      console.log(osChoice)
+      {/* 
       setCommandDetails({
         ...commandDetails,
         machineChoice: commandDetails.DeviceID,
@@ -183,6 +184,7 @@ const Commands = (props) => {
 
       });
       console.log(...commandDetails);
+      */}
     }
 
         {/**
@@ -211,9 +213,24 @@ const Commands = (props) => {
                   style = {{}} 
                   onChange={handleChange} 
                 >
-                  <Tab label="Preset Command Options" style ={{textTransform : 'none', fontSize: '20px'}}/>
-                  <Tab label="Push File to a Device" style ={{textTransform : 'none', fontSize: '20px'}}/>
-                  <Tab label="Custom Commands" style ={{textTransform : 'none', fontSize: '20px'}}/>             
+                  <Tab 
+                    label="Preset Command Options"
+                    style ={{
+                      textTransform : 'none', 
+                      fontSize: '20px'
+                  }}/>
+                  <Tab 
+                    label="Push File to a Device" 
+                    style ={{
+                      textTransform : 'none', 
+                      fontSize: '20px'
+                    }}/>
+                  <Tab 
+                    label="Custom Commands" 
+                    style ={{
+                      textTransform : 'none', 
+                      fontSize: '20px'
+                    }}/>             
                 </Tabs>
               </TabsWrapper>
 
@@ -244,109 +261,112 @@ const Commands = (props) => {
                 </AppsContext.Provider>
               </LHCommandOptionBox>
             
-            <SpaceBox style={{maxHeight: selectedTab === 0 ? "56px": "17px"}}>
-            {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
-            <div 
-              className = "AvailAppsContain" 
-              style={{flex: 2}}>
-              <AvailApps changeApp={appChoice => setAppChoice(appChoice)} />
-            </div>
-            }
-            </SpaceBox>
-
-            <CommandDetailsDisplay> 
-              <h3 style = {{paddingTop: '5px'}}>COMMAND DETAILS</h3> 
-
-              <div style={{flex: 4}}>
-                {
-                //Machine Selected
-                }
-              <div>
-                {"> Selected Machine: "} 
-                {(context.machineID !== "" && context.machineID !== undefined) ? ` ${context.machineID}`: "No Machine Chosen"}  
+              <SpaceBox style={{maxHeight: selectedTab === 0 || 2 ? "56px": "17px"}}>
+              {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
+              <div 
+                className = "AvailAppsContain" 
+                style={{flex: 2}}>
+                <AvailApps changeApp={appChoice => setAppChoice(appChoice)} />
               </div>
-                {
-                //Command Selected
-                }
-
-              <div>
-                {(selectedTab === 2 ) && `> (Custom Command): ${customCmd}`}
-                {(selectedTab === 0 && cmdChoice !== undefined && cmdChoice !== null && cmdChoice !== '') ?
-                  `> (Preset Command): ${cmdChoice}` : '' }
+              }
+              {/*
+               {(selectedTab === 2) &&
+              <div
+                className = "AvailAppsContain" 
+                style={{flex: 2}}>
+                <AvailApps changeApp={appChoice => setAppChoice(appChoice)} />
               </div>
-                {
-                //App Selected if Command selected is Restart/Kill application
-                }
-
-              {/* 
-              <div>
-                {(cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
-                  <div>  
-                    {'Selected App: '}
-                    {(context.appID !== "" && context.appID !== undefined) ? `${context.appID}` : "No App Chosen."}
-                  </div>
-                }
-              </div>    
+              }
               */}
-
-              <div>
-                {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
-                  <div>  
-                    {'> Selected App: '}
-                    {(appChoice.appID !== "" && appChoice.appID !== undefined) ? `${appChoice.appID}` : "No App Chosen."}
-                  </div>
-                }
-              </div> 
-              {
-              //File Details if Command Selected is Push File
+             {(selectedTab === 2) &&
+              <div
+                className = "osSelectContain" 
+                style={{flex: 2}}>
+                <BasicSelect changeOS={osChoice => setOsChoice(osChoice)} />
+              </div>
               }
 
-              <div>
-                {selectedTab === 1 &&
-                <div>
+
+              </SpaceBox>
+
+              <CommandDetailsDisplay> 
+                <h3 style = {{paddingTop: '5px'}}>COMMAND DETAILS</h3> 
+                <div style={{flex: 4}}>
+
+                  {/*Machine Selected*/}
                   <div>
-                    {"> File Name: "}{(file === null || file === undefined) ? ' No file chosen.' : ` ${file.name}`}
+                    {"> Selected Machine: "} 
+                    {(context.machineID !== "" && context.machineID !== undefined) ? ` ${context.machineID}`: "No Machine Chosen"}  
                   </div>
-                  <div style={{}}>
-                    {"> File Destination: "}{fileDest === ""? ' N/A' : `${fileDest}`}
-                    {filePush === "" ? '' : `${filePush}`}
+
+                  {/*Command Selected */}
+                  <div>
+                  {(selectedTab === 2 ) && `> (Custom Command): ${customCmd}`}
+                  </div>
+                  <div>
+                  {selectedTab === 2 && (osChoice !== undefined && osChoice !== null) ? 
+                      `> Operating System: ${osChoice}`: '' }
+
+                    {(selectedTab === 0 && cmdChoice !== undefined && cmdChoice !== null && cmdChoice !== '') ?
+                      `> (Preset Command): ${cmdChoice}` : '' }
+                  </div>
+
+                  {/*App Selected if Command selected is Restart/Kill application*/}
+                  <div>
+                    {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
+                      <div>  
+                        {'> Selected App: '}
+                        {(appChoice.appID !== "" && appChoice.appID !== undefined) ?
+                          `${appChoice.appID}` : "No App Chosen."}
+                      </div>
+                    }
+                  </div> 
+                
+                  {/*File Details if Command Selected is Push File */}
+                  <div>
+                    {selectedTab === 1 &&
+                    <div>
+                      <div>
+                        {"> File Name: "}{(file === null || file === undefined) ? 
+                        ' No file chosen.' : ` ${file.name}`}
+                      </div>
+                      <div style={{}}>
+                        {"> File Destination: "}{fileDest === "" ? ' N/A' : `${fileDest}`}
+                        {(filePush === "") ? '' : `${filePush}`}
+                      </div>
+                    </div>
+                  }
                   </div>
                 </div>
-              }
-              </div>
-              </div>
 
-              <Button
-                style={{marginTop: "20px", flex: 1, marginBottom: "10px"}}
-                fullWidth    
-                variant="contained"
-                type="submit"
-                onSubmit={handleSubmit}
-              >
-                {"Confirm & Send"}
-              </Button>
-            </CommandDetailsDisplay>
+                <Button
+                  style={{marginTop: "20px", flex: 1, marginBottom: "10px"}}
+                  fullWidth    
+                  variant="contained"
+                  type="submit"
+                  onSubmit={handleSubmit}
+                >
+                  {"Confirm & Send"}
+                </Button>
+              </CommandDetailsDisplay>
             </LeftSide>
           </form>
           
-            <RightSideHistory>
-              <div 
-              style = {{
-                paddingTop: '5px', 
-                paddingLeft: '10px',
-                paddingBottom: '20px', 
-                marginBottom: "10px", 
-                marginRight: "10px",
-                height: "90%",
-              }}
-              >
-                COMMAND HISTORY
-                <DataTable />
-
-                
-              </div> 
-
-            </RightSideHistory>
+          <RightSideHistory>
+            <div 
+            style = {{
+              paddingTop: '5px', 
+              paddingLeft: '10px',
+              paddingBottom: '20px', 
+              marginBottom: "10px", 
+              marginRight: "10px",
+              height: "90%",
+            }}
+            >
+              COMMAND HISTORY
+              {/*<DataTable /> */}
+            </div> 
+          </RightSideHistory>
         </CommandsTab>                  
       </Bottom>
     </Wrapper>

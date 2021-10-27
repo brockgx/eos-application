@@ -32,7 +32,6 @@ export default function AvailApps(props) {
       event.preventDefault();
       props.changeApp(newValue || "")
       setValue(newValue || "")
-     // alert(newValue.appID)
     }
 
     React.useEffect(() => {
@@ -96,8 +95,6 @@ export default function AvailApps(props) {
           )}
           value={value}
           loading={loading}
-          //onChange={(e, newValue)=> setContext(newValue || "")}
-          //onChange={(e, newValue) => props.setAppChoice(props.appChoice)}
           onChange={handleChange}
           renderInput={(params) => (
             <TextField {...params} 

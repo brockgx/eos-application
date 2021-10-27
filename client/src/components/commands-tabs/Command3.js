@@ -28,40 +28,49 @@ export default function Command3(props){
     setCustomCmd(event.target.value)
   }
 
-  const handleSubmit = (event, newValue) => {
-    event.preventDefault();
-    setCustomCmd(newValue)
-    alert('Custom command should be: ' + customCmd);
-     
-  }
-  console.log(props)
+    {/* 
+    const handleSubmit = (event, newValue) => {
+      event.preventDefault();
+      setCustomCmd(newValue)
+      alert('Custom command should be: ' + customCmd);
+    }
+    */}
   
   return (
     <CmdThreeContainer>
-      <div style={{paddingTop: "10px", width: "100%", fontSize:'20px'}}>
-      Custom Commands. Enter Command(s) to run.
+      <div style={{
+        paddingTop: "10px", 
+        width: "100%", 
+        fontSize:'20px'
+      }}>
+        Custom Commands. Enter Command(s) to run.
       </div>
-      <form onSubmit={handleSubmit}>
       <CustomInputWrapper>
-          <div style={{width: "100%"}}>
-          <TextField
-            id="customCmd"
-            name="customCmd"
-            multiline
-            style={{paddingTop: "10px"}}
-            minRows={4}
-            placeholder="eg. ls "
-            variant="outlined"
-            required
-            margin="normal"
-            fullWidth
-            value={value}
-            onChange={handleChange}
-          >
-          </TextField>
-          </div>
-          </CustomInputWrapper>
-          <div style={{display: "flex", justifyContent: "left", alignItems: "center", paddingTop: "20px"}}>
+        <div style={{width: "100%"}}>
+        <TextField
+          id="customCmd"
+          name="customCmd"
+          multiline
+          style={{paddingTop: "10px"}}
+          minRows={4}
+          placeholder="eg. ls "
+          variant="outlined"
+          required
+          margin="normal"
+          fullWidth
+          value={value}
+          onChange={handleChange}
+        >
+        </TextField>
+        </div>
+      </CustomInputWrapper>
+        <div style={{
+          display: "flex", 
+          justifyContent: "left", 
+          alignItems: "center", 
+          paddingTop: "20px"
+        }}>
+          {/*
           <Button
             style={{width: "50%"}} 
             type="submit"
@@ -69,9 +78,8 @@ export default function Command3(props){
           >
             Push Command
           </Button>
-          </div>
-        </form>
-      
+          */}
+        </div>  
     </CmdThreeContainer>
   )
 }

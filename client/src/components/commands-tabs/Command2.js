@@ -73,9 +73,7 @@ export default function Command2(props){
         const final = reader.result.split(",", 2);
         console.log(reader.result);
         console.log(final[1]);
-        props.filePush("The file: ***" + `${file.name}` + "*** has been sent to the selected machine to this directory: " + `${fileDest}`)
-        //alert('A file was submitted: ' + file.name);
-        //alert('File destination will be: ' + fileDest);
+        //props.filePush("The file: ***" + `${file.name}` + "*** has been sent to the selected machine to this directory: " + `${fileDest}` + "AND THE READER SAYS: " + `${reader.result}` + " sd    " + `${final[1]}`)
         //postFile(reader.result);
       }
       console.log("File uploading");
@@ -137,6 +135,8 @@ export default function Command2(props){
           />
         </InputWrapper>
       </FileDestContainer>
+
+      {/*
       <BtnWrapper>
         <Button
           fullWidth     
@@ -148,8 +148,9 @@ export default function Command2(props){
           Push File 
         </Button>
       </BtnWrapper>
+      */}
+      
       </FormControl>
-     
     </CmdTwoContainer>
   </MainContainer>
   )
