@@ -4,15 +4,11 @@ import { Tabs, Tab } from '@material-ui/core';
 import Command1List from '../components/commands-tabs/command1list';
 import Command2 from '../components/commands-tabs/Command2';
 import Command3 from '../components/commands-tabs/Command3';
-import BasicSelect from '../components/commands-tabs/osSelect';
 import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
 import AvailApps from '../components/commands-tabs/AvailApps';
 import { AppsContext } from '../components/commands-tabs/appContext';
 import React from 'react';
 import styled from 'styled-components';
-
-
-//import DataTable from '../components/commands-tabs/commandhistory';
 
 
 const Container = styled.div`
@@ -159,45 +155,98 @@ const Commands = (props) => {
     const [context, setContext] = useState('')
     const [cmdChoice, setCmdChoice] = useState('')
     const [filePush, setFilePush] = useState('')
-    const [osChoice, setOsChoice] = useState('')
-    
-    //console.log(customCmd)
-    //console.log(machineChoice)
-    //console.log(file)
-    const [commandDetails, setCommandDetails] = useState(defaultValues);
-    const [success, setSuccess ] = useState(false);
+
+    let uploadFile = () => {
+      if(file !== null) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const final = reader.result.split(",", 2);
+          const details = {
+            DeviceID: context.machineID,
+            CommandType: selectedTab,
+            Parameters: {
+              //file: file.name,
+              b64file: final[1],
+              destination: fileDest,
+            }
+            
+          }
+          fetch('/commands/sendfile', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(details)
+          })
+          console.log(reader.result);
+          return final[1];
+        }
+        console.log("File uploading");
+      } else {
+        if(file !== null) { console.log("Error: no file has been uploaded"); }
+        else { console.log("Error: no file location has been entered"); }
+      }
+    }    
+
+
+    let sendCommand = () => {
+      const details = {
+        DeviceID: context.machineID,
+        CommandType: cmdChoice,
+        Parameters: {
+          app_name: appChoice,
+        //app_id: 
+        } 
+      }
+      fetch('/commands/send', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(details)
+      })
+    }
+
+    let sendCustomCommand = () => {
+      const details = {
+        DeviceID: context.machineID,
+        CommandType: customCmd,
+        Parameters: {
+          command: "",
+          os_choice: "Windows",
+        } 
+      }
+      fetch('/commands/send', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(details)
+      })
+    }
 
     const handleSubmit = (event) => {
       event.preventDefault();
       console.log(context.machineID);
       console.log(fileDest);
       console.log(file);
-      console.log(osChoice)
-      setSuccess(true)
-      {/* 
-      setCommandDetails({
-        ...commandDetails,
-        machineChoice: commandDetails.DeviceID,
-        cmdChoice: commandDetails.CommandType,
-        appChoice: commandDetails.Parameters.appID,
-        file: commandDetails.Parameters.file,
-        b64file: commandDetails.Parameters.b64file,
-        customCmd: commandDetails.Parameters.custom_command,
+    
+      switch(selectedTab){
+        case 0: 
+          //
+          sendCommand()
+          console.log("This is preset command tab")
+          break;
+        case 1:
+          uploadFile()
+          break;
+        case 2: 
+          //
+          sendCustomCommand()
+          console.log("This is custom tab")
+          break;
+        default:
+          //
+      }
+    
+    }    
 
-
-      });
-      console.log(...commandDetails);
-      */}
-    }
-
-        {/**
-        fetch('/cmd/cmddetails', {
-        method: 'POST',
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(commandDetails)
-        })
-
-        */}
+   
 
   return (
   <Container>
@@ -249,6 +298,7 @@ const Commands = (props) => {
                     */}
                     <Command1List
                     cmdChoice={cmdChoice => setCmdChoice(cmdChoice)}
+                    //value={commandDetails.Parameters.custom_command}
                     />
                   </div>
                     }
@@ -257,6 +307,7 @@ const Commands = (props) => {
                       filePush={filePush => setFilePush(filePush)}
                       changeFile={file => setFile(file)} 
                       changeFileDest={fileDest => setFileDest(fileDest)}
+
                     />}
                   {selectedTab === 2 && 
                     <Command3 
@@ -281,14 +332,14 @@ const Commands = (props) => {
               </div>
               }
               */}
-             {(selectedTab === 2) &&
+            {/* {(selectedTab === 2) &&
               <div
                 className = "osSelectContain" 
                 style={{flex: 2}}>
                 <BasicSelect changeOS={osChoice => setOsChoice(osChoice)} />
               </div>
               }
-
+            */}
 
               </SpaceBox>
 
@@ -307,8 +358,10 @@ const Commands = (props) => {
                   {(selectedTab === 2 ) && `> (Custom Command): ${customCmd}`}
                   </div>
                   <div>
-                  {selectedTab === 2 && (osChoice !== undefined && osChoice !== null) ? 
+                   {/*
+                      {selectedTab === 2 && (osChoice !== undefined && osChoice !== null) ? 
                       `> Operating System: ${osChoice}`: '' }
+                    */}
 
                     {(selectedTab === 0 && cmdChoice !== undefined && cmdChoice !== null && cmdChoice !== '') ?
                       `> (Preset Command): ${cmdChoice}` : '' }

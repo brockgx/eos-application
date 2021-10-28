@@ -64,25 +64,7 @@ export default function Command2(props){
     setFileDest(event.target.value)
   }
 
-  let uploadFile = (event) => {
-    event.preventDefault();
-    if(file !== null) {
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const final = reader.result.split(",", 2);
-        console.log(reader.result);
-        console.log(final[1]);
-        //props.filePush("The file: ***" + `${file.name}` + "*** has been sent to the selected machine to this directory: " + `${fileDest}` + "AND THE READER SAYS: " + `${reader.result}` + " sd    " + `${final[1]}`)
-        //postFile(reader.result);
-      }
-      console.log("File uploading");
-    } else {
-      if(file !== null) { console.log("Error: no file has been uploaded"); }
-      else { console.log("Error: no file location has been entered"); }
-    }
-  }
-
+  
   return (
   <MainContainer>
     <CmdTwoContainer>
