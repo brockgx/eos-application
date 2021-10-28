@@ -35,8 +35,10 @@ def listClientMachines():
       "host_name": mach.host_name,
       "mac_address": mach.mac_address,
       "os": mach.os_type,
+      "os_full_version": mach.os_full_version,
       "address": mach.ip_address,
-      "status": mach.status
+      "status": mach.status,
+      "ports": mach.ports
     })
 
   return jsonify({
@@ -147,9 +149,9 @@ def listAllMetrics(mac):
   final_sys_metrics.append({
     "id": mach.id,
     "name": mach.machine.name,
-    "time": mach.timestamp,
-    "cpu": mach.cpu_usage,
-    "ram": mach.ram_usage,
+    "time": str(mach.timestamp),
+    "cpu": str(mach.cpu_usage),
+    "ram": str(mach.ram_usage),
     "disk": disks[0],
     "disk_read": mach.disk_read,
     "disk_write": mach.disk_write,
@@ -162,10 +164,10 @@ def listAllMetrics(mac):
     final_app_metrics.append({
       "id": app.id,
       "machine_name": mach.machine.name,
-      "time": mach.timestamp,
+      "time": str(mach.timestamp),
       "app_name": app.application.name,
-      "cpu": app.cpu_usage,
-      "ram": app.ram_usage
+      "cpu": str(app.cpu_usage),
+      "ram": str(app.ram_usage)
     })
   
   #Sort app metrics by top CPU & then top RAM usage (in return get first 5 entries)

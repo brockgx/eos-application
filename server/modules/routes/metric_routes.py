@@ -1,5 +1,6 @@
 #Import any third party dependencies
 from flask import Blueprint, jsonify, request
+from datetime import datetime
 
 #Import any custom made modules for the application
 from ..database.database_tables import db, ClientMachines, SystemMetrics, AppDetails, AppMetrics
@@ -21,8 +22,62 @@ def get_all_metric_data():
   all_metrics = SystemMetrics.query.all()
 
   #Loop though all system metric entries
+  metrics = []
+  for sys_metric in all_metrics:
+    #Check machine existence
+    machine_name = sys_metric.machine_id
+    machine_mac = "Machine Removed"
+    if sys_metric.machine is not None:
+      machine_name = sys_metric.machine.name
+      machine_mac = sys_metric.machine.mac_address
+
+    metrics.append({
+      "name": machine_name,
+      "machine_name": machine_name,
+      "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
+      "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M'),
+      # "time": str(sys_metric.timestamp),
+      "cpu": str(sys_metric.cpu_usage),
+      "ram": str(sys_metric.ram_usage),
+      "disk_names": sys_metric.disk_names,
+      "disk_use": sys_metric.disk_usage,
+      "disk_read": sys_metric.disk_read,
+      "disk_write": sys_metric.disk_write,
+      "network": sys_metric.network_usage,
+      "type": "system"
+    })
+
+    for app in sys_metric.app_metrics:
+      metrics.append({
+        "name": app.application.name,
+        "machine_name": machine_name,
+        "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
+        "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M'),
+        "cpu": str(app.cpu_usage),
+        "ram": str(app.ram_usage),
+        "disk_names": "null",
+        "disk_use": "null",
+        "disk_read": "null",
+        "disk_write": "null",
+        "network": "null",
+        "type": "app"
+      })
+
+  return jsonify({
+    "desc": "Object of all system and application metrics",
+    "content": metrics,
+  })
+
+#Route: to get all system metrics and return them as JSON
+#   - The route is /metrics/getallsysmetrics
+@metric_routes.route("/getallsysmetrics", methods=['GET'])
+def get_all_sys_metrics():
+  
+  #Return all system metric entries
+  all_metrics = SystemMetrics.query.all()
+
+  #Loop though all system metric entries
   all_system_metrics = []
-  all_application_metrics = []
   for sys_metric in all_metrics:
     #Check machine existence
     machine_name = sys_metric.machine_id
@@ -32,25 +87,47 @@ def get_all_metric_data():
       machine_mac = sys_metric.machine.mac_address
 
     all_system_metrics.append({
-      "id": sys_metric.id,
       "name": machine_name,
       "mac_address": machine_mac,
-      "time": str(sys_metric.timestamp),
+      "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
+      "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M'),
       "cpu": str(sys_metric.cpu_usage),
       "ram": str(sys_metric.ram_usage),
-      "disk_names": sys_metric.disk_names.split(","),
-      "disk_use": sys_metric.disk_usage.split(","),
+      "disk_names": sys_metric.disk_names,
+      "disk_use": sys_metric.disk_usage,
       "disk_read": sys_metric.disk_read,
       "disk_write": sys_metric.disk_write,
       "network": sys_metric.network_usage,
     })
 
+  return jsonify({
+    "desc": "Object of all system and application metrics",
+    "system_metrics": all_system_metrics,
+  })
+#Route: to get all application metrics and return them as JSON
+#   - The route is /metrics/getallappmetrics
+@metric_routes.route("/getallappmetrics", methods=['GET'])
+def get_all_app_metrics():
+
+  #Return all system metric entries
+  all_metrics = SystemMetrics.query.all()
+
+  #Loop though all system metric entries
+  all_application_metrics = []
+  for sys_metric in all_metrics:
+    #Check machine existence
+    machine_name = sys_metric.machine_id
+    machine_mac = "Machine Removed"
+    if sys_metric.machine is not None:
+      machine_name = sys_metric.machine.name
+      machine_mac = sys_metric.machine.mac_address
+
     for app in sys_metric.app_metrics:
       all_application_metrics.append({
-        "id": app.id,
         "name": machine_name,
         "mac_address": machine_mac,
-        "time": str(sys_metric.timestamp),
+        "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
+        "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M'),
         "app_name": app.application.name,
         "app_pid": app.application.pid,
         "app_cpu": str(app.cpu_usage),
@@ -59,7 +136,6 @@ def get_all_metric_data():
 
   return jsonify({
     "desc": "Object of all system and application metrics",
-    "system_metrics": all_system_metrics,
     "application_metrics": all_application_metrics
   })
 
