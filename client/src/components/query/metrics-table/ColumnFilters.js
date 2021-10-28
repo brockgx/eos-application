@@ -75,8 +75,10 @@ const NumInput = styled.input`
 const Select = styled.select`
   margin-top: 15px;
   min-width: 200px;
-  background-color: #F3F4F7;
+  background-color: #F4F4F7;
   border: 1px solid white;
+  border-radius: 2px;
+  font-size: 18px;
 `;
 
 /*

@@ -26,7 +26,7 @@ export const IntegratedMetricsColumnData = [
     {
         Header: 'Machine',
         accessor: 'machine_name',
-        // can interchange with TextFilter
+        // can interchange with SelectColumnFilter
         Filter: TextFilter,
         filter: "includes"
     },
@@ -58,7 +58,7 @@ export const IntegratedMetricsColumnData = [
         Header: 'Disk Names',
         accessor: 'disk_names',
         // can interchange with SelectColumnFilter
-        Filter: SelectColumnFilter,
+        Filter: TextFilter,
         filter: "equals"
     },
     { 

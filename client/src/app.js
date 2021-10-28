@@ -10,11 +10,11 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
 // All page imports here
-import { Home } from './pages/Home';
-import { Dashboard } from './pages/Dashboard';
-import { Query } from './pages/Query';
-import { Commands } from './pages/Command';
-import { Support } from './pages/Support';
+import { Home } from './pages/home';
+import { Dashboard } from './pages/dashboard';
+import { Query } from './pages/query';
+import { Commands } from './pages/command';
+import { Support } from './pages/support';
 
 //All component imports here
 import Sidebar from './components/navigation/Sidebar';
