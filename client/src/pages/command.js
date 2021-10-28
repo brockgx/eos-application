@@ -11,6 +11,7 @@ import { AppsContext } from '../components/commands-tabs/appContext';
 import React from 'react';
 import styled from 'styled-components';
 
+
 //import DataTable from '../components/commands-tabs/commandhistory';
 
 
@@ -164,6 +165,7 @@ const Commands = (props) => {
     //console.log(machineChoice)
     //console.log(file)
     const [commandDetails, setCommandDetails] = useState(defaultValues);
+    const [success, setSuccess ] = useState(false);
 
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -171,6 +173,7 @@ const Commands = (props) => {
       console.log(fileDest);
       console.log(file);
       console.log(osChoice)
+      setSuccess(true)
       {/* 
       setCommandDetails({
         ...commandDetails,
