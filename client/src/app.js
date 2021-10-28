@@ -12,8 +12,6 @@ import { Support } from './pages/support';
 import Sidebar from './components/navigation/Sidebar';
 import SignInSide from './components/SignInSide';
 import Topbar from './components/navigation/Topbar';
-import CustomizedSnackbars from './components/commands-tabs/commandSnackbar';
-
 /*
 This is the main application component for React
 it houses the view, which is a single navbar component
@@ -35,7 +33,6 @@ function App() {
           <Route path="/command" exact component={Commands} />
           <Route path="/support" exact component={Support} />
         </Switch>
-        <CustomizedSnackbars />
       </div>
     </Router>
   );

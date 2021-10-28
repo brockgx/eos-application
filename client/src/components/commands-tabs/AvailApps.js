@@ -1,11 +1,13 @@
 import React from 'react';
-import {useContext } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import  {useState } from 'react';
 import styled from 'styled-components';
-import {AppsContext} from './appContext';
+import {useEffect } from 'react';
+import {useContext} from 'react';
+import {AppsAvailContext} from './appsContext';
+import { MachineContext } from './machineContext';
 
 const MainContainer = styled.div`
 padding: 1px;
@@ -26,12 +28,38 @@ export default function AvailApps(props) {
     const [options, setOptions] = useState([]);
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
-    //const [context, setContext] = useContext(AppsContext)
+    const [machContext, setMachContext] = useState('')
+    const [appsContext, setAppsContext] = useContext(AppsAvailContext)
 
-    const handleChange = (event, newValue) => {
+   
+    {/* const handleChange = (event, newValue) => {
       event.preventDefault();
       props.changeApp(newValue || "")
       setValue(newValue || "")
+    }
+    */}
+
+    const [appsAvail, setAppsAvail] = useState([])
+      useEffect(() => {
+        const getAppsAvail = async () => {
+          const appsFromServer = await fetchAppsAvail()
+          setAppsAvail(appsFromServer)
+          }
+        getAppsAvail()
+  }, [])
+
+//Fetch app data from DB
+
+
+    const fetchAppsAvail = async () => {
+    const resp = await fetch(`/commands/machineapps/${props.machine.mac_address}`)
+    const data = resp.json()
+      if(resp.ok) {
+        console.log(data.content)
+        return data;
+      } else {
+          throw Error(`Request rejected with status ${resp.status}`);
+      }
     }
 
     React.useEffect(() => {
@@ -45,7 +73,7 @@ export default function AvailApps(props) {
         await sleep(1e3); // For demo purposes.
   
         if (active) {
-          setOptions([...appsAvail]);
+          setOptions([...appsAvailTest]);
         }
       })();
   
@@ -70,6 +98,7 @@ export default function AvailApps(props) {
 
   return (
     <MainContainer>
+      
       <AutocompleteWrapper>
        
         <Autocomplete
@@ -83,19 +112,21 @@ export default function AvailApps(props) {
           setOpen(false);
           }}
           
-          isOptionEqualToValue={(option, value) => option.appID === value.appID}
+          isOptionEqualToValue={(option, value) => option.name === value.name}
           disableCloseOnSelect
           options={options}
-          getOptionLabel={(option) => option.appID}
+          getOptionLabel={(option) => option.name}
           renderTags={() => null}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
-              {option.appID}
+              {option.name + "( PID: " + option.pid + ")"} 
             </li>
           )}
           value={value}
           loading={loading}
-          onChange={handleChange}
+          //onChange={handleChange}
+          //onChange={(e, newValue)=> setValue(newValue || "")}
+          onChange={(e, newValue)=> setValue(newValue || "")}
           renderInput={(params) => (
             <TextField {...params} 
               variant="outlined"
@@ -113,18 +144,23 @@ export default function AvailApps(props) {
             />  
           )} 
         />
+        
       </AutocompleteWrapper>
+     
     </MainContainer>
   );
 }
 
-const appsAvail = [
-  { appID: 'discord.exe'},
-  { appID: 'notepad.exe'},
-  { appID: 'explorer.exe'},
-  { appID: 'Taskmgr.exe'},
-  { appID: 'Spotify.exe'},
-  { appID: 'AdobeUpdateService.exe'},
-  { appID: 'chrome.exe'},
+
+
+
+const appsAvailTest = [
+  { name: 'discord.exe'},
+  { name: 'notepad.exe'},
+  { name: 'explorer.exe'},
+  { name: 'Taskmgr.exe'},
+  { name: 'Spotify.exe'},
+  { name: 'AdobeUpdateService.exe'},
+  { name: 'chrome.exe'},
  
 ];

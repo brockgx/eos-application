@@ -14,4 +14,4 @@ DATABASE-DETAILS:
   PASSWORD: test01
   DATABASE-TYPE: sqlite
   DATABASE-NAME: test.db
-  DATABASE-URI: D:\CS Year 2\Semester 2\SEPB\SEPB Project\EOS-Application\server\modules\database
+  DATABASE-URI: D:\Users\Alex\Documents\2_University\2021_Sem2\SWE40002\GitHub Local Copy of Group Project\eos-application\server\modules\database\

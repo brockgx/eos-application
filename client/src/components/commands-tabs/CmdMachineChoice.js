@@ -5,7 +5,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import  {useState } from 'react';
 import styled from 'styled-components';
-import {AppsContext} from './appContext';
+import {MachineContext} from './machineContext';
+import {useEffect } from 'react';
 
 const MainContainer = styled.div`
 padding: 1px;
@@ -21,33 +22,46 @@ function sleep(delay = 0) {
   });
 }
 
+    {/*
+    
+
+  */}
+
+  
+
 export default function CmdMachineChoice(props) {
     
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
-    const [context, setContext] = useContext(AppsContext)
+    const [machContext, setMachContext] = useContext(MachineContext)
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
-    const [machineChoice, setMachineChoice] = useState();
     
+    const [machines, setMachines] = useState([])
+    useEffect(() => {
+      const getMachines = async () => {
+        const machinesFromServer = await fetchMachines()
+        setMachines(machinesFromServer)
+      }
+      getMachines()
+    }, [])
 
-    const handleChange = (event, newValue) => {
-      //props.changeMachine(newValue.machineID || "")
-      setValue(newValue || "")
-      props.changeMachine(newValue.machineID || "")
+    // Fetch device data from DB
+    const fetchMachines = async () => {
+    const resp = await fetch(`/commands/availableMachines`)
+    const data  = await resp.json()
+      if(resp.ok) {
+        console.log(data.content)
+        return data.content;
+      } else {
+          throw Error(`Request rejected with status ${resp.status}`);
+      }
     }
 
-    const handleSubmit = (event, newValue) => {
-      event.preventDefault();
-      console.log(machineChoice)
-      setMachineChoice(newValue || "")
-      alert('Custom command should be: ' + machineChoice);
-       
-    }
 
     React.useEffect(() => {
       let active = true;
-  
+
       if (!loading) {
         return undefined;
       }
@@ -56,7 +70,7 @@ export default function CmdMachineChoice(props) {
         await sleep(1e3); // For demo purposes. This can be awaiting for the data to be received from the API
   
         if (active) {
-          setOptions([...machinesAvail]);
+          setOptions([...machines]);
         }
       })();
   
@@ -83,19 +97,18 @@ export default function CmdMachineChoice(props) {
           onClose={() => {
             setOpen(false);
           }}
-          isOptionEqualToValue={(option, value) => option.machineID === value.machineID}
+          isOptionEqualToValue={(option, value) => option.name === value.name}
           disableCloseOnSelect
-          getOptionLabel={(option) => option.machineID}
+          getOptionLabel={(option) => option.name}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
-              {option.machineID}
+              {option.name + " (" + option.mac_address + ")"} 
             </li>
           )}
           options={options}
           loading={loading}
           fullWidth
-        
-          onChange={(e, newValue)=> setContext(newValue || "")}
+          onChange={(e, newValue)=> setMachContext(newValue || "")}
           style={{marginBottom: 0}}
           renderInput={(params) => (
             <TextField {...params} 
@@ -121,6 +134,7 @@ export default function CmdMachineChoice(props) {
   );
 }
 
+/*
 //hardcoded but will be 
 const machinesAvail = [
   { machineID: 'MyronPC'},
@@ -132,3 +146,5 @@ const machinesAvail = [
   { machineID: 'AlfredPC'},
   { machineID: 'HitchcockPC'},
 ];
+
+*/

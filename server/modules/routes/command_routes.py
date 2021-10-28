@@ -10,7 +10,8 @@ import json
 #Import from in house modules
 #from ..database.prototype_database import db, Random, AppMetrics
 
-
+#Import from in house modules
+from ..database.database_tables import db, ClientMachines, AppMetrics, AppDetails
 #Setup the blueprint for the command routes
 command_routes = Blueprint('command_routes',__name__)
 
@@ -21,18 +22,55 @@ def command():
   return "The command routes are: /availableMachines - to get connected machines, /send - to send a command, /sendfile - to send a file"
 
 #Route: to get a list of all machines tied to the application
-@command_routes.route("/availablemachines", methods=['GET'])
+@command_routes.route("/availableMachines", methods=['GET'])
 def getAvailableMachines():
-  return "Listing all online machines..."
+    #Get a list of everything in the machines database
+    machineList = ClientMachines.query.all()
+    finalList = []
+
+    for mach in machineList:
+      finalList.append({
+      "id": mach.id,
+      "name": mach.name,
+      "host_name": mach.host_name,
+      "mac_address": mach.mac_address,
+    })
+
+    return jsonify({
+      "description": "A list of all of the available machines",
+      "content": finalList
+    })
+
+
+  #Route: to get list of apps for a specified machine
+
+@command_routes.route('/machineapps/<machine_id>', methods=['GET'])
+def getAvailableApps(machine_id):
+
+  appList = AppDetails.query.filter_by(machine_id=machine_id).all()
+  final_apps_avail = []
+
+  for app in appList:
+	  final_apps_avail.append({
+		"app_name": app.name,
+    "pid": app.pid,
+		})
+  print(final_apps_avail)
+  return jsonify({
+	"description": "A list of available applications for a machine",
+	"content": final_apps_avail
+	})
 
 #Route: to send a command to the agent and get a response back
 @command_routes.route("/send", methods=['POST'])
 def sendCommand():
   req = request.json
-  console.log(req)
+  print(req)
   return "Sending command to agent..."
 
 #Route: to send a file to the agent machine
 @command_routes.route("/sendfile", methods=['POST'])
 def sendFile():
+  req = request.json
+  print(req)
   return "Sending file to agent..."

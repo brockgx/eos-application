@@ -1,4 +1,4 @@
-import  {useState } from 'react';
+import  {useEffect, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { Tabs, Tab } from '@material-ui/core';
 import Command1List from '../components/commands-tabs/command1list';
@@ -6,10 +6,10 @@ import Command2 from '../components/commands-tabs/Command2';
 import Command3 from '../components/commands-tabs/Command3';
 import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
 import AvailApps from '../components/commands-tabs/AvailApps';
-import { AppsContext } from '../components/commands-tabs/appContext';
+import { MachineContext } from '../components/commands-tabs/machineContext';
 import React from 'react';
 import styled from 'styled-components';
-
+import {AppsAvailContext} from '../components/commands-tabs/appsContext';
 
 const Container = styled.div`
   flex: 10;
@@ -127,21 +127,6 @@ const SpaceBox = styled.div`
     flex-shrink: 3;
 `;
 
-const defaultValues = {
-  //whatever details the API/backend needs
-  DeviceID: "",
-  DeviceName: "",
-  CommandType: "",
-  Parameters: {
-    file: "",
-    b64file: "",
-    destination: "",
-    appID: "",
-    custom_command: "",
-  },
-};
-
-
 const Commands = (props) => {
     const [selectedTab, setSelectedTab] = useState(0);
     const handleChange = (event, newValue) => {
@@ -152,7 +137,8 @@ const Commands = (props) => {
     const [ file, setFile] = useState(null)
     const [fileDest, setFileDest] = useState('')
     const [appChoice, setAppChoice] = useState('')
-    const [context, setContext] = useState('')
+    const [machContext, setMachContext] = useState('')
+    const [appsContext, setAppsContext] = useState('')
     const [cmdChoice, setCmdChoice] = useState('')
     const [filePush, setFilePush] = useState('')
 
@@ -163,7 +149,7 @@ const Commands = (props) => {
         reader.onload = () => {
           const final = reader.result.split(",", 2);
           const details = {
-            DeviceID: context.machineID,
+            DeviceID: machContext.name,
             CommandType: selectedTab,
             Parameters: {
               //file: file.name,
@@ -187,10 +173,9 @@ const Commands = (props) => {
       }
     }    
 
-
     let sendCommand = () => {
       const details = {
-        DeviceID: context.machineID,
+        DeviceID: machContext.name,
         CommandType: cmdChoice,
         Parameters: {
           app_name: appChoice,
@@ -206,7 +191,7 @@ const Commands = (props) => {
 
     let sendCustomCommand = () => {
       const details = {
-        DeviceID: context.machineID,
+        DeviceID: machContext.name,
         CommandType: customCmd,
         Parameters: {
           command: "",
@@ -222,7 +207,7 @@ const Commands = (props) => {
 
     const handleSubmit = (event) => {
       event.preventDefault();
-      console.log(context.machineID);
+      console.log(machContext.machineID);
       console.log(fileDest);
       console.log(file);
     
@@ -285,10 +270,11 @@ const Commands = (props) => {
                     }}/>             
                 </Tabs>
               </TabsWrapper>
-
+              
+              <AppsAvailContext.Provider value={[appsContext, setAppsContext]}>
               <LHCommandOptionBox style={{height: "50%"}}>
-                <AppsContext.Provider value={[context, setContext]}>
-                  <CmdMachineChoice changeMachine={machineChoice => setMachineChoice(machineChoice)} /> 
+                <MachineContext.Provider value={[machContext, setMachContext]}>
+                  <CmdMachineChoice /> 
                   {selectedTab === 0 && 
                   <div>
                     {/*<Command1 
@@ -312,35 +298,17 @@ const Commands = (props) => {
                   {selectedTab === 2 && 
                     <Command3 
                       changeCmd={customCmd => setCustomCmd(customCmd)} />} 
-                </AppsContext.Provider>
+                </MachineContext.Provider>
               </LHCommandOptionBox>
             
+           
               <SpaceBox style={{maxHeight: selectedTab === 0 || 2 ? "56px": "17px"}}>
               {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
               <div 
                 className = "AvailAppsContain" 
                 style={{flex: 2}}>
-                <AvailApps changeApp={appChoice => setAppChoice(appChoice)} />
-              </div>
-              }
-              {/*
-               {(selectedTab === 2) &&
-              <div
-                className = "AvailAppsContain" 
-                style={{flex: 2}}>
-                <AvailApps changeApp={appChoice => setAppChoice(appChoice)} />
-              </div>
-              }
-              */}
-            {/* {(selectedTab === 2) &&
-              <div
-                className = "osSelectContain" 
-                style={{flex: 2}}>
-                <BasicSelect changeOS={osChoice => setOsChoice(osChoice)} />
-              </div>
-              }
-            */}
-
+                <AvailApps machine={machContext}/>
+              </div>}
               </SpaceBox>
 
               <CommandDetailsDisplay> 
@@ -350,7 +318,7 @@ const Commands = (props) => {
                   {/*Machine Selected*/}
                   <div>
                     {"> Selected Machine: "} 
-                    {(context.machineID !== "" && context.machineID !== undefined) ? ` ${context.machineID}`: "No Machine Chosen"}  
+                    {(machContext.name !== "" && machContext.name !== undefined) ? ` ${machContext.name}`: "No Machine Chosen"}  
                   </div>
 
                   {/*Command Selected */}
@@ -358,11 +326,6 @@ const Commands = (props) => {
                   {(selectedTab === 2 ) && `> (Custom Command): ${customCmd}`}
                   </div>
                   <div>
-                   {/*
-                      {selectedTab === 2 && (osChoice !== undefined && osChoice !== null) ? 
-                      `> Operating System: ${osChoice}`: '' }
-                    */}
-
                     {(selectedTab === 0 && cmdChoice !== undefined && cmdChoice !== null && cmdChoice !== '') ?
                       `> (Preset Command): ${cmdChoice}` : '' }
                   </div>
@@ -372,8 +335,8 @@ const Commands = (props) => {
                     {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
                       <div>  
                         {'> Selected App: '}
-                        {(appChoice.appID !== "" && appChoice.appID !== undefined) ?
-                          `${appChoice.appID}` : "No App Chosen."}
+                        {(appsContext.appID !== "" && appsContext.appID !== undefined) ?
+                          `${appsContext.appID}` : "No App Chosen."}
                       </div>
                     }
                   </div> 
@@ -405,6 +368,7 @@ const Commands = (props) => {
                   {"Confirm & Send"}
                 </Button>
               </CommandDetailsDisplay>
+              </AppsAvailContext.Provider>
             </LeftSide>
           </form>
           
