@@ -5,7 +5,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 //All page imports here
 import { Dashboard } from './pages/dashboard';
 import { Query } from './pages/query';
-import { Commands } from './pages/Command';
+import { Commands } from './pages/command';
 import { Support } from './pages/support';
 
 //All component imports here
