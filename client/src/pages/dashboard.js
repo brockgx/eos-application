@@ -2,7 +2,7 @@
  * Name: Dashboard.js
  * Purpose: Renders various components that make up the 'Dashboard Page' 
  * 
- * Usage: App.js to render the Support page
+ * Usage: App.js to render the Dashboard page
  */
 
 // Module imports here

@@ -32,7 +32,7 @@ const FillBar = styled.div`
   text-align: center;
 `;
 const Label = styled.span`
-  color: ${(props) => props.color >= 80 ? 'red' : '#212D40' };
+  color: ${(props) => props.color >= 80 ? 'red' : '#475571;' };
   font-size: 22px;
   font-weight: 400;
   padding-left: 5px;
