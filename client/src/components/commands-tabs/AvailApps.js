@@ -1,20 +1,19 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import  {useState } from 'react';
-import styled from 'styled-components';
+import {useState } from 'react';
 import {useEffect } from 'react';
-import {useContext} from 'react';
-import {AppsAvailContext} from './appsContext';
-import { MachineContext } from './machineContext';
+
+import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Autocomplete from '@mui/material/Autocomplete';
+
+import styled from 'styled-components';
 
 const MainContainer = styled.div`
-padding: 1px;
+  padding: 1px;
 `;
 
 const AutocompleteWrapper = styled.div`
-padding: 1px;
+  padding: 1px;
 `;
 
 function sleep(delay = 0) {
@@ -28,17 +27,8 @@ export default function AvailApps(props) {
     const [options, setOptions] = useState([]);
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
-    const [machContext, setMachContext] = useState('')
-    const [appsContext, setAppsContext] = useContext(AppsAvailContext)
 
-   
-    {/* const handleChange = (event, newValue) => {
-      event.preventDefault();
-      props.changeApp(newValue || "")
-      setValue(newValue || "")
-    }
-    */}
-
+    //appsAvail is to be used when not using appsAvailTest hardcoded data
     const [appsAvail, setAppsAvail] = useState([])
       useEffect(() => {
         const getAppsAvail = async () => {
@@ -48,9 +38,7 @@ export default function AvailApps(props) {
         getAppsAvail()
   }, [])
 
-//Fetch app data from DB
-
-
+    //Fetch app data from DB
     const fetchAppsAvail = async () => {
     const resp = await fetch(`/commands/machineapps/${props.machine.mac_address}`)
     const data = resp.json()
@@ -70,10 +58,10 @@ export default function AvailApps(props) {
       }
   
       (async () => {
-        await sleep(1e3); // For demo purposes.
-  
+        await sleep(1e3); // For demo purposes. This can be awaiting fetch availApps, or removed entirely.
         if (active) {
-          setOptions([...appsAvailTest]);
+          //appsAvailTest is hardcoded array for testing console.log of data.content (line 48) from fetchAppsAvail
+          setOptions([...appsAvailTest]); 
         }
       })();
   
@@ -88,19 +76,9 @@ export default function AvailApps(props) {
       }
     }, [open]);
 
-    
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    alert('A command was submitted: ' + `${value}`);
-  }
-
-    
-
   return (
     <MainContainer>
-      
       <AutocompleteWrapper>
-       
         <Autocomplete
           id="avail-apps-demo"
           open={open}
@@ -124,8 +102,6 @@ export default function AvailApps(props) {
           )}
           value={value}
           loading={loading}
-          //onChange={handleChange}
-          //onChange={(e, newValue)=> setValue(newValue || "")}
           onChange={(e, newValue)=> setValue(newValue || "")}
           renderInput={(params) => (
             <TextField {...params} 
@@ -136,24 +112,27 @@ export default function AvailApps(props) {
                 ...params.InputProps,
                 endAdornment: (
                   <React.Fragment>
-                    {loading ? <CircularProgress color="inherit" size={22} style={{marginBottom: 10, marginRight: 10}} /> : null}
-                    {params.InputProps.endAdornment}
+                    {loading ? 
+                    <CircularProgress 
+                      color="inherit" 
+                      size={22} 
+                      style={{
+                        marginBottom: 10, 
+                        marginRight: 10}} /> : null
+                      }
+                      {params.InputProps.endAdornment}
                   </React.Fragment>
                 ),
               }}
             />  
           )} 
         />
-        
       </AutocompleteWrapper>
-     
     </MainContainer>
   );
 }
 
-
-
-
+//hardcoded array of test data for testing that the fetchAvailApps is receiving data.content properly 
 const appsAvailTest = [
   { name: 'discord.exe'},
   { name: 'notepad.exe'},
@@ -162,5 +141,4 @@ const appsAvailTest = [
   { name: 'Spotify.exe'},
   { name: 'AdobeUpdateService.exe'},
   { name: 'chrome.exe'},
- 
 ];

@@ -1,19 +1,23 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import {useContext } from 'react';
-import Autocomplete from '@mui/material/Autocomplete';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import  {useState } from 'react';
-import styled from 'styled-components';
-import {MachineContext} from './machineContext';
+import {useState } from 'react';
 import {useEffect } from 'react';
+import {useContext } from 'react';
+
+import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Autocomplete from '@mui/material/Autocomplete';
+
+import styled from 'styled-components';
+
+import {MachineContext} from './machineContext';
+
 
 const MainContainer = styled.div`
-padding: 1px;
+  padding: 1px;
 `;
 
 const AutocompleteWrapper = styled.div`
-padding: 1px;
+  padding: 1px;
 `;
 
 function sleep(delay = 0) {
@@ -22,20 +26,19 @@ function sleep(delay = 0) {
   });
 }
 
-    {/*
-    
-
-  */}
-
-  
+/* 
+    CmdMachineChoice.js 29/10/21 notes.
+      -> Needs to have a message when there are no machines when you click the dropdown. It currently stays on loading...
+      -> 
+*/
 
 export default function CmdMachineChoice(props) {
     
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
-    const [machContext, setMachContext] = useContext(MachineContext)
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
+    const [machContext, setMachContext] = useContext(MachineContext)
     
     const [machines, setMachines] = useState([])
     useEffect(() => {
@@ -68,7 +71,6 @@ export default function CmdMachineChoice(props) {
   
       (async () => {
         await sleep(1e3); // For demo purposes. This can be awaiting for the data to be received from the API
-  
         if (active) {
           setOptions([...machines]);
         }
@@ -84,6 +86,9 @@ export default function CmdMachineChoice(props) {
         setOptions([]);
       }
     }, [open]);
+
+    //test to determine whether machContext or what is used
+    //console.log(machContext)
 
   return (
     <MainContainer>
@@ -135,7 +140,7 @@ export default function CmdMachineChoice(props) {
 }
 
 /*
-//hardcoded but will be 
+//hardcoded for testing
 const machinesAvail = [
   { machineID: 'MyronPC'},
   { machineID: 'BrockPC'},

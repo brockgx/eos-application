@@ -1,15 +1,38 @@
+import React from 'react';
 import  {useEffect, useState } from 'react';
 import { Button } from '@material-ui/core';
 import { Tabs, Tab } from '@material-ui/core';
+
 import Command1List from '../components/commands-tabs/command1list';
 import Command2 from '../components/commands-tabs/Command2';
 import Command3 from '../components/commands-tabs/Command3';
 import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
 import AvailApps from '../components/commands-tabs/AvailApps';
 import { MachineContext } from '../components/commands-tabs/machineContext';
-import React from 'react';
+
 import styled from 'styled-components';
-import {AppsAvailContext} from '../components/commands-tabs/appsContext';
+
+
+/* 
+    command.js 29/10/21 notes.
+      -> line 190-200~
+      in sendCustomCommand, os_choice is hardcoded as an example here, but a simple select box or buttons in a box should be added 
+      in the SpaceBox component to conditionally render when on custom command tab
+
+      -> line 300-315~
+      under "App Selected if Command selected is Restart/Kill application" appchoice.appID might not 
+      be the correct thing to call anymore, due to the change from hardcoded to calling 
+      for the apps from the API. So this needs to be checked to ensure it is the correct name, 
+      or change if it is outdated.
+      
+      -> line 345-350~
+      The CommandHistoryDisplay component will be the component that you will use to display the past 10 commands 
+      from a fetch command(?), this should be added, it does not need to be a table like the query table. 
+      Possibly displaying a dropdown that fetches the past 10 commands, 
+      or fetching the past 10 commands and displaying the json string directly into the 
+      CommandHistoryDisplay component as a proof of concept to show Jordan that that information can be viewed. 
+*/
+
 
 const Container = styled.div`
   flex: 10;
@@ -41,18 +64,11 @@ const TopText = styled.span`
   box-sizing: border-box;
 `;
 
-const TabsWrapper = styled.div`
-  padding: 0px;
-  box-sizing: border-box;
-`;
-
 const Bottom = styled.div`
   justify-content: space-between;
   padding: 0px 40px;
   box-sizing: border-box;
-
 `;
-
 
 const CommandsTab = styled.div`
   -webkit-box-shadow: 0px 0px 15px -7px rgba(0, 0, 0, 0.8);
@@ -68,17 +84,6 @@ const CommandsTab = styled.div`
   flex-direction: row;
 `;
 
-const RightSide = styled.div`
-   display: flex;
-   flex: 1;
-   margin-bottom: 20px;
-   padding-left: 5px;
-   box-sizing: border-box;
-   margin-left: 0px;
-   padding-left: 20px;
-  
-`;
-
 const LeftSide = styled.div`
   display: flex;
   margin-right: 20px;
@@ -86,18 +91,21 @@ const LeftSide = styled.div`
   flex: 1;
   flex-direction: column;
   gap: 20px;
- 
-
 `;
 
-const OptionsArea = styled.div`
-  margin-right: 20px;
-  flex: 1;
-  border: 1px solid yellow;
+const TabsWrapper = styled.div`
+  padding: 0px;
+  box-sizing: border-box;
 `;
 
 const LHCommandOptionBox = styled.div`
   flex: 3;
+  height: 50%;
+`;
+
+const SpaceBox = styled.div`
+    flex: 1;
+    flex-shrink: 3;
 `;
 
 const CommandDetailsDisplay= styled.div`
@@ -119,29 +127,33 @@ const RightSideHistory = styled.div`
     padding-right: 20px;
     border: 1px solid grey;
     flex: 1;
-    
 `;
  
-const SpaceBox = styled.div`
-    flex: 1;
-    flex-shrink: 3;
+const CommandHistoryDisplay = styled.div`
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    height: 90%;
 `;
 
+
 const Commands = (props) => {
+    
+    //for handling what command tab the user is on
     const [selectedTab, setSelectedTab] = useState(0);
     const handleChange = (event, newValue) => {
         setSelectedTab(newValue);
     }
-    const [ machineChoice, setMachineChoice] = useState('')
-    const [ customCmd, setCustomCmd] = useState('')
-    const [ file, setFile] = useState(null)
+    const [customCmd, setCustomCmd] = useState('')
+    const [file, setFile] = useState(null)
     const [fileDest, setFileDest] = useState('')
     const [appChoice, setAppChoice] = useState('')
     const [machContext, setMachContext] = useState('')
-    const [appsContext, setAppsContext] = useState('')
     const [cmdChoice, setCmdChoice] = useState('')
-    const [filePush, setFilePush] = useState('')
 
+    //for reading the file the user inputs, and prepares details object in the format for the API
     let uploadFile = () => {
       if(file !== null) {
         let reader = new FileReader();
@@ -156,8 +168,8 @@ const Commands = (props) => {
               b64file: final[1],
               destination: fileDest,
             }
-            
           }
+          //posts the details object to the API as a json string
           fetch('/commands/sendfile', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
@@ -172,7 +184,7 @@ const Commands = (props) => {
         else { console.log("Error: no file location has been entered"); }
       }
     }    
-
+    //if the user is sending a command, the detail object will include different parameters
     let sendCommand = () => {
       const details = {
         DeviceID: machContext.name,
@@ -189,12 +201,15 @@ const Commands = (props) => {
       })
     }
 
+    //if the user is sending a custom command, the detail object will include different parameters
     let sendCustomCommand = () => {
       const details = {
         DeviceID: machContext.name,
         CommandType: customCmd,
         Parameters: {
           command: "",
+          //os_choice is hardcoded, a simple select box or buttons in a box should be added 
+          //in the SpaceBox component to conditionally render when on custom command tab
           os_choice: "Windows",
         } 
       }
@@ -210,7 +225,8 @@ const Commands = (props) => {
       console.log(machContext.machineID);
       console.log(fileDest);
       console.log(file);
-    
+      //depending on what tab the user is on, the command executed will differ so that the relevant
+      //information is sent to the API and to the specific API route
       switch(selectedTab){
         case 0: 
           //
@@ -228,87 +244,52 @@ const Commands = (props) => {
         default:
           //
       }
-    
     }    
-
-   
 
   return (
   <Container>
     <Wrapper>
       <Top>
-        <TopText>Commands </TopText>
+        <TopText>Commands</TopText>
       </Top>
       <Bottom>
         <CommandsTab>
           <form style={{maxWidth: '673px'}} onSubmit={handleSubmit}>
             <LeftSide>
-              <TabsWrapper >
-                <Tabs
-                  centered
-                  value={selectedTab} 
-                  style = {{}} 
-                  onChange={handleChange} 
-                >
-                  <Tab 
-                    label="Preset Command Options"
-                    style ={{
-                      textTransform : 'none', 
-                      fontSize: '20px'
-                  }}/>
-                  <Tab 
-                    label="Push File to a Device" 
-                    style ={{
-                      textTransform : 'none', 
-                      fontSize: '20px'
-                    }}/>
-                  <Tab 
-                    label="Custom Commands" 
-                    style ={{
-                      textTransform : 'none', 
-                      fontSize: '20px'
-                    }}/>             
+              <TabsWrapper>
+                <Tabs centered value={selectedTab} onChange={handleChange}>
+                  <Tab label="Preset Command Options"
+                    style ={{textTransform : 'none', fontSize: '20px'}}/>
+                  <Tab label="Push File to a Device" 
+                    style ={{textTransform : 'none', fontSize: '20px'}}/>
+                  <Tab label="Custom Commands" 
+                    style ={{textTransform : 'none', fontSize: '20px'}}/>             
                 </Tabs>
               </TabsWrapper>
               
-              <AppsAvailContext.Provider value={[appsContext, setAppsContext]}>
-              <LHCommandOptionBox style={{height: "50%"}}>
+              <LHCommandOptionBox>
                 <MachineContext.Provider value={[machContext, setMachContext]}>
                   <CmdMachineChoice /> 
                   {selectedTab === 0 && 
                   <div>
-                    {/*<Command1 
-                      machineChoice={machineChoice}
-                    cmdChoice={cmdChoice => setCmdChoice(cmdChoice)}
-                    />
-                    */}
-                    <Command1List
-                    cmdChoice={cmdChoice => setCmdChoice(cmdChoice)}
-                    //value={commandDetails.Parameters.custom_command}
-                    />
-                  </div>
-                    }
+                    <Command1List cmdChoice={cmdChoice => setCmdChoice(cmdChoice)}/>
+                  </div>}
                   {selectedTab === 1 && 
                     <Command2 
-                      filePush={filePush => setFilePush(filePush)}
                       changeFile={file => setFile(file)} 
                       changeFileDest={fileDest => setFileDest(fileDest)}
-
                     />}
                   {selectedTab === 2 && 
-                    <Command3 
-                      changeCmd={customCmd => setCustomCmd(customCmd)} />} 
+                    <Command3 changeCmd={customCmd => setCustomCmd(customCmd)} />} 
                 </MachineContext.Provider>
               </LHCommandOptionBox>
             
-           
+              {/* SpaceBox is to make the command details box and the command options tab box  */}
               <SpaceBox style={{maxHeight: selectedTab === 0 || 2 ? "56px": "17px"}}>
-              {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
-              <div 
-                className = "AvailAppsContain" 
-                style={{flex: 2}}>
-                <AvailApps machine={machContext}/>
-              </div>}
+                {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
+                <div className = "AvailAppsContain" style={{flex: 2}}> 
+                  <AvailApps machine={machContext}/>
+                </div>}
               </SpaceBox>
 
               <CommandDetailsDisplay> 
@@ -335,8 +316,8 @@ const Commands = (props) => {
                     {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
                       <div>  
                         {'> Selected App: '}
-                        {(appsContext.appID !== "" && appsContext.appID !== undefined) ?
-                          `${appsContext.appID}` : "No App Chosen."}
+                        {(appChoice.appID !== "" && appChoice.appID !== undefined) ?
+                          `${appChoice.appID}` : "No App Chosen."}
                       </div>
                     }
                   </div> 
@@ -349,9 +330,8 @@ const Commands = (props) => {
                         {"> File Name: "}{(file === null || file === undefined) ? 
                         ' No file chosen.' : ` ${file.name}`}
                       </div>
-                      <div style={{}}>
+                      <div>
                         {"> File Destination: "}{fileDest === "" ? ' N/A' : `${fileDest}`}
-                        {(filePush === "") ? '' : `${filePush}`}
                       </div>
                     </div>
                   }
@@ -368,30 +348,21 @@ const Commands = (props) => {
                   {"Confirm & Send"}
                 </Button>
               </CommandDetailsDisplay>
-              </AppsAvailContext.Provider>
             </LeftSide>
           </form>
           
           <RightSideHistory>
-            <div 
-            style = {{
-              paddingTop: '5px', 
-              paddingLeft: '10px',
-              paddingBottom: '20px', 
-              marginBottom: "10px", 
-              marginRight: "10px",
-              height: "90%",
-            }}
-            >
-              COMMAND HISTORY
-              {/*<DataTable /> */}
-            </div> 
+            {/* The CommandHistoryDisplay will be the component that you will use to display the past 10 commands from a fetch command(?)*/}
+            <CommandHistoryDisplay>
+              COMMAND HISTORY 
+            </CommandHistoryDisplay> 
           </RightSideHistory>
+
         </CommandsTab>                  
       </Bottom>
     </Wrapper>
   </Container>
-    )
+  )
 }
 
 export { Commands }

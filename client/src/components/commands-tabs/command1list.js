@@ -1,6 +1,73 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
+import styled from 'styled-components';
+
+const MainContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    
+`;
+
+const ShutDeviceDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid grey;
+    
+`;
+
+const ShutDownSpaceDiv = styled.div`
+    flex: 2;
+`;
+
+const RestartDeviceDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid grey;
+`;
+
+const RestartDeviceSpaceDiv = styled.div`
+    flex: 2;
+`;
+
+const KillProcessDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid grey;
+`;
+
+const KillProcessSpaceDiv = styled.div`
+    flex: 2;
+`;
+
+const RestartAppDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+    padding-bottom: 4px;
+    border-bottom: 1px solid grey;
+`;
+
+const RestartAppSpaceDiv = styled.div`
+    flex: 2;
+`;
 
 //divs still to be made into styled components 
 export default function Command1List(props) {
@@ -9,31 +76,17 @@ export default function Command1List(props) {
         event.preventDefault();
         const value =  event.currentTarget.value;
         props.cmdChoice(event.currentTarget.value);
-       // alert('A command was submitted: ' + `${value}`);
       }
       
     return (
     <Box sx={{ width: '100%'}}>
         <form onSubmit={handleSubmit}>
-            <div style={{
-                display: "flex", 
-                flexDirection: "column", 
-                fontSize:'20px', 
-                }}>
-                <div style={{
-                    display: "flex", 
-                    flexDirection: "row", 
-                    gap: "10px", 
-                    marginTop: "10px", 
-                    marginBottom: "10px", 
-                    paddingBottom: "4px", 
-                    borderBottom: "1px solid grey" 
-                }}>
+            <MainContainer>
+                <ShutDeviceDiv>
                     <div style={{flex: 1, }}>
                         Shutdown Device
                     </div>
-                    <div style={{flex: 2}}>
-                    </div>
+                        <ShutDownSpaceDiv />
                     <Button
                         variant="contained"
                         type="submit"
@@ -43,47 +96,26 @@ export default function Command1List(props) {
                     >
                         Select
                     </Button>
-                </div >
-                <div style={{
-                    display: "flex", 
-                    flexDirection: "row", 
-                    gap: "10px", 
-                    marginTop: "10px", 
-                    marginBottom: "10px", 
-                    paddingBottom: "4px", 
-                    borderBottom: "1px solid grey" 
-                }}>
+                </ShutDeviceDiv>
+                <RestartDeviceDiv>
                     <div style={{flex: 1, marginRight: "0px"}}> 
-                    Restart Device
+                        Restart Device
                     </div >
-                    <div style={{flex: 2}}>
-                    </div>
+                        <RestartDeviceSpaceDiv />
                     <Button
                         variant="contained"
                         onClick={handleSubmit}
                         value="Restart Device"
                         style={{flex: 1, padding: '0px'}}
                     >
-                    Select
+                        Select
                     </Button>
-                </div>
-            
-                <div style={{
-                    display: "flex", 
-                    flexDirection: "row", 
-                    gap: "10px", 
-                    marginTop: "10px", 
-                    marginBottom: "10px", 
-                    alignItems: "center", 
-                    paddingBottom: "4px", 
-                    borderBottom: "1px solid grey" 
-                }} >
+                </RestartDeviceDiv>
+                <KillProcessDiv>
                     <div style={{flex: 1}}>
                         Kill Process
                     </div>
-                    <div style={{flex: 2}}>
-                    </div>
-
+                        <KillProcessSpaceDiv />
                     <Button
                         variant="contained"
                         value="Kill Process"
@@ -92,34 +124,23 @@ export default function Command1List(props) {
                     >
                         Select
                     </Button>  
-                </div >
+                </KillProcessDiv>
 
-                <div style={{
-                    display: "flex", 
-                    flexDirection: "row", 
-                    gap: "10px", 
-                    marginTop: "10px", 
-                    marginBottom: "10px", 
-                    alignItems: "center", 
-                    paddingBottom: "4px", 
-                    borderBottom: "1px solid grey" 
-                }} >
+               <RestartAppDiv>
                     <div style={{flex: 1}}>
                         Restart Application
                     </div>
-                    <div style={{flex: 2}}>
-                    </div>
-
+                        <RestartAppSpaceDiv />
                     <Button
                         onClick={handleSubmit}
                         value="Restart Process"
                         variant="contained"
                         style={{flex: 1, padding: '0px'}}
-                        >
+                    >
                         Select
                     </Button>
-                </div>
-            </div>
+                </RestartAppDiv>
+            </MainContainer>
         </form>
     </Box>
     );

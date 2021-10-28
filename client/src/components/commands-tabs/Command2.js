@@ -1,21 +1,17 @@
 import React from 'react';
-import { TextField, Input, Button, FormControl } from '@material-ui/core';
-import { AttachFile, PinDropSharp} from '@material-ui/icons';
-import styled from 'styled-components';
 import { useState} from 'react';
-
+import { TextField, Input, Button, FormControl } from '@material-ui/core';
+import { AttachFile } from '@material-ui/icons';
+import styled from 'styled-components';
 
 const MainContainer= styled.div`
       padding: 0px;
       box-sizing: border-box;
 `;
 
+//styled components prepared that can be easily styled in the future, also makes the code easier to read
 const CmdTwoContainer = styled.div`
       margin: 0px;
-`;
-
-const BtnWrapper= styled.div`
-      padding: 1px;
 `;
 
 const FileOption = styled.div`
@@ -27,12 +23,12 @@ const UploadFileBtn = styled.div`
       padding-top: 20px;
       padding-bottom: 10px;
       width: 100%;
-     
 `;
 
 const FileDestContainer = styled.div`
       margin-top: 10px;
       margin-bottom: 10px;
+      font-size: 20px;
 `;
 
 const InputWrapper = styled.div`
@@ -43,15 +39,6 @@ export default function Command2(props){
   const [file, setFile] = useState(null);
   const [fileDest, setFileDest] = useState('');
 
-  {/** 
-  console.log(file)
-  console.log(fileDest)
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    alert('A file was submitted: ' + file.name);
-    alert('File destination will be: ' + fileDest);
-  }
-*/}
   const handleFile = (event) => {
     event.preventDefault();
     props.changeFile(event.target.files[0])
@@ -63,12 +50,10 @@ export default function Command2(props){
     props.changeFileDest(event.target.value)
     setFileDest(event.target.value)
   }
-
   
   return (
   <MainContainer>
     <CmdTwoContainer>
-      
       <FormControl style={{width: "100%"}}>
       <FileOption>
         <div style={{fontSize: "20px", width: "100%", paddingTop: "10px"}}>
@@ -97,13 +82,14 @@ export default function Command2(props){
           <TextField
             style={{marginLeft: '10px', flex: 7}}
             id="fileNameDisplay"
-            placeholder={(file === null || file === undefined ) ? 'No file chosen.' : `${file.name}`}
+            placeholder={(file === null || file === undefined ) ?
+              'No file chosen.' : `${file.name}`}
             inputProps={{readOnly: true,}}
           />
         </UploadFileBtn>
       </FileOption>
     
-      <FileDestContainer style = {{fontSize:'20px'}}>
+      <FileDestContainer>
         Please enter the desired file destination:
         <InputWrapper>
           <TextField
@@ -113,25 +99,13 @@ export default function Command2(props){
             name="fileDest"
             value={fileDest}
             onChange={handleFileDest}
-            style = {{marginBottom:10, marginTop:10, fontSize:'20px'}}
+            style = {{
+              marginBottom:10, 
+              marginTop:10, 
+              fontSize:'20px'}}
           />
         </InputWrapper>
       </FileDestContainer>
-
-      {/*
-      <BtnWrapper>
-        <Button
-          fullWidth     
-          type="submit"
-          variant="contained"
-         // onSubmit={uploadFile} 
-         onClick={uploadFile}
-        >
-          Push File 
-        </Button>
-      </BtnWrapper>
-      */}
-      
       </FormControl>
     </CmdTwoContainer>
   </MainContainer>
