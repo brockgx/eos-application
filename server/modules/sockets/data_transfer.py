@@ -7,7 +7,9 @@ import time
 
 #Constants
 HEADERSIZE = 10
-RECVSIZE = 16
+RECVSIZE = 4096
+
+
 
 #Global variables
 

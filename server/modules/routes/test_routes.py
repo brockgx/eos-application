@@ -97,6 +97,7 @@ def brockSocket():
 
   if data:
     # commanddata = Command.query.filter_by(id=id).first()
+      print(data)
       commmand_data.result = True
       db.session.commit()
   else:
