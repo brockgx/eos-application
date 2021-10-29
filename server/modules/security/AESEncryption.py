@@ -1,9 +1,13 @@
 from Crypto.Cipher import AES
-import secrets, os
+import secrets, os, sys
 from platform import system
 global fileSecret
 
-FILEDIR = os.path.abspath(os.path.dirname(__file__))
+if getattr(sys, 'frozen', False):
+    FILEDIR = path.dirname(sys.executable)
+else:
+    FILEDIR = os.path.abspath(os.path.dirname(__file__))
+
 if system() == "Windows":
   KEY_PATH = FILEDIR + "\\PassIV"
 else:
