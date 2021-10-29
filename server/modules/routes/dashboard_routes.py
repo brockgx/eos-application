@@ -142,8 +142,14 @@ def listAllMetrics(mac):
   # Get sys metrics
   mach = SystemMetrics.query.filter_by(machine_id=mac).order_by(SystemMetrics.id.desc()).first()
   final_sys_metrics = []
+  disk_metrics = []
 
-  disks = mach.disk_usage.split(",")
+  #Package the disks for display
+  disk_names = mach.disk_names.split(",")
+  disk_usage = mach.disk_usage.split(",")
+  for index, disk in enumerate(disk_names):
+    disk_metrics.append({"name": disk, "usage": disk_usage[index]})
+
 
 
   final_sys_metrics.append({
@@ -152,10 +158,10 @@ def listAllMetrics(mac):
     "time": str(mach.timestamp),
     "cpu": str(mach.cpu_usage),
     "ram": str(mach.ram_usage),
-    "disk": disks[0],
+    "disk": disk_metrics,
     "disk_read": mach.disk_read,
     "disk_write": mach.disk_write,
-    "network": mach.network_usage / 100
+    "network": str(mach.network_usage)
   })
 
   final_app_metrics = []

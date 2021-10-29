@@ -43,7 +43,7 @@ def get_all_metric_data():
       "disk_use": sys_metric.disk_usage,
       "disk_read": round(sys_metric.disk_read/1000000, 2),
       "disk_write": round(sys_metric.disk_write/1000000, 2),
-      "network": round(sys_metric.network_usage/1000000, 2),
+      "network": str(sys_metric.network_usage),
       "type": "system"
     })
 
@@ -97,7 +97,7 @@ def get_all_sys_metrics():
       "disk_use": sys_metric.disk_usage,
       "disk_read": round(sys_metric.disk_read/1000000, 2),
       "disk_write": round(sys_metric.disk_write/1000000, 2),
-      "network": round(sys_metric.network_usage/1000000, 2),
+      "network": str(sys_metric.network_usage)
     })
 
   return jsonify({
