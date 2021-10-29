@@ -71,6 +71,8 @@ const Dashboard = () => {
     const resp = await fetch('/dash/clientmachines')
     const data = await resp.json()
     if(resp.ok) {
+      console.log(data)
+
       return data;
     } else {
       throw Error(`Request rejected with status ${resp.status}`);

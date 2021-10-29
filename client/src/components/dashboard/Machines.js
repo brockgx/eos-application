@@ -289,7 +289,7 @@ const Machines = (props) => {
                 <b>MAC address:&nbsp;</b>{machine.mac_address}     
               </DetailsRow>
               <DetailsRow>
-                <b>IP address:&nbsp;</b>{ip2int.toIp(machine.address)}     
+                <b>IP address:&nbsp;</b>{machine.address}     
               </DetailsRow>
               <DetailsRow>
                 <b>Ports:&nbsp;</b>{machine.ports}  

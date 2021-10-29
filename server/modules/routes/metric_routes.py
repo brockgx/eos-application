@@ -41,9 +41,9 @@ def get_all_metric_data():
       "ram": str(sys_metric.ram_usage),
       "disk_names": sys_metric.disk_names,
       "disk_use": sys_metric.disk_usage,
-      "disk_read": sys_metric.disk_read,
-      "disk_write": sys_metric.disk_write,
-      "network": sys_metric.network_usage,
+      "disk_read": round(sys_metric.disk_read/1000000, 2),
+      "disk_write": round(sys_metric.disk_write/1000000, 2),
+      "network": round(sys_metric.network_usage/1000000, 2),
       "type": "system"
     })
 
@@ -55,11 +55,11 @@ def get_all_metric_data():
         "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M'),
         "cpu": str(app.cpu_usage),
         "ram": str(app.ram_usage),
-        "disk_names": "null",
-        "disk_use": "null",
-        "disk_read": "null",
-        "disk_write": "null",
-        "network": "null",
+        "disk_names": 0,
+        "disk_use": 0,
+        "disk_read": 0,
+        "disk_write": 0,
+        "network": 0,
         "type": "app"
       })
 
@@ -95,9 +95,9 @@ def get_all_sys_metrics():
       "ram": str(sys_metric.ram_usage),
       "disk_names": sys_metric.disk_names,
       "disk_use": sys_metric.disk_usage,
-      "disk_read": sys_metric.disk_read,
-      "disk_write": sys_metric.disk_write,
-      "network": sys_metric.network_usage,
+      "disk_read": round(sys_metric.disk_read/1000000, 2),
+      "disk_write": round(sys_metric.disk_write/1000000, 2),
+      "network": round(sys_metric.network_usage/1000000, 2),
     })
 
   return jsonify({

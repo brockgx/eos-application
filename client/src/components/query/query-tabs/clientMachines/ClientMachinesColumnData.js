@@ -35,7 +35,8 @@ export const ClientMachinesColumnData = [
         accessor: 'address',
         // can interchange with SelectColumnFilter
         Filter: TextFilter,
-        filter: "includes"
+        filter: "includes",
+        // Cell: (row) => { return (ip2int.toIp(row.value)) } 
     },
     { 
         Header: 'Ports',

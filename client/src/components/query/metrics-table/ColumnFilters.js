@@ -98,7 +98,6 @@ export const TextFilter = ({ column }) => {
   // Debounces user input (0.5 sec)
   const onChange = useAsyncDebounce(value => {
     setFilter(value || undefined)
-    console.log(filterValue)
   }, 500 //half a second
   )
 
@@ -132,7 +131,6 @@ export const DateColumnFilter = ({ column }) => {
   // Debounces user input (0.5 sec)
   const onChange = useAsyncDebounce(value => {
     setFilter(value || undefined)
-    console.log(filterValue)
   }, 500 //half a second
   )
   return (
@@ -165,7 +163,6 @@ export const TimeColumnFilter = ({ column }) => {
   // Debounces user input (0.5 sec)
   const onChange = useAsyncDebounce(value => {
     setFilter(value || undefined)
-    console.log(filterValue)
   }, 500 //half a second
   )
   return (

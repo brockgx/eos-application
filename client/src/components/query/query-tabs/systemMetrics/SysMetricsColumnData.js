@@ -54,21 +54,21 @@ export const SysMetricsColumnData = [
         filter: "between"
     },
     { 
-        Header: 'Disk Read (B)',
+        Header: 'Disk Read (MB)',
         accessor: 'disk_read',
         Filter: NumberRangeColumnFilter,
-        filter: "between"
+        filter: "between",
     },
     { 
-        Header: 'Disk Write (B)',
+        Header: 'Disk Write (MB)',
         accessor: 'disk_write',
         Filter: NumberRangeColumnFilter,
-        filter: "between"
+        filter: "between",
     },
     { 
-        Header: 'Network Usage (B)',
+        Header: 'Network Usage (MB)',
         accessor: 'network',
         Filter: NumberRangeColumnFilter,
-        filter: "between"
+        filter: "between",
     }
 ]
