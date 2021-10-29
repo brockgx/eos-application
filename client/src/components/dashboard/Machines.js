@@ -11,8 +11,7 @@ import {useHistory} from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import styled from 'styled-components'
 import clsx from "clsx";
-import ip2int from 'ip2integer'
-
+ 
 // Component imports here
 import MachineMetrics from './MachineMetrics';
 import { IconButton, Collapse, TextField } from '@material-ui/core'
