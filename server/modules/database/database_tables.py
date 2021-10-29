@@ -32,7 +32,7 @@ class SystemMetrics(db.Model):
   disk_usage = db.Column(db.String(70), nullable=False)
   disk_read = db.Column(db.Integer, nullable=False)
   disk_write = db.Column(db.Integer, nullable=False)
-  network_usage = db.Column(db.Integer, nullable=False) #May be float as was a percentage
+  network_usage = db.Column(db.Numeric(5,2), nullable=False) #May be float as was a percentage
   app_metrics = db.relationship('AppMetrics', backref='system_metric')
 
 #Table: for holding details about the specific applications monitored
