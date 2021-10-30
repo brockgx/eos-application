@@ -39,7 +39,8 @@ export default function AvailApps(props) {
   }, [])
 
 
-    const mac = "94:de:80:c6:73:49"
+    //const mac = "94:de:80:c6:73:49"
+    const mac = props.machChoice.mac_address
     //Fetch app data from DB
     const fetchAppsAvail = async () => {
       const resp = await fetch(`/commands/machineapps/${mac}`)
@@ -79,6 +80,14 @@ export default function AvailApps(props) {
       }
     }, [open]);
 
+
+    const handleChange = (event, newValue) => {
+      event.preventDefault(); 
+      console.log(value)
+      setValue(newValue || "")
+      props.changeAppChoice(newValue || "")
+   }
+
   return (
     <MainContainer>
       <AutocompleteWrapper>
@@ -105,9 +114,10 @@ export default function AvailApps(props) {
           )}
           
           loading={loading}
-          onChange={(e, newValue)=> setValue(newValue || "")}
+          onChange={handleChange}
+          //onChange={(e, newValue)=> setValue(newValue || "")}
           renderInput={(params) => (
-            <TextField {...params}
+            <TextField {...params} 
               variant="outlined"
               placeholder="discord.exe"
               required

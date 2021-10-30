@@ -46,7 +46,7 @@ def getAvailableMachines():
 
 @command_routes.route('/machineapps/<mac>', methods=['GET'])
 def getAvailableApps(mac):
-  mac = '94:de:80:c6:73:49'
+ # mac = '94:de:80:c6:73:49'
   machAppsList = AppDetails.query.filter_by(machine_id=mac).all()
   final_apps_avail = []
   

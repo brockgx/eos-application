@@ -113,6 +113,13 @@ const CommandDetailsDisplay= styled.div`
   word-break: break-all;
 `;
 
+const MacAddText = styled.div`
+  padding-left: 50px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 2px;
+`;
+
 
 const RightSideHistory = styled.div`
   flex: 1;
@@ -185,8 +192,8 @@ const Commands = (props) => {
         DeviceName: machChoice.name,
         CommandType: cmdChoice,
         Parameters: {
-          app_name: appChoice,
-        //app_id: 
+          app_name: appChoice.app_name,
+          app_id: appChoice.pid,
         } 
       }
       fetch('/commands/send', {
@@ -282,7 +289,10 @@ const Commands = (props) => {
               <SpaceBox style={{maxHeight: selectedTab === 0 || 2 ? "56px": "17px"}}>
                 {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
                 <div className = "AvailAppsContain" style={{flex: 2}}> 
-                  <AvailApps/>
+                  <AvailApps 
+                  changeAppChoice={appChoice => setAppChoice(appChoice)}
+                  machChoice = {machChoice}
+                  />
                 </div>}
               </SpaceBox>
 
@@ -291,10 +301,18 @@ const Commands = (props) => {
                 <div style={{flex: 4}}>
 
                   {/*Machine Selected*/}
-                  <div>
-                    {"> Selected Machine: "} 
-                    {(machChoice.name !== "" && machChoice.name !== null && machChoice.name !== undefined) ? ` ${machChoice.name}`: "No Machine Chosen"}  
-                  </div>
+                  
+                    {(machChoice.name !== "" && machChoice.name !== null && machChoice.name !== undefined) ?
+                    <div>
+                    <div>
+                     {`> Selected Machine: ${machChoice.name}`}
+                    </div>
+                     <MacAddText>
+                      {`(MAC Address: ${machChoice.mac_address})`}
+                     </MacAddText>
+                     </div>
+                    : "> Selected Machine: No Machine Chosen"} 
+                 
 
                   {/*Command Selected */}
                   <div>
@@ -310,8 +328,8 @@ const Commands = (props) => {
                     {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
                       <div>  
                         {'> Selected App: '}
-                        {(appChoice.appID !== "" && appChoice.appID !== undefined) ?
-                          `${appChoice.appID}` : "No App Chosen."}
+                        {(appChoice.app_name !== "" && appChoice.app_name !== undefined) ?
+                          `${appChoice.app_name} (PID: ${appChoice.pid})` : "No App Chosen."}
                       </div>
                     }
                   </div> 
