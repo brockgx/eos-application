@@ -38,17 +38,19 @@ export default function AvailApps(props) {
         getAppsAvail()
   }, [])
 
+
+    const mac = "94:de:80:c6:73:49"
     //Fetch app data from DB
     const fetchAppsAvail = async () => {
-    const resp = await fetch(`/commands/machineapps/${props.machine.mac_address}`)
-    const data = resp.json()
-      if(resp.ok) {
-        console.log(data.content)
-        return data;
-      } else {
-          throw Error(`Request rejected with status ${resp.status}`);
+      const resp = await fetch(`/commands/machineapps/${mac}`)
+      const data = await resp.json()
+        if(resp.ok) {
+          console.log(data)
+          return data.content;
+        } else {
+            throw Error(`Request rejected with status ${resp.status}`);
+        }
       }
-    }
 
     React.useEffect(() => {
       let active = true;
@@ -61,7 +63,8 @@ export default function AvailApps(props) {
         await sleep(1e3); // For demo purposes. This can be awaiting fetch availApps, or removed entirely.
         if (active) {
           //appsAvailTest is hardcoded array for testing console.log of data.content (line 48) from fetchAppsAvail
-          setOptions([...appsAvailTest]); 
+          //setOptions([...appsAvailTest]); 
+          setOptions([...appsAvail]);
         }
       })();
   
@@ -89,22 +92,22 @@ export default function AvailApps(props) {
           onClose={() => {
           setOpen(false);
           }}
-          
-          isOptionEqualToValue={(option, value) => option.name === value.name}
+          ///
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           disableCloseOnSelect
           options={options}
-          getOptionLabel={(option) => option.name}
+          getOptionLabel={(option) => option.app_name}
           renderTags={() => null}
           renderOption={(props, option, { selected }) => (
-            <li {...props}>
-              {option.name + "( PID: " + option.pid + ")"} 
+            <li {...props} key={option.id}>
+              {option.app_name + "( PID: " + option.pid + ")"} 
             </li>
           )}
-          value={value}
+          
           loading={loading}
           onChange={(e, newValue)=> setValue(newValue || "")}
           renderInput={(params) => (
-            <TextField {...params} 
+            <TextField {...params}
               variant="outlined"
               placeholder="discord.exe"
               required

@@ -44,21 +44,23 @@ def getAvailableMachines():
 
   #Route: to get list of apps for a specified machine
 
-@command_routes.route('/machineapps/<machine_id>', methods=['GET'])
-def getAvailableApps(machine_id):
-
-  appList = AppDetails.query.filter_by(machine_id=machine_id).all()
+@command_routes.route('/machineapps/<mac>', methods=['GET'])
+def getAvailableApps(mac):
+  mac = '94:de:80:c6:73:49'
+  machAppsList = AppDetails.query.filter_by(machine_id=mac).all()
   final_apps_avail = []
-
-  for app in appList:
+  
+  for app in machAppsList:
 	  final_apps_avail.append({
+    "id": app.id,
 		"app_name": app.name,
     "pid": app.pid,
+    "machine_id": app.machine_id
 		})
   print(final_apps_avail)
   return jsonify({
-	"description": "A list of available applications for a machine",
-	"content": final_apps_avail
+	  "description": "A list of available applications for a machine",
+	  "content": final_apps_avail
 	})
 
 #Route: to send a command to the agent and get a response back

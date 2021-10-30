@@ -1,16 +1,12 @@
 import React from 'react';
 import {useState } from 'react';
 import {useEffect } from 'react';
-import {useContext } from 'react';
 
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Autocomplete from '@mui/material/Autocomplete';
 
 import styled from 'styled-components';
-
-import {MachineContext} from './machineContext';
-
 
 const MainContainer = styled.div`
   padding: 1px;
@@ -33,12 +29,10 @@ function sleep(delay = 0) {
 */
 
 export default function CmdMachineChoice(props) {
-    
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
-    const [machContext, setMachContext] = useContext(MachineContext)
     
     const [machines, setMachines] = useState([])
     useEffect(() => {
@@ -87,8 +81,11 @@ export default function CmdMachineChoice(props) {
       }
     }, [open]);
 
-    //test to determine whether machContext or what is used
-    //console.log(machContext)
+    const handleChange = (event, newValue) => {
+        event.preventDefault(); 
+        setValue(newValue || "")
+        props.changeMachChoice(newValue || "")
+     }
 
   return (
     <MainContainer>
@@ -113,7 +110,7 @@ export default function CmdMachineChoice(props) {
           options={options}
           loading={loading}
           fullWidth
-          onChange={(e, newValue)=> setMachContext(newValue || "")}
+          onChange={handleChange}
           style={{marginBottom: 0}}
           renderInput={(params) => (
             <TextField {...params} 
