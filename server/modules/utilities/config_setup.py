@@ -1,13 +1,17 @@
 from os import path
 from platform import system
-import yaml
+import yaml, sys
 
 from .logging_setup import server_logger
 #import yaml, os, platform
 
 def read_config_file():
   #Get the directory of the configuration file
-  CONFIG_DIR = path.abspath(path.join(__file__,"../../../"))
+  if getattr(sys, 'frozen', False):
+    CONFIG_DIR = path.dirname(sys.executable)
+  else:
+    CONFIG_DIR = path.abspath(path.join(__file__,"../../../"))
+  
   if system() == "Windows":
     CONFIG_PATH = CONFIG_DIR + "\\server_config.yml"
   else:

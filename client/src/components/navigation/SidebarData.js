@@ -1,3 +1,12 @@
+/*
+ * Name: SidebarData.js
+ * Purpose: Define the menu items for the sidebar
+ *          set the title, icon and path for each item
+ * 
+ * Usage: imported by Sidebar.js to render the sidebar menu
+ */
+
+// Import various icon libraries from 'react-icons'
 import * as FaIcons from 'react-icons/fa';
 import * as IoIcons from 'react-icons/io';
 

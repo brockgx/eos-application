@@ -1,19 +1,29 @@
+/*
+ * Name: Machines.js
+ * Purpose: Renders various components that make up the 'Machine Tiles' 
+ * 
+ * Usage: Dashboard.js - maps an array of machines to this tile component
+ */
+
+// Module imports here
 import {useState} from 'react';
 import {useHistory} from 'react-router-dom';
-
-import { IconButton, Collapse, TextField } from '@material-ui/core'
-import styled from 'styled-components'
 import { makeStyles } from "@material-ui/core/styles";
+import styled from 'styled-components'
 import clsx from "clsx";
+ 
+// Component imports here
+import MachineMetrics from './MachineMetrics';
+import { IconButton, Collapse, TextField } from '@material-ui/core'
+
+// Icon and assset imports here
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import * as FaIcons from 'react-icons/fa';
 import * as IoIcons from 'react-icons/io';
-import MachineMetrics from './MachineMetrics';
-
-import ip2int from 'ip2integer'
 import windows from '../../assets/windows.png'
 import linux from '../../assets/linux.png'
 
+// Styled component declarations
 const Container = styled.div`
   padding-bottom: 10px;
 `;
@@ -26,31 +36,27 @@ const Wrapper = styled.div`
   -webkit-box-shadow: 0px 0px 1px -5px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 0px 1px -5px rgba(0,0,0,0.75);
 `;
-
 const Top = styled.div`
   display: flex;
 `;
-
 const ColumnContainer = styled.div`
   display: flex;
   flex: 2.5;  
+  margin-top: 5px;
 `;
-
 const DetailsContainer = styled.div`
   display: flex;
-  padding-top: 5px;
   flex-direction: column;
   font-size: 20px;
   font-weight: 400;
 `;
-
 const MachineNameContainer = styled.span`
   font-size: 28px;
   font-weight: 400;
   display: flex;
   align-items: center;
+  margin: 5px 0px;
 `;
-
 const DetailsRow = styled.span`
   display: flex;
   margin-top: 5px;
@@ -58,7 +64,6 @@ const DetailsRow = styled.span`
   font-weight: 300;
   align-items: center;
 `;
-
 const RightContainer = styled.div`
   flex: 2;  
   display: flex;
@@ -67,56 +72,48 @@ const RightContainer = styled.div`
   font-weight: 300;
   margin: 5px 10px;;
 `;
-
 const Bottom = styled.div`
 `;
-
 const Image = styled.img`
   padding: 5px;
-  width: 90px;
-  height: 90px;
   margin-top: 5px;
+  width: 120px;
+  height: 120px;
   src: ${(props) => props.src };
 `;
-
 const EditName = styled.span`
   margin-left: 10px;
 `;
-
 const MachineStatusIcon = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background-color: ${(props) => props.color === 1 ? 'green' : 'red' };
 `;
-
 const MachineStatusName = styled.span`
   margin-left: 5px;
 `;
-
 const MetricsContainer = styled.div`
-  padding: 0px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   font-size: 20px;
   font-weight: 300;
 `;
-
 const Metrics = styled.div`
-  padding: 10px 0px 0px 5px;
+  padding-top: 10px;
   display: flex;
   border-top: 1px solid #687CA1;
   font-size: 22px;
   font-weight: 300;
 `;
-
 const Text = styled.span`
   font-size: 22px;
   font-weight: 600;
+  margin: 7px 0px;
 `;
 
-// handles rotation of arrow icon on drop down
+// Use Material UI styles to handles rotation of arrow icon on drop down
 const useStyles = makeStyles((theme) => ({
   expand: {
     transform: "rotate(0deg)",
@@ -130,18 +127,47 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Machines = ({machine}) => {
+/*
+ * This is the main implementation for the Machines component
+ * Renders a machine tile with an expandable Metrics dropdown
+ * Dropdown passess machine_name to the MachienMetrics component
+ */
+const Machines = (props) => {
+  
+  // destructure machine objecct from props
+  const {machine} = props
+
+  // Instantiate useHistory hook to navigate to other pages
+  const history = useHistory();
+
+  // Instantiate useStyles for material UI animation
   const classes = useStyles();
+
+  // Variable to handle expansion of metrics container
   const [expanded, setExpanded] = useState(false);
+
+  // Variables to handle the change of nickname on the UI
   const [edit, setEdit] = useState(false)
   const [name, setName] = useState('')
-  
+
+  // Variable to receive data from child component (MachineMetrics.js)
+  const [childData, setChildData] = useState('')
+
+  // Function to handle callback from child component
+  // Receives timestamp from latest data metrics
+  // Converts timestamp to datetime using "Date" function
+  const handleCallback = (childData) =>{
+    const time = new Date(childData * 1000).toLocaleString()
+    setChildData(time)
+  }
+
+  // Function to handle the click event of the dropdown arrow
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const history = useHistory();
-
+  // Function to send a DELETE rquest to the API
+  // Remove a client machine from the DB
   const handleDelete = () => {
     fetch(`/dash/clientmachines/${machine.id}`, {
       method: 'DELETE',
@@ -150,12 +176,14 @@ const Machines = ({machine}) => {
     })
   };
 
+  // Function to handle state of editable name field
   const changeEditMode = () => {
     setEdit(!edit)
   }
 
+  // Function to send PUT request to API
+  // Updates nickname in DB using user input from editable field
   const handleEdit = () => {
-    console.log(name)
     fetch(`/dash/clientmachines/${machine.id}`, {
       method: 'PUT',
       headers: {"Content-Type": "application/json" },
@@ -166,16 +194,36 @@ const Machines = ({machine}) => {
     })
   };
 
+  // Redirect functions to navigate to "Commands page"
   const redirect_command = () =>{
-    history.push('/command')
+    //set the pathname to update the sidebar selection
+    window.location.pathname = '/command';
+
+    // Pass data to prefill commands form with "machine name"
+    history.push({
+      pathname: '/command',
+      state:{machine_name: machine.name}
+    })
   }
+  
+  // Redirect functions to navigate to "Query page"
   const redirect_query = () =>{
-    history.push('/query')
+    // Pass data to prefill query filter with "machine name"
+    history.push({
+      pathname: '/query',
+      state:{machine_name: machine.name}
+    })
   }
 
   return (
     <Container>
       <Wrapper>
+        {/*
+          * "Top" renders top half of Machine Tile
+          * Includes machine connection information
+          * plus in depth machine details
+          * and common functions w/ delete functionality 
+          */}
         <Top>
           <ColumnContainer>
             {
@@ -210,12 +258,14 @@ const Machines = ({machine}) => {
                 }   
                 </EditName>
               </MachineNameContainer>
-              {/* <MachineInfo>
-                <b>Details:&nbsp;</b>
-                {machine.host_name} : {ip2int.toIp(machine.address)} : 1337
-              </MachineInfo> */}
               <DetailsRow>
-                <b>Last Update:&nbsp;</b> 
+                <b>Host name:&nbsp;</b>{machine.host_name}     
+              </DetailsRow>
+              <DetailsRow>
+                <b>Last Update:&nbsp;</b>
+                { childData === ""
+                ? "pending"
+                : childData }
               </DetailsRow>
               <DetailsRow>
                 <b>Status:&nbsp;</b>
@@ -235,13 +285,13 @@ const Machines = ({machine}) => {
             <DetailsContainer>
               <Text>Machine Details:</Text>
               <DetailsRow>
-                <b>Host name:&nbsp;</b>{machine.host_name}     
+                <b>MAC address:&nbsp;</b>{machine.mac_address}     
               </DetailsRow>
               <DetailsRow>
-                <b>IP address:&nbsp;</b>{ip2int.toIp(machine.address)}     
+                <b>IP address:&nbsp;</b>{machine.address}     
               </DetailsRow>
               <DetailsRow>
-                <b>Port:&nbsp;</b>1337     
+                <b>Ports:&nbsp;</b>{machine.ports}  
               </DetailsRow>
             </DetailsContainer>
           </ColumnContainer>
@@ -272,6 +322,13 @@ const Machines = ({machine}) => {
             />
           </RightContainer>
         </Top>
+
+        {/*
+          * "Bottom" renders expandable Metrics section
+          * Pass machine name To "MachineMetrics" component
+          * which gets metrics from API and renders up to date
+          * machine metric tables & graphs
+          */}
         <Bottom>
           <MetricsContainer>
             <IconButton
@@ -280,13 +337,13 @@ const Machines = ({machine}) => {
               })}
               onClick={handleExpandClick}
               aria-expanded={expanded}
-              aria-label="show more"
+              aria-label="Show More"
             >
-              <ExpandMoreIcon />
+              <ExpandMoreIcon/>
             </IconButton>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Metrics>
-                <MachineMetrics machineName={machine.mac_address}/>
+                <MachineMetrics parentCallback={handleCallback} machineName={machine.mac_address}/>
               </Metrics>
             </Collapse>  
           </MetricsContainer>
@@ -295,5 +352,4 @@ const Machines = ({machine}) => {
     </Container>
   )
 }
-
 export default Machines

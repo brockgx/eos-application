@@ -1,26 +1,51 @@
+/*
+ * Name: Home.js
+ * Purpose: Renders various components that make up the 'Home Page' 
+ * Source: https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/sign-in-side
+
+ * Usage: App.js to render the Home page
+ */
+
+// Module imports here
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
+
+// import styles here
 import { makeStyles } from '@material-ui/core/styles';
+
+// Import icons and assets here
 import logo from '../assets/logo.png';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-/*
-This Sign In page is based on the free log in template found at the below link:
-https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/sign-in-side
-*/
+// Renders the copyright component 
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        EoS Monitor
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
+// Implementation of styles using material ui "makeStyles" directive
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
   },
   image: {
+    //backgroundImage: 'url(https://source.unsplash.com/random)',
     backgroundImage: 'url(https://source.unsplash.com/hpjSkU2UYSU)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
@@ -45,13 +70,15 @@ const useStyles = makeStyles((theme) => ({
     
   },
   submit: {
-    margin: theme.spacing(10, 0, 10),
+    margin: theme.spacing(10, 0, 2),
   },
 
 }));
 
-
-export default function SignInSide() {
+/*
+ * This is the main implementation for the "Home" page
+ */
+const Home = () => {
   const classes = useStyles();
 
   return (
@@ -59,26 +86,27 @@ export default function SignInSide() {
       <CssBaseline />
       <Grid item xs={false} sm={4} md={6} className={classes.image} />
       <Grid item xs={12} sm={8} md={6} component={Paper} elevation={4} square >
-
         <div className={classes.paper}>
-              <div>
-                <img src = {logo} 
-                alt="logo" 
-                width="150px" 
-                height="150px" 
-                border-radius="50%"
-                display="inline-block"
-                 />  
-              </div>
-              <Avatar className={classes.avatar} style = {{marginBottom:10}}>
-                <LockOutlinedIcon/>
-              </Avatar>
-              
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
           
-          <form className={classes.form} noValidate>
+          <div style={{display: "flex", alignItems:"center", marginTop: "50px"}}>
+            <img src = {logo} 
+            alt="logo" 
+            width="120px" 
+            height="120px" 
+            border-radius="50%"
+            display="inline-block"
+              />  
+            <span style={{ margin:"30px", fontSize: "72px", fontWeight: "700", color:"#1d3557"}}>
+              EoS Monitor
+            </span>
+          </div>
+          <Avatar className={classes.avatar} style={{marginTop: "180px"}}>
+            <LockOutlinedIcon/>
+          </Avatar>  
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <form className={classes.form} noValidate >
             <TextField
               variant="standard"
               margin="normal"
@@ -89,9 +117,8 @@ export default function SignInSide() {
               autoComplete="email"
               autoFocus
               className = "classEmail"
-              style = {{marginBottom:50}}
+              style = {{marginBottom:60}}
             />
-           
             <TextField
               margin="normal"
               required
@@ -101,13 +128,13 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
-              style = {{marginBottom:30}}
+              style = {{marginBottom:10}}
             />
             <FormControlLabel
               className ="rememberMe"
               control={<Checkbox value="remember" color="primary"/>}
               label="Remember me"
-              style = {{marginTop:30 ,marginLeft: 0, Align: 'left'}}
+              style = {{marginTop:20 ,marginLeft: 0, Align: 'left'}}
             />
             <Button
               type="submit"
@@ -119,10 +146,20 @@ export default function SignInSide() {
             >
               Sign In
             </Button>
-            
+            <div >
+              <div >
+                <Link href="#" variant="body2">
+                  Forgotten your password?
+                </Link>
+              </div>
+            </div>
+            <div style={{marginTop: "250px"}}>
+              <Copyright />
+            </div>
           </form>
         </div>
       </Grid>
     </Grid>
   );
 }
+export { Home }

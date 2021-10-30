@@ -1,13 +1,17 @@
 from Crypto.Cipher import AES
-import secrets, os
+import secrets, os, sys
 from platform import system
 global fileSecret
 
-FILEDIR = os.path.abspath(os.path.dirname(__file__))
-if system() == "Windows":
-  KEY_PATH = FILEDIR + "\\PassIV"
+if getattr(sys, 'frozen', False):
+    FILE_DIR = path.dirname(sys.executable)
 else:
-  KEY_PATH = FILEDIR + "/PassIV"
+    FILE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+if system() == "Windows":
+  KEY_PATH = FILE_DIR + "\\PassIV"
+else:
+  KEY_PATH = FILE_DIR + "/PassIV"
 
 def do_encrypt(Message):
     try:
