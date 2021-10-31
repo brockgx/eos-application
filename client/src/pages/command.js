@@ -8,6 +8,7 @@ import Command2 from '../components/commands-tabs/Command2';
 import Command3 from '../components/commands-tabs/Command3';
 import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
 import AvailApps from '../components/commands-tabs/AvailApps';
+import CmdShellOption from '../components/commands-tabs/CmdShellOption';
 
 import styled from 'styled-components';
 
@@ -83,13 +84,13 @@ const CommandsTab = styled.div`
 const LeftSide = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0px;
   margin-right: 20px;
   height: 100%;
 `;
 
 const TabsWrapper = styled.div`
-  padding: 0px;
+  margin-bottom: 20px;
 `;
 
 const LHCommandOptionBox = styled.div`
@@ -99,6 +100,14 @@ const LHCommandOptionBox = styled.div`
 const SpaceBox = styled.div`
   flex: 1;
   flex-shrink: 3;
+  padding-bottom: 30px;
+  margin-bottom: 20px;
+
+`;
+
+const ShellOptionBox = styled.div`
+  flex: 2;
+
 `;
 
 const CommandDetailsDisplay= styled.div`
@@ -114,6 +123,13 @@ const CommandDetailsDisplay= styled.div`
 `;
 
 const MacAddText = styled.div`
+  padding-left: 50px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 2px;
+`;
+
+const ShellOptionTextWrapper = styled.div`
   padding-left: 50px;
   font-size: 20px;
   font-weight: 600;
@@ -152,6 +168,7 @@ const Commands = (props) => {
     const [appChoice, setAppChoice] = useState('')
     const [machChoice, setMachChoice] = useState('')
     const [cmdChoice, setCmdChoice] = useState('')
+    const [cmdShellOption, setCmdShellOption] = useState('')
 
     //for reading the file the user inputs, and prepares details object in the format for the API
     let uploadFile = () => {
@@ -208,12 +225,10 @@ const Commands = (props) => {
       const details = {
         DeviceID: machChoice.mac_address,
         DeviceName: machChoice.name,
-        CommandType: customCmd,
+        CommandType: "Custom_command",
         Parameters: {
-          command: "",
-          //os_choice is hardcoded, a simple select box or buttons in a box should be added 
-          //in the SpaceBox component to conditionally render when on custom command tab
-          os_choice: "Windows",
+          command: customCmd,
+          cmd_shell_choice: cmdShellOption,
         } 
       }
       fetch('/commands/send', {
@@ -293,37 +308,42 @@ const Commands = (props) => {
                   changeAppChoice={appChoice => setAppChoice(appChoice)}
                   machChoice = {machChoice}
                   />
-                </div>}
+                </div>
+                }
+                {(selectedTab === 2) && 
+                  <ShellOptionBox>
+                   <CmdShellOption changeShellOption={cmdShellOption => setCmdShellOption(cmdShellOption)} />
+                  </ShellOptionBox>
+                }
               </SpaceBox>
 
               <CommandDetailsDisplay> 
                 <h3 style = {{paddingTop: '5px'}}>COMMAND DETAILS</h3> 
                 <div style={{flex: 4}}>
 
-                  {/*Machine Selected*/}
-                  
+                  {/*Command details displayed when a machine is selected*/}
                     {(machChoice.name !== "" && machChoice.name !== null && machChoice.name !== undefined) ?
                     <div>
-                    <div>
-                     {`> Selected Machine: ${machChoice.name}`}
+                      <div>{`> Selected Machine: ${machChoice.name}`}</div>
+                      <MacAddText>{`(MAC Address: ${machChoice.mac_address})`}</MacAddText>
                     </div>
-                     <MacAddText>
-                      {`(MAC Address: ${machChoice.mac_address})`}
-                     </MacAddText>
-                     </div>
                     : "> Selected Machine: No Machine Chosen"} 
-                 
 
-                  {/*Command Selected */}
+                  {/*Command details displayed when a preset or custom command tab is selected */}
                   <div>
-                  {(selectedTab === 2 ) && `> (Custom Command): ${customCmd}`}
+                    {(selectedTab === 2 ) &&
+                    <div>
+                      {`> (Custom Command): ${customCmd}`}
+                      <ShellOptionTextWrapper>{`(Command Shell Option): ${cmdShellOption}`}</ShellOptionTextWrapper>
+                     </div>
+                     }
                   </div>
                   <div>
                     {(selectedTab === 0 && cmdChoice !== undefined && cmdChoice !== null && cmdChoice !== '') ?
                       `> (Preset Command): ${cmdChoice}` : '' }
                   </div>
 
-                  {/*App Selected if Command selected is Restart/Kill application*/}
+                  {/*Details of app selected if command selected is Restart/Kill application*/}
                   <div>
                     {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
                       <div>  
@@ -342,9 +362,7 @@ const Commands = (props) => {
                         {"> File Name: "}{(file === null || file === undefined) ? 
                         ' No file chosen.' : ` ${file.name}`}
                       </div>
-                      <div>
-                        {"> File Destination: "}{fileDest === "" ? ' N/A' : `${fileDest}`}
-                      </div>
+                      <div>{"> File Destination: "}{fileDest === "" ? ' N/A' : `${fileDest}`}</div>
                     </div>
                   }
                   </div>
