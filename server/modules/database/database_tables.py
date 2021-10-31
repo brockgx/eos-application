@@ -25,7 +25,7 @@ class ClientMachines(db.Model):
 #
 class SystemMetrics(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  machine_id = db.Column(db.Integer, db.ForeignKey('client_machines.mac_address'), nullable=True)
+  machine_id = db.Column(db.String(40), db.ForeignKey('client_machines.mac_address'), nullable=True)
   timestamp = db.Column(db.Numeric(16,6), nullable=False)
   cpu_usage = db.Column(db.Numeric(5,2), nullable=False)
   ram_usage = db.Column(db.Numeric(5,2), nullable=False)
