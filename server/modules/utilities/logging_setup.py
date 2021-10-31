@@ -1,8 +1,12 @@
-import logging
+import logging, sys
 from os import path
 from platform import system
 
-UTILITIES_DIR = path.abspath(path.dirname(__file__))
+if getattr(sys, 'frozen', False):
+  UTILITIES_DIR = path.dirname(sys.executable)
+else:
+  UTILITIES_DIR = path.abspath(path.dirname(__file__))
+  
 if system() == "Windows":
   LOG_FILE = UTILITIES_DIR + "\\eos_server.log"
 else:
