@@ -15,4 +15,4 @@ DATABASE-DETAILS:
   PASSWORD: test01 #the password of the account for the database (if required)
   DATABASE-TYPE: sqlite #the database type, can be mysql or sqlite
   DATABASE-NAME: test.db #the name of the database
-  DATABASE-URI: E:\Semester 2\SEPB\SEPB Project\EOS-Application\server\modules #the path or server URI for the database (must include a / or \ at the end)
+  DATABASE-URI: /home/devmain/uni-work/app-resources/eos-app/server/modules/database/ #the path or server URI for the database (must include a / or \ at the end)

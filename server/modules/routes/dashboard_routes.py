@@ -199,16 +199,19 @@ def check_machine_status():
       port = int(mach.ports.split(",")[0])
 
       sock.connect((ip, port))
+      sock.close()
     except Exception as err_msg:
       can_connect = False
       server_logger.warning("Couldn't connect to {}, on port {}.".format(ip,port))
     
     if can_connect:
       if mach.status == 0:
+        print("Machine is offline but should be online: " + mach.name)
         mach.status = 1
         db.session.commit()
     elif not can_connect:
       if mach.status == 1:
+        print("Machine is online but should be offline: " + mach.name)
         mach.status = 0
         db.session.commit()
   
