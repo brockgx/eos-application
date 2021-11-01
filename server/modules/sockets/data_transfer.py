@@ -2,7 +2,7 @@
 from ..security.AESEncryption import do_encrypt, do_decrypt
 import io
 import sys
-import tqdm
+import time
 
 #Constants
 HEADERSIZE = 10
@@ -13,85 +13,91 @@ RECVSIZE = 4096
 #Function: send data
 def sendSocketData(socketConn, message):
   #The full message to send with the buffer
-  encryptedMsg = io.BytesIO(do_encrypt(message))
-  encryptedLength = sys.getsizeof(encryptedMsg)
+  encryptedBytes = do_encrypt(message)
+  encryptedMsg = io.BytesIO(encryptedBytes)
+  encryptedLength = len(encryptedBytes)
   # CURRENT
   # LENGTH: encryptedtestLen.encode()
   # MSG: encryptedMsg
+  socketConn.setblocking(1)
   #SEP: \0 <null byte>
-  socketConn.send(f"{encryptedLength}".encode())
+  #print(encryptedLength)
+  bytelen = encryptedLength.to_bytes(4,'little')
+  #print("bytelen")
+  #print(bytelen)
+  socketConn.send(bytelen)
   
-  progress = tqdm.tqdm(range(encryptedLength), f"Sending {encryptedLength} bytes", unit="B", unit_scale=True, unit_divisor=1024)
+  sentbytes = 0
+  #progress = tqdm.tqdm(range(encryptedLength), f"Sending {encryptedLength} bytes", unit="B", unit_scale=True, unit_divisor=1024)
   with encryptedMsg as f:
       while True:
           # read the bytes from the file
           bytes_read = f.read(RECVSIZE)
+          sentbytes = f.tell()
+          #print(sentbytes)
           if not bytes_read:
               # file transmitting is done
+              socketConn.setblocking(0)
+              #print("File Sent!")
               break
           # we use sendall to assure transimission in 
           # busy networks
+          #print("Sending data")
           socketConn.sendall(bytes_read)
           # update the progress bar
-          progress.update(len(bytes_read))
+          #progress.update(len(bytes_read))
+      
   ##Send the message if available
   #try:
   #  socketConn.sendall(encryptedtestLen.encode() + b'\0' + encryptedMsg)
   #except Exception as error:
   #  print("Failure message")
   #  print(str(error))
+  
 
 #Function: receive data
 def receiveSocketData(socketConn):
   #function variables
   import io
   datarecv = io.BytesIO()
+  #print("Rec socket started")
+  #time.sleep(2)
+  socketConn.setblocking(1)
   
-  datasize = socketConn.recv(RECVSIZE).decode()
-
+  size = socketConn.recv(4)
+  print(size)
+  filesize = int.from_bytes(size,'little')
+  print(filesize)
+  #time.sleep(2)
+  #datasize = int(test.decode())
+  #print(datasize)
+  #time.sleep(2)
+  recvbytes = 0
   # start receiving the file from the socket
   # and writing to the file stream
-  progress = tqdm.tqdm(range(datasize), f"Receiving {datasize} bytes", unit="B", unit_scale=True, unit_divisor=1024)
+  #progress = tqdm.tqdm(range(datasize), f"Receiving {str(datasize)} bytes", unit="B", unit_scale=True, unit_divisor=1024)
   with datarecv as f:
       while True:
-          # read 1024 bytes from the socket (receive)
-          bytes_read = datasize.recv(RECVSIZE)
-          if not bytes_read:    
-              # nothing is received
-              # file transmitting is done
-              break
-          # write to the file the bytes we just received
-          f.write(bytes_read)
-          # update the progress bar
-          progress.update(len(bytes_read))
+        # read 1024 bytes from the socket (receive)
+        #print("try read byte")
+        #print("recv:" + str(recvbytes) + " size: " + str(filesize))
+        if(recvbytes >= filesize):
+          #print("END FILE FFS")
+          break
+        bytes_read = socketConn.recv(RECVSIZE)
+        if not bytes_read: 
+            #print("end")
+            socketConn.setblocking(0)
+            # nothing is received
+            # file transmitting is done
+            break
+        # write to the file the bytes we just received
+        #print("try write")
+        f.write(bytes_read)
+        recvbytes = f.tell()
+        #print(recvbytes)
+        #print("after write")
+        # update the progress bar
+        #progress.update(len(bytes_read))
       # Result
-      return datarecv.getvalue()
-  #receiveMsg = True
-  #newMsg = True
-  #lengthMsg = 0
-  #completeMsg = b''
-#
-  #while receiveMsg:
-  #  try:
-  #    msg = socketConn.recv(RECVSIZE)
-#
-  #    if newMsg == False:
-  #      completeMsg += msg
-  #  except:
-  #    receiveMsg = False
-#
-  #  if msg != b'':
-  #    if newMsg:
-  #      splitMsg = msg.split(b'\0')
-  #      lengthMsg = int(splitMsg[0].decode())
-  #      newMsg = False
-  #      completeMsg+=splitMsg[1]
-#
-  #    if len(str(completeMsg)) == lengthMsg:
-  #      receievedMsg = do_decrypt(completeMsg)
-  #      receievedMsg = receievedMsg.decode()
-  #      newMsg = True
-  #      completeMsg = ''
-  #      receiveMsg = False
-          
-  #return receievedMsg
+      return do_decrypt(datarecv.getvalue())
