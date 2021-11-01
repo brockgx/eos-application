@@ -15,4 +15,4 @@ DATABASE-DETAILS:
   PASSWORD: test01
   DATABASE-TYPE: sqlite
   DATABASE-NAME: test.db
-  DATABASE-URI: C:\Users\Keegan\UNI2021\SEM2\SEPB_Project\Repos\eos-application\server\modules\database\
+  DATABASE-URI: /home/devmain/uni-work/app-resources/eos-app/server/modules/database/

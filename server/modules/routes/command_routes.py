@@ -84,7 +84,7 @@ def sendCommand():
     print("No data received")
   
 
-  return jsonify({"desc": "Return of the message from the socket", "content":data}) #Returns the output from the agent in a JSON format
+  return jsonify({"desc": "Return of the message from the socket", "content": str(data.decode())}) #Returns the output from the agent in a JSON format
 
 #Route: to send a file to the agent machine
 @command_routes.route("/sendfile", methods=['POST'])
