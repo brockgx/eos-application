@@ -6,10 +6,11 @@
 #Import from third party modules
 from flask import Blueprint, jsonify, request
 from sqlalchemy import desc
-import json, ipaddress, random, socket
+import json, ipaddress, socket, time
 
 #Import from in house modules
 from ..database.database_tables import db, ClientMachines, SystemMetrics, AppMetrics
+from ..sockets.data_transfer import sendSocketData, receiveSocketData
 from ..utilities.logging_setup import server_logger
 
 #Setup the blueprint for the dashboard routes
@@ -199,10 +200,16 @@ def check_machine_status():
       port = int(mach.ports.split(",")[0])
 
       sock.connect((ip, port))
+      sendSocketData(sock, json.dumps({"machine_id": mach.id, "machine_name": mach.name, "type": "ping", "parameters": {}}))
+      time.sleep(2)
+      data = receiveSocketData(sock)
+      if data:
+        server_logger.info("Pinging on ({},{}) successful.".format(ip,port))
       sock.close()
     except Exception as err_msg:
       can_connect = False
       server_logger.warning("Couldn't connect to {}, on port {}.".format(ip,port))
+      print(err_msg)
     
     if can_connect:
       if mach.status == 0:
