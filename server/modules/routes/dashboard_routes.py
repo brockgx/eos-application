@@ -6,12 +6,11 @@
 #Import from third party modules
 from flask import Blueprint, jsonify, request
 from sqlalchemy import desc
-import json
-import ipaddress
-import random
+import json, ipaddress, random, socket
 
 #Import from in house modules
 from ..database.database_tables import db, ClientMachines, SystemMetrics, AppMetrics
+from ..utilities.logging_setup import server_logger
 
 #Setup the blueprint for the dashboard routes
 dashboard_routes = Blueprint('dashboard_routes',__name__)
@@ -185,4 +184,34 @@ def listAllMetrics(mac):
       "sysMetrics": final_sys_metrics,
       "appMetrics": final_app_metrics[0:5]
     }
+  })
+
+@dashboard_routes.route('/checkstatus', methods=['GET'])
+def check_machine_status():
+  #Get a list of everything in the machines database
+  machine_list = ClientMachines.query.all()
+
+  can_connect = True
+  for mach in machine_list:
+    try:
+      sock = socket.socket()
+      ip = str(ipaddress.IPv4Address(mach.ip_address))
+      port = int(mach.ports.split(",")[0])
+
+      sock.connect((ip, port))
+    except Exception as err_msg:
+      can_connect = False
+      server_logger.warning("Couldn't connect to {}, on port {}.".format(ip,port))
+    
+    if can_connect:
+      if mach.status == 0:
+        mach.status = 1
+        db.session.commit()
+    elif not can_connect:
+      if mach.status == 1:
+        mach.status = 0
+        db.session.commit()
+  
+  return jsonify({
+    "description": "Status check for all machines"
   })
