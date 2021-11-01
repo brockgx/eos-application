@@ -17,6 +17,7 @@ const AutocompleteWrapper = styled.div`
   padding: 1px;
 `;
 
+
 function sleep(delay = 0) {
   return new Promise((resolve) => {
     setTimeout(resolve, delay);
@@ -39,9 +40,11 @@ export default function AvailApps(props) {
         getAppsAvail()
   }, [])
 
+    
     const mac = props.machChoice.mac_address
     //Fetch app data from DB
     const fetchAppsAvail = async () => {
+      if (mac != undefined){
       const resp = await fetch(`/commands/machineapps/${mac}`)
       const data = await resp.json()
         if(resp.ok) {
@@ -50,7 +53,7 @@ export default function AvailApps(props) {
         } else {
             throw Error(`Request rejected with status ${resp.status}`);
         }
-      }
+      }}
 
     React.useEffect(() => {
       let active = true;
@@ -63,7 +66,6 @@ export default function AvailApps(props) {
         await sleep(1e3); // For demo purposes. This can be awaiting fetch availApps, or removed entirely.
         if (active) {
           //appsAvailTest is hardcoded array for testing console.log of data.content (line 48) from fetchAppsAvail
-          //setOptions([...appsAvailTest]); 
           setOptions([...appsAvail]);
         }
       })();
@@ -90,7 +92,7 @@ export default function AvailApps(props) {
   return (
     <MainContainer>
       <AutocompleteWrapper>
-        <InputLabel style={{marginBottom: "15px"}}>Select target application.</InputLabel>
+        <InputLabel style={{marginBottom: "15px", fontWeight: "600"}}>Select target application.</InputLabel>
         <Autocomplete
           id="avail-apps-demo"
           open={open}
@@ -113,11 +115,8 @@ export default function AvailApps(props) {
             </li>
           )}
           style={{marginTop: "8px", width: "75%"}}
-          
           loading={loading}
-          
           onChange={handleChange}
-          
           renderInput={(params) => (
             <TextField {...params} 
               variant="outlined"
@@ -147,6 +146,7 @@ export default function AvailApps(props) {
     </MainContainer>
   );
 }
+
 
 //hardcoded array of test data for testing that the fetchAvailApps is receiving data.content properly 
 const appsAvailTest = [

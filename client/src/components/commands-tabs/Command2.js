@@ -10,17 +10,19 @@ const MainContainer= styled.div`
 
 const FileOption = styled.div`
       margin-bottom: 0px;
+
 `;
 
 const UploadFileBtn = styled.div`
       display: flex;
+      margin-top: 10px;
       padding-top: 20px;
       padding-bottom: 10px;
       width: 100%;
 `;
 
 const FileDestContainer = styled.div`
-      margin-top: 10px;
+      margin-top: 20px;
       margin-bottom: 10px;
       font-size: 20px;
 `;

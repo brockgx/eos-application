@@ -14,7 +14,7 @@ const ShutDeviceDiv = styled.div`
     display: flex;
     flex-direction: row;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 25px;
     margin-bottom: 10px;
     padding-bottom: 4px;
     border-bottom: 1px solid grey;
@@ -59,7 +59,7 @@ const RestartAppDiv = styled.div`
     flex-direction: row;
     gap: 10px;
     margin-top: 10px;
-    margin-bottom: 10px;
+    
     align-items: center;
     padding-bottom: 4px;
     border-bottom: 1px solid grey;

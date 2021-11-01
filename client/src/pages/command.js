@@ -92,7 +92,7 @@ const LHCommandOptionBox = styled.div`
 const SpaceBox = styled.div`
   flex: 1;
   margin-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 10px;
   max-height: 94px;
 
 `;
@@ -131,6 +131,15 @@ const MacAddText = styled.div`
   letter-spacing: 2px;
 `;
 
+const AppErrorText = styled.div`
+  font-weight: 600;
+  color: red;
+  font-size: 25px;
+  border: 1px solid red;
+  padding-left: 10px;
+  padding-right: 10px;
+`;
+
 const ShellOptionTextWrapper = styled.div`
   padding-left: 50px;
   font-size: 20px;
@@ -163,6 +172,30 @@ const CommandHistoryDisplay = styled.div`
 `;
 
 
+const HistoryDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid purple;
+  border-radius: 4px;
+  min-height: 270px;
+  max-height: 340px;
+  word-break: break-all;
+  
+`;
+
+const CmdHistoryOutput = styled.div`
+  &:first-letter{
+    font-weight: bold;
+    font-size: 25px;
+    letter-spacing: 5px;
+  }
+`;
+
+
+
+
 const Commands = (props) => {
     //for handling what command tab the user is on
     const [selectedTab, setSelectedTab] = useState(0);
@@ -177,6 +210,7 @@ const Commands = (props) => {
     const [cmdChoice, setCmdChoice] = useState('')
     const [cmdShellOption, setCmdShellOption] = useState('')
 
+    console.log(machChoice.name)
     //for reading the file the user inputs, and prepares details object in the format for the API
     let uploadFile = () => {
       if(file !== null) {
@@ -220,12 +254,13 @@ const Commands = (props) => {
           app_id: appChoice.pid,
         } 
       }
+      
       fetch('/commands/send', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(details)
       })
-    }
+  }
 
     //if the user is sending a custom command, the detail object will include different parameters
     let sendCustomCommand = () => {
@@ -306,6 +341,7 @@ const Commands = (props) => {
                 {selectedTab === 2 && 
                   <Command3 
                   changeCmd={customCmd => setCustomCmd(customCmd)} />} 
+             
               </LHCommandOptionBox>
             
               {/* SpaceBox is to make the command details box and the command options tab box 
@@ -313,10 +349,11 @@ const Commands = (props) => {
               The available apps and the shell option dropdown components only render when the relevant commands are selected,
               as to not confuse the user */}
               <SpaceBox>
-                {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
-                  <AvailApps 
-                  changeAppChoice={appChoice => setAppChoice(appChoice)}
-                  machChoice = {machChoice}/>}
+                {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") && (machChoice.name !== undefined && machChoice.name !== null && machChoice.name !== "") 
+                ? <AvailApps changeAppChoice={appChoice => setAppChoice(appChoice)} machChoice = {machChoice}/>
+                // if The machine is not chosen, it will render an error box instead of rendering the app selection bar.
+                : (selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") && (machChoice.name === undefined || machChoice.name || null && machChoice.name === "") 
+                  && <AppErrorText>Please select a target machine before attempting to select an application to handle.</AppErrorText>}
                 {(selectedTab === 2) && 
                   <ShellOptionBox>
                     <CmdShellOption changeShellOption={cmdShellOption => setCmdShellOption(cmdShellOption)}/>
@@ -396,7 +433,13 @@ const Commands = (props) => {
           <RightSideHistory>
             {/* The CommandHistoryDisplay will be the component that you will use to display the past 10 commands from a fetch command(?)*/}
             <CommandHistoryDisplay>
-              COMMAND HISTORY 
+              <h3 style = {{paddingTop: '5px'}}>COMMAND HISTORY</h3> 
+              <HistoryDetailsContainer>
+              
+                <CmdHistoryOutput>
+
+                </CmdHistoryOutput>
+              </HistoryDetailsContainer>
             </CommandHistoryDisplay> 
           </RightSideHistory>
 
