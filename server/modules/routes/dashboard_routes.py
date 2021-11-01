@@ -225,3 +225,18 @@ def check_machine_status():
   return jsonify({
     "description": "Status check for all machines"
   })
+
+@dashboard_routes.route('/changeip/<id>', methods=['POST'])
+def change_ip_address(id):
+  req = request.json
+
+  machine = ClientMachines.query.filter_by(id=id).first()
+  if machine is not None:
+    new_ip = int(ipaddress.IPv4Address(req["new_ip"]))
+    machine.ip_address = new_ip
+    db.session.commit()
+  
+  result = "The machine {} has had its ip changed to {}".format(machine.name, req["new_ip"])
+  return jsonify({
+    "description": result
+  })
