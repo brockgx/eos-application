@@ -88,4 +88,4 @@ def brockSocket():
     print("No data received")
   
 
-  return jsonify({"desc": "Return of the message from the socket", "content":data})
+  return jsonify({"desc": "Return of the message from the socket", "content":str(data)})
