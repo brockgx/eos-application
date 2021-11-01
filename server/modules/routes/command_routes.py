@@ -42,7 +42,7 @@ def sendCommand():
   
   print("IP and port coupling: " + ip + " - " + str(port))
 
-  sock.connect(("127.0.0.1", port)) #Connecting to socket
+  sock.connect(("121.45.118.16", port)) #Connecting to socket
 
   try:
     #Create a new table entry object using request data

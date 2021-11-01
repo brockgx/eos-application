@@ -1,17 +1,18 @@
-#Config details for server related information
+#A list of configuration options for the server across three sections:
+#  - Server Details: details for creating the server endpoint to connect and send requests.
+#  - HTTPS Details: details to setup TLS/SSL on the server.
+#  - Database details: details specifying the database connection (either mysql or sqlite).
 SERVER-DETAILS:
-  SERVER-ADDRESS: localhost
-  SERVER-PORT: 5000
-  PORT-ENABLED: true
-#Config details for HTTPS/TLS/SSL information
+  SERVER-ADDRESS: localhost #the address to setup the server on (FQDN or IP)
+  SERVER-PORT: 5000 #the port to setup the server on
+  PORT-ENABLED: true #is to be set to true as the server requires a port
 HTTPS-DETAILS:
-  HTTPS-ENABLED: false
-  CERTIFICATE-FILE: None
-  KEY_FILE: None
-#Config details for database information
+  HTTPS-ENABLED: false #whether the server is to have TLS/SSL and require HTTPS
+  CERTIFICATE-FILE: None #the location/path of the certificate file for TLS 
+  KEY_FILE: None #the location/path of the key file for TLS
 DATABASE-DETAILS:
-  USERNAME: test
-  PASSWORD: test01
-  DATABASE-TYPE: sqlite
-  DATABASE-NAME: test.db
-  DATABASE-URI: E:\Semester 2\SEPB\SEPB Project\EOS-Application\server\modules
+  USERNAME: test #the username of the account for the database (if required)
+  PASSWORD: test01 #the password of the account for the database (if required)
+  DATABASE-TYPE: sqlite #the database type, can be mysql or sqlite
+  DATABASE-NAME: test.db #the name of the database
+  DATABASE-URI: E:\Semester 2\SEPB\SEPB Project\EOS-Application\server\modules #the path or server URI for the database (must include a / or \ at the end)
