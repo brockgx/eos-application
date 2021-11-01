@@ -15,16 +15,6 @@ import styled from 'styled-components';
 
 /* 
     command.js 29/10/21 notes.
-      -> line 190-200~
-      in sendCustomCommand, os_choice is hardcoded as an example here, but a simple select box or buttons in a box should be added 
-      in the SpaceBox component to conditionally render when on custom command tab
-
-      -> line 300-315~
-      under "App Selected if Command selected is Restart/Kill application" appchoice.appID might not 
-      be the correct thing to call anymore, due to the change from hardcoded to calling 
-      for the apps from the API. So this needs to be checked to ensure it is the correct name, 
-      or change if it is outdated.
-      
       -> line 345-350~
       The CommandHistoryDisplay component will be the component that you will use to display the past 10 commands 
       from a fetch command(?), this should be added, it does not need to be a table like the query table. 
@@ -84,7 +74,6 @@ const CommandsTab = styled.div`
 const LeftSide = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0px;
   margin-right: 20px;
   height: 100%;
 `;
@@ -94,19 +83,23 @@ const TabsWrapper = styled.div`
 `;
 
 const LHCommandOptionBox = styled.div`
-  flex: 3;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+
 `;
 
 const SpaceBox = styled.div`
   flex: 1;
-  flex-shrink: 3;
-  padding-bottom: 30px;
   margin-bottom: 20px;
+  margin-top: 20px;
+  max-height: 94px;
 
 `;
 
 const ShellOptionBox = styled.div`
   flex: 2;
+ 
 
 `;
 
@@ -117,9 +110,18 @@ const CommandDetailsDisplay= styled.div`
   padding-right: 10px;
   border: 1px solid purple;
   border-radius: 4px;
-  min-height: 330px;
+  min-height: 270px;
   max-height: 340px;
   word-break: break-all;
+  
+`;
+
+const DetailOutputText = styled.div`
+  &:first-letter{
+    font-weight: bold;
+    font-size: 25px;
+    letter-spacing: 5px;
+  }
 `;
 
 const MacAddText = styled.div`
@@ -136,6 +138,11 @@ const ShellOptionTextWrapper = styled.div`
   letter-spacing: 2px;
 `;
 
+const CustomCommandDisplay = styled.div`
+`;
+
+const FileOutputText = styled.div`
+`;
 
 const RightSideHistory = styled.div`
   flex: 1;
@@ -275,97 +282,102 @@ const Commands = (props) => {
           <form style={{maxWidth: '673px'}} onSubmit={handleSubmit}>
             <LeftSide>
               <TabsWrapper>
-                <Tabs centered value={selectedTab} onChange={handleChange}>
-                  <Tab label="Preset Command Options"
-                    style ={{textTransform : 'none', fontSize: '20px'}}/>
-                  <Tab label="Push File to a Device" 
-                    style ={{textTransform : 'none', fontSize: '20px'}}/>
-                  <Tab label="Custom Commands" 
-                    style ={{textTransform : 'none', fontSize: '20px'}}/>             
+                <Tabs 
+                  centered 
+                  value={selectedTab} 
+                  onChange={handleChange}
+                  indicatorColor="primary" 
+                >
+                  <Tab label="Preset Command Options" style ={{textTransform : 'none', fontSize: '20px'}}/>
+                  <Tab label="Push File to a Device" style ={{textTransform : 'none', fontSize: '20px'}}/>
+                  <Tab label="Custom Commands" style ={{textTransform : 'none', fontSize: '20px'}}/>             
                 </Tabs>
               </TabsWrapper>
               
               <LHCommandOptionBox>
                 <CmdMachineChoice changeMachChoice={machChoice => setMachChoice(machChoice)}/> 
                 {selectedTab === 0 && 
-                <div>
-                  <Command1List cmdChoice={cmdChoice => setCmdChoice(cmdChoice)}/>
-                </div>}
+                  <Command1List 
+                    cmdChoice={cmdChoice => setCmdChoice(cmdChoice)}/>}
                 {selectedTab === 1 && 
                   <Command2 
                     changeFile={file => setFile(file)} 
-                    changeFileDest={fileDest => setFileDest(fileDest)}
-                  />}
+                    changeFileDest={fileDest => setFileDest(fileDest)}/>}
                 {selectedTab === 2 && 
-                  <Command3 changeCmd={customCmd => setCustomCmd(customCmd)} />} 
+                  <Command3 
+                  changeCmd={customCmd => setCustomCmd(customCmd)} />} 
               </LHCommandOptionBox>
             
-              {/* SpaceBox is to make the command details box and the command options tab box  */}
-              <SpaceBox style={{maxHeight: selectedTab === 0 || 2 ? "56px": "17px"}}>
+              {/* SpaceBox is to make the command details box and the command options tab box 
+              stable height while giving space for additional conditionally rendered dropdown menus
+              The available apps and the shell option dropdown components only render when the relevant commands are selected,
+              as to not confuse the user */}
+              <SpaceBox>
                 {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
-                <div className = "AvailAppsContain" style={{flex: 2}}> 
                   <AvailApps 
                   changeAppChoice={appChoice => setAppChoice(appChoice)}
-                  machChoice = {machChoice}
-                  />
-                </div>
-                }
+                  machChoice = {machChoice}/>}
                 {(selectedTab === 2) && 
                   <ShellOptionBox>
-                   <CmdShellOption changeShellOption={cmdShellOption => setCmdShellOption(cmdShellOption)} />
-                  </ShellOptionBox>
-                }
+                    <CmdShellOption changeShellOption={cmdShellOption => setCmdShellOption(cmdShellOption)}/>
+                  </ShellOptionBox>}
               </SpaceBox>
 
               <CommandDetailsDisplay> 
                 <h3 style = {{paddingTop: '5px'}}>COMMAND DETAILS</h3> 
                 <div style={{flex: 4}}>
 
-                  {/*Command details displayed when a machine is selected*/}
-                    {(machChoice.name !== "" && machChoice.name !== null && machChoice.name !== undefined) ?
+                  {/*Conditionally renders details depending on whether a machine is selected*/}
+                  {(machChoice.name !== "" && machChoice.name !== undefined) 
+                  ?
                     <div>
-                      <div>{`> Selected Machine: ${machChoice.name}`}</div>
+                      <DetailOutputText>{`> Selected Machine: ${machChoice.name}`}</DetailOutputText>
                       <MacAddText>{`(MAC Address: ${machChoice.mac_address})`}</MacAddText>
                     </div>
-                    : "> Selected Machine: No Machine Chosen"} 
+                  : <DetailOutputText>{'>'} Selected Machine: No Machine Chosen</DetailOutputText>} 
 
                   {/*Command details displayed when a preset or custom command tab is selected */}
                   <div>
                     {(selectedTab === 2 ) &&
-                    <div>
-                      {`> (Custom Command): ${customCmd}`}
+                    <CustomCommandDisplay> 
+                      <DetailOutputText>{`> (Custom Command): ${customCmd}`}</DetailOutputText>
                       <ShellOptionTextWrapper>{`(Command Shell Option): ${cmdShellOption}`}</ShellOptionTextWrapper>
-                     </div>
-                     }
+                    </CustomCommandDisplay>}
                   </div>
                   <div>
-                    {(selectedTab === 0 && cmdChoice !== undefined && cmdChoice !== null && cmdChoice !== '') ?
-                      `> (Preset Command): ${cmdChoice}` : '' }
+                    {(selectedTab === 0 && cmdChoice !== undefined && cmdChoice !== null && cmdChoice !== '') 
+                    ? <DetailOutputText>{`> (Preset Command):  ${cmdChoice}`}</DetailOutputText>
+                    : '' }
                   </div>
 
                   {/*Details of app selected if command selected is Restart/Kill application*/}
                   <div>
                     {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
-                      <div>  
-                        {'> Selected App: '}
-                        {(appChoice.app_name !== "" && appChoice.app_name !== undefined) ?
-                          `${appChoice.app_name} (PID: ${appChoice.pid})` : "No App Chosen."}
-                      </div>
+                     <DetailOutputText> 
+                        {'> Selected App: '}{(appChoice.app_name !== "" && appChoice.app_name !== undefined) 
+                        ? `${appChoice.app_name} (PID: ${appChoice.pid})` 
+                        : "No App Chosen."}
+                      </DetailOutputText>
                     }
                   </div> 
                 
                   {/*File Details if Command Selected is Push File */}
                   <div>
                     {selectedTab === 1 &&
-                    <div>
-                      <div>
-                        {"> File Name: "}{(file === null || file === undefined) ? 
-                        ' No file chosen.' : ` ${file.name}`}
-                      </div>
-                      <div>{"> File Destination: "}{fileDest === "" ? ' N/A' : `${fileDest}`}</div>
-                    </div>
-                  }
+                    <FileOutputText>
+                      <DetailOutputText>
+                        {"> File Name: "}{(file === null || file === undefined) 
+                        ? ' No file chosen.' 
+                        : ` ${file.name}`}
+                      </DetailOutputText>
+                      <DetailOutputText>
+                        {"> File Destination: "}{fileDest === "" 
+                        ? ' N/A' 
+                        : `${fileDest}`}
+                      </DetailOutputText>
+                    </FileOutputText>}
                   </div>
+
                 </div>
 
                 <Button

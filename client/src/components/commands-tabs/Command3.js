@@ -11,10 +11,11 @@ const CmdThreeContainer = styled.div`
 
 const CustomInputWrapper = styled.div`
   width: 100%;
+  padding-top: 20px;
 `;
 
 const CustomCmdTitle = styled.div`
-  padding-top: 10px;
+  padding-top: 15px;  
   width: 100%;
   font-size: 20px;
 `;
@@ -32,7 +33,7 @@ export default function Command3(props){
   return (
   <CmdThreeContainer>
     <CustomCmdTitle>
-      Custom Commands. Enter Command(s) to run.
+      Enter Custom Command to run.
     </CustomCmdTitle>
     <CustomInputWrapper>
       <TextField

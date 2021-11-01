@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const MainContainer = styled.div`
     display: flex;
     flex-direction: column;
-    font-size: 20px;
+    font-size: 19px;
     
 `;
 
@@ -82,6 +82,7 @@ export default function Command1List(props) {
     <Box sx={{ width: '100%'}}>
         <form onSubmit={handleSubmit}>
             <MainContainer>
+                <div style={{fontSize: "20px", width: "100%", paddingTop: "15px"}}>Click the preset option you would like to run.</div>
                 <ShutDeviceDiv>
                     <div style={{flex: 1, }}>
                         Shutdown Device

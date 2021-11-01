@@ -3,6 +3,7 @@ import {useState } from 'react';
 import {useEffect } from 'react';
 
 import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -38,8 +39,6 @@ export default function AvailApps(props) {
         getAppsAvail()
   }, [])
 
-
-    //const mac = "94:de:80:c6:73:49"
     const mac = props.machChoice.mac_address
     //Fetch app data from DB
     const fetchAppsAvail = async () => {
@@ -91,6 +90,7 @@ export default function AvailApps(props) {
   return (
     <MainContainer>
       <AutocompleteWrapper>
+        <InputLabel style={{marginBottom: "15px"}}>Select target application.</InputLabel>
         <Autocomplete
           id="avail-apps-demo"
           open={open}
@@ -101,7 +101,7 @@ export default function AvailApps(props) {
           onClose={() => {
           setOpen(false);
           }}
-          ///
+        
           isOptionEqualToValue={(option, value) => option.id === value.id}
           disableCloseOnSelect
           options={options}
@@ -112,15 +112,18 @@ export default function AvailApps(props) {
               {option.app_name + "( PID: " + option.pid + ")"} 
             </li>
           )}
+          style={{marginTop: "8px", width: "75%"}}
           
           loading={loading}
+          
           onChange={handleChange}
-          //onChange={(e, newValue)=> setValue(newValue || "")}
+          
           renderInput={(params) => (
             <TextField {...params} 
               variant="outlined"
               placeholder="discord.exe"
               required
+              id="appsInput"
               InputProps={{
                 ...params.InputProps,
                 endAdornment: (

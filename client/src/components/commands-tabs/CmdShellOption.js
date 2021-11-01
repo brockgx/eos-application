@@ -22,14 +22,14 @@ export default function CmdShellOption(props) {
             <div style={{flex: 2}}>
             </div>
             <FormLabel>Command Shell Options</FormLabel>
-            <FormControl style={{display: "flex", flex: 2}}>
+            <FormControl style={{display: "flex", flex: 2, marginTop: "20px"}}>
                 <Select
                     labelId="Command Shell Options"
                     id="Command Shell Options"
                     value={value}
                     onChange={handleChange}
                     variant="outlined"
-                    defaultValue="Cmd"
+                    defaultValue="Powershell"
                 >
                     <MenuItem value={'Cmd'}>Cmd</MenuItem>
                     <MenuItem value={'Powershell'}>Powershell</MenuItem>
