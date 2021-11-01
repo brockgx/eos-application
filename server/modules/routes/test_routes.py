@@ -44,15 +44,13 @@ def brockSocket():
   
   print("IP and port coupling: " + ip + " - " + str(port))
 
-  sock.connect((ip, port))
+  sock.connect(("127.0.0.1", port))
 
-  print(time.time())
   try:
     #Create a new table entry object using request data
     commmand_data = Command(
-      timestamp= time.time(),
-      machine_id = req["machine_id"],
-      machine_name = req["machine_name"],
+      machine = agent_machine,
+      timestamp = time.time(),
       type = req["type"])
 
     db.session.add(commmand_data)
@@ -63,28 +61,16 @@ def brockSocket():
     print(err_msg)
 
   json_var = {}
-  parameters = {}
 
   machine_id = req["machine_id"] 
-  machine_name = req["machine_name"]
+  machine_name = req["machine_name"] 
   type = req["type"]
   json_var["machine_id"] = machine_id
   json_var["machine_name"] = machine_name
   json_var["type"] = type
   params_send = req["parameters"]
 
-  if req["type"] == "fileupload":
-    print("fileupload")
-  elif req["type"] == "appshutdown":
-    print("shutdown")
-  elif req["type"] == "restartmachine":
-    print("restartmachine")
-  elif req["type"] == "shutdownmachine":
-    print("shutdownmachine")
-  elif req["type"] == "restartapp":
-    print("restartapp")
-  elif req["type"] == "custom":
-    print("custom_command")
+  print(req["type"])
   
   
   json_var["parameters"] = params_send
@@ -95,8 +81,7 @@ def brockSocket():
 
   data = receiveSocketData(sock)
 
-  if data:
-    # commanddata = Command.query.filter_by(id=id).first()
+  if data: #
       commmand_data.result = True
       db.session.commit()
   else:
@@ -104,6 +89,3 @@ def brockSocket():
   
 
   return jsonify({"desc": "Return of the message from the socket", "content":str(data)})
-
-
-   

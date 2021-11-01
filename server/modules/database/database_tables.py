@@ -19,7 +19,8 @@ class ClientMachines(db.Model):
   status = db.Column(db.Integer, nullable=False)
   system_metrics = db.relationship('SystemMetrics', backref='machine')
   app_details = db.relationship('AppDetails', backref='machine')
-
+  command_details = db.relationship('Command', backref='machine')
+  
 #Table: for holding details about the system metrics
 #
 class SystemMetrics(db.Model):
@@ -32,7 +33,7 @@ class SystemMetrics(db.Model):
   disk_usage = db.Column(db.String(70), nullable=False)
   disk_read = db.Column(db.Integer, nullable=False)
   disk_write = db.Column(db.Integer, nullable=False)
-  network_usage = db.Column(db.Integer, nullable=False) #May be float as was a percentage
+  network_usage = db.Column(db.Numeric(5,2), nullable=False) #May be float as was a percentage
   app_metrics = db.relationship('AppMetrics', backref='system_metric')
 
 #Table: for holding details about the specific applications monitored
@@ -53,13 +54,14 @@ class AppMetrics(db.Model):
   cpu_usage = db.Column(db.Numeric(5,2), nullable=False)
   ram_usage = db.Column(db.Numeric(5,2), nullable=False)
 
-
 #Table: for holding sending commands from server
 #
 class Command(db.Model):
   id = db.Column(db.Integer, primary_key=True)
+  machine_id = db.Column(db.String(40), db.ForeignKey('client_machines.id'), nullable=True) #foreign
   timestamp = db.Column(db.Numeric(16,6), nullable=False)
-  machine_id = db.Column(db.String(40), db.ForeignKey('client_machines.mac_address'), nullable=True)
-  machine_name = db.Column(db.String(50), db.ForeignKey('client_machines.mac_address'), nullable=True)
   type =  db.Column(db.String(50), nullable=False)
+  # output = db.Column(db.String(500), nullable=False)
   result = db.Column(db.Boolean, nullable=False,default=False)
+  #
+  #

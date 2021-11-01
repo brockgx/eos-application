@@ -35,8 +35,10 @@ def listClientMachines():
       "host_name": mach.host_name,
       "mac_address": mach.mac_address,
       "os": mach.os_type,
-      "address": mach.ip_address,
-      "status": mach.status
+      "os_full_version": mach.os_full_version,
+      "address": str(ipaddress.IPv4Address(mach.ip_address)),
+      "status": mach.status,
+      "ports": mach.ports
     })
 
   return jsonify({
@@ -140,20 +142,26 @@ def listAllMetrics(mac):
   # Get sys metrics
   mach = SystemMetrics.query.filter_by(machine_id=mac).order_by(SystemMetrics.id.desc()).first()
   final_sys_metrics = []
+  disk_metrics = []
 
-  disks = mach.disk_usage.split(",")
+  #Package the disks for display
+  disk_names = mach.disk_names.split(",")
+  disk_usage = mach.disk_usage.split(",")
+  for index, disk in enumerate(disk_names):
+    disk_metrics.append({"name": disk, "usage": disk_usage[index]})
+
 
 
   final_sys_metrics.append({
     "id": mach.id,
     "name": mach.machine.name,
-    "time": mach.timestamp,
-    "cpu": mach.cpu_usage,
-    "ram": mach.ram_usage,
-    "disk": disks[0],
+    "time": str(mach.timestamp),
+    "cpu": str(mach.cpu_usage),
+    "ram": str(mach.ram_usage),
+    "disk": disk_metrics,
     "disk_read": mach.disk_read,
     "disk_write": mach.disk_write,
-    "network": mach.network_usage / 100
+    "network": str(mach.network_usage)
   })
 
   final_app_metrics = []
@@ -162,10 +170,10 @@ def listAllMetrics(mac):
     final_app_metrics.append({
       "id": app.id,
       "machine_name": mach.machine.name,
-      "time": mach.timestamp,
+      "time": str(mach.timestamp),
       "app_name": app.application.name,
-      "cpu": app.cpu_usage,
-      "ram": app.ram_usage
+      "cpu": str(app.cpu_usage),
+      "ram": str(app.ram_usage)
     })
   
   #Sort app metrics by top CPU & then top RAM usage (in return get first 5 entries)

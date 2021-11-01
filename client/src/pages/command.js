@@ -8,7 +8,6 @@ import Command3 from '../components/commands-tabs/Command3';
 
 import styled from 'styled-components';
 
-//import '../styles/command.css';
 
 const Container = styled.div`
   flex: 10;
