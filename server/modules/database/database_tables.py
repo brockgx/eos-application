@@ -63,5 +63,3 @@ class Command(db.Model):
   type =  db.Column(db.String(50), nullable=False)
   # output = db.Column(db.String(500), nullable=False)
   result = db.Column(db.Boolean, nullable=False,default=False)
-  #
-  #

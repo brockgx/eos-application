@@ -11,7 +11,12 @@ RECVSIZE = 16
 
 #Global variables
 
-#Function: send data
+#Function: To send data across the socket
+#Params:
+#   - socketConn: the socket connection to receive data from
+#   - message: the message to send as a string
+#Returned:
+#   - None
 def sendSocketData(socketConn, message):
   #The full message to send with the buffer
   #full_msg = bytes(f'{len(str(serialized_msg)):<{HEADERSIZE}}' + str(serialized_msg)[2:][:-1], "utf-8")
@@ -29,7 +34,11 @@ def sendSocketData(socketConn, message):
   except:
     print("Failure message")
 
-#Function: receive data
+#Function: To receive socket data
+#Params:
+#   - socketConn: the socket connection to receive data from
+#Returned:
+#   - The received message
 def receiveSocketData(socketConn):
   #function variables
   #receieved_msg = "EMPTY"
