@@ -31,7 +31,6 @@ const MetricContainer = styled.div`
 `;
 const TableContainer = styled.div`
   display: flex;
-  margin-left: 70px;
   flex-direction: column;
 `;
 const ChartContainer = styled.div`
@@ -42,12 +41,19 @@ const ProgressWrapper = styled.div`
   justify-content: space-between;
   align-content: center;
   align-items: center;
+  margin: 10px 120px;
 `;
-const ProgressContainer = styled.div`
+const DiskContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+`;
+const DiskWrapper = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
-  padding: 80px 0px 0px 20px;
+  margin-bottom: 15px;
 `;
 const TableWrapper = styled.div`
   display: flex;
@@ -97,8 +103,9 @@ const Title = styled.span`
 `;
 const Text = styled.span`
   padding: 5px;
-  font-size: 22px;
-  font-weight: 300;
+  font-size: 20px;
+  font-weight: 400;
+  margin-right: 5px;
 `;
 
 /*
@@ -167,6 +174,7 @@ const MachineMetrics = (props) => {
     const resp = await fetch(`/dash/clientmachinemetrics/${machineName}`)
     const data = await resp.json()
     if(resp.ok) {
+      console.log(data)
       return data;
     } else {
       throw Error(`Request rejected with status ${resp.status}`);
@@ -209,37 +217,42 @@ const MachineMetrics = (props) => {
                       </ChartContainer>
                     </MetricContainer>
                     <MetricContainer >
+                      <Title>
+                        Disk Usage:
+                      </Title>
                       <ProgressWrapper >
-                        <Title>
-                          Disk Usage:
-                        </Title>
-                        <ProgressContainer>
-                          <ProgressBar
-                            labelAlignment="outside"
-                            labelColor="black"
-                            bgColor="#7587A9"
-                            height="30px"
-                            backgroundColor="#7587A9"
-                            width="150px"
-                            completed={parseInt(metrics.disk)}
-                          />
-                        </ProgressContainer>
+                        <DiskContainer>
+                          {metrics.disk.map((disk) => {
+                            return (
+                              <DiskWrapper>
+                                <Text >{disk.name}</Text>
+                                <ProgressBar
+                                  labelAlignment="outside"
+                                  labelColor="black"
+                                  bgColor="#7587A9"
+                                  height="30px"
+                                  backgroundColor="#7587A9"
+                                  width="150px"
+                                  completed={parseFloat(disk.usage)}
+                                />
+                              </DiskWrapper>
+                            )
+                          })}
+                        </DiskContainer>
                       </ProgressWrapper>
-                      <ProgressWrapper >
-                        <Title>
+                      <Title>
                           Network Usage:
-                        </Title>
-                        <ProgressContainer>
-                          <ProgressBar 
-                            labelAlignment="outside"
-                            labelColor="black"
-                            bgColor="#7587A9"
-                            height="30px"
-                            width="150px"
-                            backgroundColor="#7587A9"
-                            completed={parseInt(metrics.network)} 
-                            />
-                        </ProgressContainer>
+                      </Title>
+                      <ProgressWrapper style={{marginLeft: "162px"}}>
+                        <ProgressBar 
+                          labelAlignment="outside"
+                          labelColor="black"
+                          bgColor="#7587A9"
+                          height="30px"
+                          width="150px"
+                          backgroundColor="#7587A9"
+                          completed={parseFloat(metrics.network)} 
+                          />
                       </ProgressWrapper>
                     </MetricContainer>
                   </>
