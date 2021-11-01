@@ -11,8 +11,8 @@ HTTPS-DETAILS:
   CERTIFICATE-FILE: None #the location/path of the certificate file for TLS 
   KEY_FILE: None #the location/path of the key file for TLS
 DATABASE-DETAILS:
-  USERNAME: test #the username of the account for the database (if required)
-  PASSWORD: test01 #the password of the account for the database (if required)
-  DATABASE-TYPE: sqlite #the database type, can be mysql or sqlite
-  DATABASE-NAME: test.db #the name of the database
-  DATABASE-URI: /home/devmain/uni-work/app-resources/eos-app/server/modules/database/ #the path or server URI for the database (must include a / or \ at the end)
+  USERNAME: test
+  PASSWORD: test01
+  DATABASE-TYPE: sqlite
+  DATABASE-NAME: test.db
+  DATABASE-URI: C:\Users\Keegan\UNI2021\SEM2\SEPB_Project\Repos\eos-application\server\modules\database\
