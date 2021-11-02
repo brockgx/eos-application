@@ -29,7 +29,7 @@ if config_dets != False:
   try:
     DB_LOCATION = config_dets["DATABASE-DETAILS"]["DATABASE-URI"] + config_dets["DATABASE-DETAILS"]["DATABASE-NAME"]
     if config_dets["DATABASE-DETAILS"]["DATABASE-TYPE"] == "mysql":
-      DB_PATH = "mysql+pymysql://" + config_dets["DATABASE-DETAILS"]["USERNAME"] + config_dets["DATABASE-DETAILS"]["PASSWORD"] + "@" + DB_LOCATION
+      DB_PATH = "mysql+pymysql://" + config_dets["DATABASE-DETAILS"]["USERNAME"] + ":" + config_dets["DATABASE-DETAILS"]["PASSWORD"] + "@" + DB_LOCATION
     else:
       DB_PATH = "sqlite:///" + DB_LOCATION
     #Add the DB connection to the Flask app
