@@ -13,8 +13,10 @@ RECVSIZE = 4096
 #Function: send data
 def sendSocketData(socketConn, message):
   #The full message to send with the buffer
+  print(message)
   encryptedBytes = do_encrypt(message)
   encryptedMsg = io.BytesIO(encryptedBytes)
+  print(encryptedBytes)
   encryptedLength = len(encryptedBytes)
   # CURRENT
   # LENGTH: encryptedtestLen.encode()

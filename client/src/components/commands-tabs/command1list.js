@@ -91,7 +91,7 @@ export default function Command1List(props) {
                     <Button
                         variant="contained"
                         type="submit"
-                        value="Shutdown Device"
+                        value="shutdownmachine"
                         onClick={handleSubmit}
                         style={{flex: 1, padding: '0px'}}
                     >
@@ -106,7 +106,7 @@ export default function Command1List(props) {
                     <Button
                         variant="contained"
                         onClick={handleSubmit}
-                        value="Restart Device"
+                        value="restartmachine"
                         style={{flex: 1, padding: '0px'}}
                     >
                         Select
@@ -119,7 +119,7 @@ export default function Command1List(props) {
                         <KillProcessSpaceDiv />
                     <Button
                         variant="contained"
-                        value="Kill Process"
+                        value="appshutdown"
                         onClick={handleSubmit}
                         style={{flex: 1, padding: '0px'}}
                     >
@@ -134,7 +134,7 @@ export default function Command1List(props) {
                         <RestartAppSpaceDiv />
                     <Button
                         onClick={handleSubmit}
-                        value="Restart Process"
+                        value="restartapp"
                         variant="contained"
                         style={{flex: 1, padding: '0px'}}
                     >

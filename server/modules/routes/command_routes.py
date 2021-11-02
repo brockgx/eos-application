@@ -40,7 +40,7 @@ def getAvailableMachines():
       "mac_address": mach.mac_address,
       "machine_id": mach.id,
     })
-
+    #print(finalList)
     return jsonify({
       "description": "A list of all of the available machines",
       "content": finalList
@@ -98,7 +98,7 @@ def sendCommand():
   sock = socket.socket()
 
   #Getting machine_id for the first machine in the table Client_machines
-  agent_machine = ClientMachines.query.filter_by(id=req["mac_address"]).first() 
+  agent_machine = ClientMachines.query.filter_by(id=req["machine_id"]).first() 
   ip = str(ipaddress.IPv4Address(agent_machine.ip_address))
   port = int(agent_machine.ports.split(",")[0])
   
@@ -134,7 +134,7 @@ def sendCommand():
   json_var["parameters"] = params_send
     
   json_data = json.dumps(json_var)  #Creating a json object
-
+  print(json_data)
   sendSocketData(sock, json_data) #Sending JSON Object to agent via sockets
 
   data = receiveSocketData(sock) #Receving the response from agent

@@ -246,14 +246,10 @@ const Commands = (props) => {
     //if the user is sending a command, the detail object will include different parameters
     let sendCommand = () => {
       const details = {
-        //DeviceID: machChoice.mac_address,
-       // DeviceName: machChoice.name,
-        machine_id: machChoice.mac_address,
+        machine_id: machChoice.id,
         machine_name: machChoice.name,
-        mac_address: machChoice.mac_address,
-        //CommandType: cmdChoice,
         type: cmdChoice,
-        Parameters: {
+        parameters: {
           app_name: appChoice.app_name,
           app_id: appChoice.pid,
         } 
@@ -269,7 +265,7 @@ const Commands = (props) => {
     //if the user is sending a custom command, the detail object will include different parameters
     let sendCustomCommand = () => {
       const details = {
-        DeviceID: machChoice.mac_address,
+        DeviceID: machChoice.id,
         DeviceName: machChoice.name,
         CommandType: "Custom_command",
         Parameters: {
@@ -296,6 +292,7 @@ const Commands = (props) => {
           //
           sendCommand()
           console.log("This is preset command tab")
+
           break;
         case 1:
           uploadFile()
