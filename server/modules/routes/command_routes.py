@@ -42,7 +42,7 @@ def sendCommand():
   
   print("IP and port coupling: " + ip + " - " + str(port))
 
-  sock.connect(("127.0.0.1", port)) #Connecting to socket
+  sock.connect((ip, port)) #Connecting to socket
 
   try:
     #Create a new table entry object using request data
@@ -84,7 +84,7 @@ def sendCommand():
     print("No data received")
   
 
-  return jsonify({"desc": "Return of the message from the socket", "content":data}) #Returns the output from the agent in a JSON format
+  return jsonify({"desc": "Return of the message from the socket", "content": str(data.decode())}) #Returns the output from the agent in a JSON format
 
 #Route: to send a file to the agent machine
 @command_routes.route("/sendfile", methods=['POST'])

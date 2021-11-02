@@ -6,12 +6,12 @@
 #Import from third party modules
 from flask import Blueprint, jsonify, request
 from sqlalchemy import desc
-import json
-import ipaddress
-import random
+import json, ipaddress, socket, time
 
 #Import from in house modules
 from ..database.database_tables import db, ClientMachines, SystemMetrics, AppMetrics
+from ..sockets.data_transfer import sendSocketData, receiveSocketData
+from ..utilities.logging_setup import server_logger
 
 #Setup the blueprint for the dashboard routes
 dashboard_routes = Blueprint('dashboard_routes',__name__)
@@ -185,4 +185,58 @@ def listAllMetrics(mac):
       "sysMetrics": final_sys_metrics,
       "appMetrics": final_app_metrics[0:5]
     }
+  })
+
+@dashboard_routes.route('/checkstatus', methods=['GET'])
+def check_machine_status():
+  #Get a list of everything in the machines database
+  machine_list = ClientMachines.query.all()
+
+  can_connect = True
+  for mach in machine_list:
+    try:
+      sock = socket.socket()
+      ip = str(ipaddress.IPv4Address(mach.ip_address))
+      port = int(mach.ports.split(",")[0])
+
+      sock.connect((ip, port))
+      sendSocketData(sock, json.dumps({"machine_id": mach.id, "machine_name": mach.name, "type": "ping", "parameters": {}}))
+      time.sleep(2)
+      data = receiveSocketData(sock)
+      if data:
+        server_logger.info("Pinging on ({},{}) successful.".format(ip,port))
+      sock.close()
+    except Exception as err_msg:
+      can_connect = False
+      server_logger.warning("Couldn't connect to {}, on port {}.".format(ip,port))
+      print(err_msg)
+    
+    if can_connect:
+      if mach.status == 0:
+        print("Machine is offline but should be online: " + mach.name)
+        mach.status = 1
+        db.session.commit()
+    elif not can_connect:
+      if mach.status == 1:
+        print("Machine is online but should be offline: " + mach.name)
+        mach.status = 0
+        db.session.commit()
+  
+  return jsonify({
+    "description": "Status check for all machines"
+  })
+
+@dashboard_routes.route('/changeip/<id>', methods=['POST'])
+def change_ip_address(id):
+  req = request.json
+
+  machine = ClientMachines.query.filter_by(id=id).first()
+  if machine is not None:
+    new_ip = int(ipaddress.IPv4Address(req["new_ip"]))
+    machine.ip_address = new_ip
+    db.session.commit()
+  
+  result = "The machine {} has had its ip changed to {}".format(machine.name, req["new_ip"])
+  return jsonify({
+    "description": result
   })
