@@ -97,7 +97,8 @@ def sendCommand():
   req = request.json
   sock = socket.socket()
 
-  agent_machine = ClientMachines.query.filter_by(id=req["machine_id"]).first() #Getting machine_id for the first machine in the table Client_machines
+  #Getting machine_id for the first machine in the table Client_machines
+  agent_machine = ClientMachines.query.filter_by(id=req["mac_address"]).first() 
   ip = str(ipaddress.IPv4Address(agent_machine.ip_address))
   port = int(agent_machine.ports.split(",")[0])
   

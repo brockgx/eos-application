@@ -246,9 +246,13 @@ const Commands = (props) => {
     //if the user is sending a command, the detail object will include different parameters
     let sendCommand = () => {
       const details = {
-        DeviceID: machChoice.mac_address,
-        DeviceName: machChoice.name,
-        CommandType: cmdChoice,
+        //DeviceID: machChoice.mac_address,
+       // DeviceName: machChoice.name,
+        machine_id: machChoice.mac_address,
+        machine_name: machChoice.name,
+        mac_address: machChoice.mac_address,
+        //CommandType: cmdChoice,
+        type: cmdChoice,
         Parameters: {
           app_name: appChoice.app_name,
           app_id: appChoice.pid,
