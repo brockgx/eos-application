@@ -38,6 +38,7 @@ def getAvailableMachines():
       "name": mach.name,
       "host_name": mach.host_name,
       "mac_address": mach.mac_address,
+      "machine_id": mach.id,
     })
 
     return jsonify({
@@ -66,6 +67,28 @@ def getAvailableApps(mac):
     "description": "A list of available applications for a machine",
     "content": final_apps_avail
   })
+
+#Route: to get the past 20~ commands
+@command_routes.route("/pastCommands", methods=['GET'])
+def getPastCommands():
+    #Get a list of everything in the machines database
+    commandList = ClientMachines.query.all()
+    finalList = []
+
+    for cmd in commandList:
+      finalList.append({
+      "id": cmd.id,
+      "machine_id": cmd.id,
+      "name": cmd.machine_name,
+      "command_type": cmd.command_type,
+      "mac_address": cmd.mac_address,
+      
+    })
+
+    return jsonify({
+      "description": "A list of all of the available machines",
+      "content": finalList
+    })
 
 #Route: to send a command to the agent and get a response back
 @command_routes.route("/send", methods=['POST'])

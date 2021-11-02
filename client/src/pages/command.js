@@ -9,7 +9,7 @@ import Command3 from '../components/commands-tabs/Command3';
 import CmdMachineChoice from '../components/commands-tabs/CmdMachineChoice';
 import AvailApps from '../components/commands-tabs/AvailApps';
 import CmdShellOption from '../components/commands-tabs/CmdShellOption';
-
+import CmdHistoryDropdown from '../components/commands-tabs/CmdHistoryDropdown';
 import styled from 'styled-components';
 
 
@@ -177,10 +177,9 @@ const HistoryDetailsContainer = styled.div`
   flex-direction: column;
   padding-left: 10px;
   padding-right: 10px;
+  padding-bottom: 30px;
   border: 1px solid purple;
   border-radius: 4px;
-  min-height: 270px;
-  max-height: 340px;
   word-break: break-all;
   
 `;
@@ -209,6 +208,7 @@ const Commands = (props) => {
     const [machChoice, setMachChoice] = useState('')
     const [cmdChoice, setCmdChoice] = useState('')
     const [cmdShellOption, setCmdShellOption] = useState('')
+    const [cmdHistoryChoice, setCmdHistoryChoice] = useState('')
 
     console.log(machChoice.name)
     //for reading the file the user inputs, and prepares details object in the format for the API
@@ -352,7 +352,7 @@ const Commands = (props) => {
                 {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") && (machChoice.name !== undefined && machChoice.name !== null && machChoice.name !== "") 
                 ? <AvailApps changeAppChoice={appChoice => setAppChoice(appChoice)} machChoice = {machChoice}/>
                 // if The machine is not chosen, it will render an error box instead of rendering the app selection bar.
-                : (selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") && (machChoice.name === undefined || machChoice.name || null && machChoice.name === "") 
+                : (selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") && (machChoice.name === undefined || machChoice.name || null || machChoice.name === "") 
                   && <AppErrorText>Please select a target machine before attempting to select an application to handle.</AppErrorText>}
                 {(selectedTab === 2) && 
                   <ShellOptionBox>
@@ -435,10 +435,52 @@ const Commands = (props) => {
             <CommandHistoryDisplay>
               <h3 style = {{paddingTop: '5px'}}>COMMAND HISTORY</h3> 
               <HistoryDetailsContainer>
-              
-                <CmdHistoryOutput>
-
+                <CmdHistoryDropdown changeCmdHistoryChoice={cmdHistoryChoice => setCmdHistoryChoice(cmdHistoryChoice)}/>
+                <CmdHistoryOutput style={{paddingTop: "50px"}}>
+                  {'> Command ID: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
+                  ? `${cmdHistoryChoice.id}`
+                  : "No Command Selected"}
                 </CmdHistoryOutput>
+                <CmdHistoryOutput>
+                  {'> Timestamp: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
+                  ? `${cmdHistoryChoice.timestamp}`
+                  : "N/A"}
+                </CmdHistoryOutput>
+                <CmdHistoryOutput>
+                  {'> Machine ID: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
+                  ? `${cmdHistoryChoice.machine_id}`
+                  : "N/A"}
+                </CmdHistoryOutput>
+                <CmdHistoryOutput>
+                  {'> Command type: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
+                  ? `${cmdHistoryChoice.command_type}`
+                  : "N/A"}
+                </CmdHistoryOutput>
+                <CmdHistoryOutput>
+                  {'> Command Output: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
+                  ? `${cmdHistoryChoice.output}`
+                  : "N/A"}
+                </CmdHistoryOutput>
+                <CmdHistoryOutput>
+                  {'> Command Parameters: '}
+                  {(cmdHistoryChoice.command_type === "Custom Command") && `${cmdHistoryChoice.parameters.content}`}
+                  
+                </CmdHistoryOutput>
+
+                {(cmdHistoryChoice.command_type === "PushFile") &&
+                <div style={{paddingLeft: "50px"}}>
+                  <CmdHistoryOutput>{`> File Name: ${cmdHistoryChoice.parameters.file_name}`}</CmdHistoryOutput>
+                  <CmdHistoryOutput>{`> File Destination: ${cmdHistoryChoice.parameters.file_dest}`}</CmdHistoryOutput>
+                </div>}
+                
+                {(cmdHistoryChoice.command_type === "KillProcess" || cmdHistoryChoice.command_type === "RestartApp") &&
+                
+                  (cmdHistoryChoice.parameters.app_name !== null && cmdHistoryChoice.parameters.app_name !== undefined) &&
+                  <div style={{paddingLeft: "50px"}}>
+                  <CmdHistoryOutput>{`> App Name: ${cmdHistoryChoice.parameters.app_name}`}</CmdHistoryOutput>
+                  <CmdHistoryOutput>{`> App ID: ${cmdHistoryChoice.parameters.app_pid}`}</CmdHistoryOutput>
+                  </div>}
+                  
               </HistoryDetailsContainer>
             </CommandHistoryDisplay> 
           </RightSideHistory>
