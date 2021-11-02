@@ -57,5 +57,6 @@ class Command(db.Model):
   machine_id = db.Column(db.String(40), db.ForeignKey('client_machines.mac_address'), nullable=True) #foreign
   timestamp = db.Column(db.Numeric(16,6), nullable=False)
   type =  db.Column(db.String(50), nullable=False)
-  # output = db.Column(db.String(500), nullable=False)
+  command_input = db.Column(db.String(300), nullable=True)
+  output = db.Column(db.String(1000), nullable=False)
   result = db.Column(db.Boolean, nullable=False,default=False)
