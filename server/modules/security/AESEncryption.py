@@ -1,14 +1,18 @@
 from Crypto.Cipher import AES
-import secrets, os
+import secrets, os, sys
 from platform import system
 
 
 #The code below locates the file containing the encryption IV and Key, the values in the file may change as long as they remain 16 characters.
-FILEDIR = os.path.abspath(os.path.dirname(__file__))
-if system() == "Windows":
-  KEY_PATH = FILEDIR + "\\PassIV"
+if getattr(sys, 'frozen', False):
+    FILE_DIR = os.path.dirname(sys.executable)
 else:
-  KEY_PATH = FILEDIR + "/PassIV"
+    FILE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+if system() == "Windows":
+  KEY_PATH = FILE_DIR + "\\PassIV"
+else:
+  KEY_PATH = FILE_DIR + "/PassIV"
 
 #The do_encrypt function takes a message of type string and encrypts it using the IV and Key found in the PassIV file.
 #The key and IV must be exactly 16 characters long or the function will fail to encrypt.
