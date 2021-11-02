@@ -30,13 +30,13 @@ export default function CmdHistoryDropdown(props) {
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
 
-    //appsAvail is to be used when not using appsAvailTest hardcoded data
-    {/**
-        const [cmdHistoryTest, setCmdHistory] = useState([])
+    
+    
+        const [cmdHistoryChoice, setCmdHistoryChoice] = useState([])
       useEffect(() => {
         const getCmdHistory = async () => {
           const cmdHistoryFromServer = await fetchCmdHistory()
-          setCmdHistory(cmdHistoryFromServer)
+          setCmdHistoryChoice(cmdHistoryFromServer)
           }
         getCmdHistory()
   }, [])
@@ -46,7 +46,7 @@ export default function CmdHistoryDropdown(props) {
     //Fetch app data from DB
     const fetchCmdHistory = async () => {
      // if (mac != undefined){
-      const resp = await fetch(`/commands/availableMachines`)
+      const resp = await fetch(`/commands/pastcommands`)
       const data = await resp.json()
         if(resp.ok) {
           console.log(data)
@@ -56,7 +56,7 @@ export default function CmdHistoryDropdown(props) {
         }
       }
     //}
-    */}
+   
     React.useEffect(() => {
       let active = true;
   
@@ -68,7 +68,7 @@ export default function CmdHistoryDropdown(props) {
         await sleep(1e3); // For demo purposes. This can be awaiting fetch availApps, or removed entirely.
         if (active) {
           //appsAvailTest is hardcoded array for testing console.log of data.content (line 48) from fetchAppsAvail
-          setOptions([...cmdHistoryTest]);
+          setOptions([...cmdHistoryChoice]);
         }
       })();
   
@@ -105,10 +105,10 @@ export default function CmdHistoryDropdown(props) {
             setOpen(false);
           }}
           isOptionEqualToValue={(option, value) => option.id === value.id}
-          getOptionLabel={(option) => option.id}
+          getOptionLabel={(option) => option.machine_name + " (" + option.command_type + ") " + "#" + option.id }
           renderOption={(props, option, { selected }) => (
             <li {...props}>
-              {option.id + " (" + option.command_type + ", " + option.machine_id + ")"} 
+              {option.machine_name + " (" + option.command_type + ") " + "#" + option.id } 
             </li>
           )}
           options={options}

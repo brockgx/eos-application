@@ -209,6 +209,7 @@ const Commands = (props) => {
     const [cmdChoice, setCmdChoice] = useState('')
     const [cmdShellOption, setCmdShellOption] = useState('')
     const [cmdHistoryChoice, setCmdHistoryChoice] = useState('')
+    const [cmdOutput, setCmdOutput] = useState('waiting...')
 
     console.log(machChoice.name)
     //for reading the file the user inputs, and prepares details object in the format for the API
@@ -219,25 +220,25 @@ const Commands = (props) => {
         reader.onload = () => {
           const final = reader.result.split(",", 2);
           const details = {
-            DeviceID: machChoice.mac_address,
-            DeviceName: machChoice.name,
-            CommandType: selectedTab,
-            Parameters: {
+            machine_id: machChoice.id,
+            machine_name: machChoice.name,
+            type: "fileupload",
+            parameters: {
               //file: file.name,
               b64file: final[1],
               destination: fileDest,
             }
           }
           //posts the details object to the API as a json string
-          fetch('/commands/sendfile', {
+          fetch('/commands/send', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(details)
           })
-          console.log(reader.result);
+          .then(resp => resp.json())
+          .then(data => setCmdOutput(data.content))
           return final[1];
         }
-        console.log("File uploading");
       } else {
         if(file !== null) { console.log("Error: no file has been uploaded"); }
         else { console.log("Error: no file location has been entered"); }
@@ -260,17 +261,19 @@ const Commands = (props) => {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(details)
       })
+      .then(resp => resp.json())
+      .then(data => setCmdOutput(data.content))
   }
 
     //if the user is sending a custom command, the detail object will include different parameters
     let sendCustomCommand = () => {
       const details = {
-        DeviceID: machChoice.id,
-        DeviceName: machChoice.name,
-        CommandType: "Custom_command",
-        Parameters: {
-          command: customCmd,
-          cmd_shell_choice: cmdShellOption,
+        machine_id: machChoice.id,
+        machine_name: machChoice.name,
+        type: "custom_command",
+        parameters: {
+          custom_command: customCmd,
+          shell: cmdShellOption,
         } 
       }
       fetch('/commands/send', {
@@ -278,6 +281,8 @@ const Commands = (props) => {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(details)
       })
+      .then(resp => resp.json())
+      .then(data => setCmdOutput(data.content))
     }
 
     const handleSubmit = (event) => {
@@ -285,6 +290,7 @@ const Commands = (props) => {
       console.log(machChoice.name);
       console.log(fileDest);
       console.log(file);
+
       //depending on what tab the user is on, the command executed will differ so that the relevant
       //information is sent to the API and to the specific API route
       switch(selectedTab){
@@ -350,10 +356,10 @@ const Commands = (props) => {
               The available apps and the shell option dropdown components only render when the relevant commands are selected,
               as to not confuse the user */}
               <SpaceBox>
-                {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") && (machChoice.name !== undefined && machChoice.name !== null && machChoice.name !== "") 
+                {(selectedTab === 0) && (cmdChoice === "appshutdown" || cmdChoice === "restartapp") && (machChoice.name !== undefined && machChoice.name !== null && machChoice.name !== "") 
                 ? <AvailApps changeAppChoice={appChoice => setAppChoice(appChoice)} machChoice = {machChoice}/>
                 // if The machine is not chosen, it will render an error box instead of rendering the app selection bar.
-                : (selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") && (machChoice.name === undefined || machChoice.name || null || machChoice.name === "") 
+                : (selectedTab === 0) && (cmdChoice === "appshutdown" || cmdChoice === "restartapp") && (machChoice.name === undefined || machChoice.name || null || machChoice.name === "") 
                   && <AppErrorText>Please select a target machine before attempting to select an application to handle.</AppErrorText>}
                 {(selectedTab === 2) && 
                   <ShellOptionBox>
@@ -390,7 +396,7 @@ const Commands = (props) => {
 
                   {/*Details of app selected if command selected is Restart/Kill application*/}
                   <div>
-                    {(selectedTab === 0) && (cmdChoice === "Kill Process" || cmdChoice === "Restart Process") &&
+                    {(selectedTab === 0) && (cmdChoice === "appshutdown" || cmdChoice === "restartapp") &&
                      <DetailOutputText> 
                         {'> Selected App: '}{(appChoice.app_name !== "" && appChoice.app_name !== undefined) 
                         ? `${appChoice.app_name} (PID: ${appChoice.pid})` 
@@ -416,6 +422,8 @@ const Commands = (props) => {
                     </FileOutputText>}
                   </div>
 
+                
+
                 </div>
 
                 <Button
@@ -438,9 +446,9 @@ const Commands = (props) => {
               <HistoryDetailsContainer>
                 <CmdHistoryDropdown changeCmdHistoryChoice={cmdHistoryChoice => setCmdHistoryChoice(cmdHistoryChoice)}/>
                 <CmdHistoryOutput style={{paddingTop: "50px"}}>
-                  {'> Command ID: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
-                  ? `${cmdHistoryChoice.id}`
-                  : "No Command Selected"}
+                  {'> Machine: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
+                  ? `${cmdHistoryChoice.machine_name}`
+                  : "N/A"}
                 </CmdHistoryOutput>
                 <CmdHistoryOutput>
                   {'> Timestamp: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
@@ -448,13 +456,13 @@ const Commands = (props) => {
                   : "N/A"}
                 </CmdHistoryOutput>
                 <CmdHistoryOutput>
-                  {'> Machine ID: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
-                  ? `${cmdHistoryChoice.machine_id}`
+                  {'> Type: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
+                  ? `${cmdHistoryChoice.command_type}`
                   : "N/A"}
                 </CmdHistoryOutput>
                 <CmdHistoryOutput>
-                  {'> Command type: '}{(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
-                  ? `${cmdHistoryChoice.command_type}`
+                  {'> Command: '}{(cmdHistoryChoice.command_type === "custom_command" && cmdHistoryChoice !== undefined && cmdHistoryChoice !== "") 
+                  ? `${cmdHistoryChoice.command_input}`
                   : "N/A"}
                 </CmdHistoryOutput>
                 <CmdHistoryOutput>
@@ -462,28 +470,13 @@ const Commands = (props) => {
                   ? `${cmdHistoryChoice.output}`
                   : "N/A"}
                 </CmdHistoryOutput>
-                <CmdHistoryOutput>
-                  {'> Command Parameters: '}
-                  {(cmdHistoryChoice.command_type === "Custom Command") && `${cmdHistoryChoice.parameters.content}`}
-                  
-                </CmdHistoryOutput>
-
-                {(cmdHistoryChoice.command_type === "PushFile") &&
-                <div style={{paddingLeft: "50px"}}>
-                  <CmdHistoryOutput>{`> File Name: ${cmdHistoryChoice.parameters.file_name}`}</CmdHistoryOutput>
-                  <CmdHistoryOutput>{`> File Destination: ${cmdHistoryChoice.parameters.file_dest}`}</CmdHistoryOutput>
-                </div>}
-                
-                {(cmdHistoryChoice.command_type === "KillProcess" || cmdHistoryChoice.command_type === "RestartApp") &&
-                
-                  (cmdHistoryChoice.parameters.app_name !== null && cmdHistoryChoice.parameters.app_name !== undefined) &&
-                  <div style={{paddingLeft: "50px"}}>
-                  <CmdHistoryOutput>{`> App Name: ${cmdHistoryChoice.parameters.app_name}`}</CmdHistoryOutput>
-                  <CmdHistoryOutput>{`> App ID: ${cmdHistoryChoice.parameters.app_pid}`}</CmdHistoryOutput>
-                  </div>}
                   
               </HistoryDetailsContainer>
             </CommandHistoryDisplay> 
+              {/** Output display */}
+              <div>
+                {cmdOutput}
+              </div>
           </RightSideHistory>
 
         </CommandsTab>                  

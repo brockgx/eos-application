@@ -6,7 +6,7 @@
 #Import from third party modules
 from flask import Blueprint, jsonify, request
 import json, ipaddress, socket, time
-
+from datetime import datetime
 
 from ..database.database_tables import db, ClientMachines, Command
 from ..sockets.data_transfer import sendSocketData, receiveSocketData
@@ -69,20 +69,20 @@ def getAvailableApps(mac):
   })
 
 #Route: to get the past 20~ commands
-@command_routes.route("/pastCommands", methods=['GET'])
+@command_routes.route("/pastcommands", methods=['GET'])
 def getPastCommands():
     #Get a list of everything in the machines database
-    commandList = ClientMachines.query.all()
+    commandList = Command.query.order_by(Command.id.desc()).limit(25).all()
     finalList = []
 
     for cmd in commandList:
       finalList.append({
       "id": cmd.id,
-      "machine_id": cmd.id,
-      "name": cmd.machine_name,
-      "command_type": cmd.command_type,
-      "mac_address": cmd.mac_address,
-      
+      "machine_name": cmd.machine.name,
+      "command_type": cmd.type,
+      "command_input": cmd.command_input,
+      "output": cmd.output,
+      "timestamp": datetime.fromtimestamp(cmd.timestamp).strftime('%Y-%m-%d %H:%M'),
     })
 
     return jsonify({
@@ -108,12 +108,15 @@ def sendCommand():
 
   try:
     #Create a new table entry object using request data
-    commmand_data = Command(
+    command_data = Command(
       machine = agent_machine,
       timestamp = time.time(),
-      type = req["type"])
+      type = req["type"],
+      output = 'waiting...')
 
-    db.session.add(commmand_data) #Stores the data in the database
+    if req["type"] == 'custom_command':
+      command_data.command_input = req["parameters"]["custom_command"]
+    db.session.add(command_data) #Stores the data in the database
     db.session.commit()
 
     print("Command Data saved to database")
@@ -140,7 +143,8 @@ def sendCommand():
   data = receiveSocketData(sock) #Receving the response from agent
 
   if data: # Runs if a response was returned from the agent
-      commmand_data.result = True 
+      command_data.result = True 
+      command_data.output = data.decode()
       db.session.commit() #Updates the database
   else:
     print("No data received")

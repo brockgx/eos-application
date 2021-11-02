@@ -29,11 +29,11 @@ export default function CmdShellOption(props) {
                     value={value}
                     onChange={handleChange}
                     variant="outlined"
-                    defaultValue="Powershell"
+                    defaultValue="cmd"
                 >
-                    <MenuItem value={'Cmd'}>Cmd</MenuItem>
-                    <MenuItem value={'Powershell'}>Powershell</MenuItem>
-                    <MenuItem value={'WSL'}>WSL</MenuItem>
+                    <MenuItem value={'cmd'}>CMD</MenuItem>
+                    <MenuItem value={'powershell'}>Powershell</MenuItem>
+                    <MenuItem value={'wsl'}>WSL</MenuItem>
                 </Select>
             </FormControl>
            

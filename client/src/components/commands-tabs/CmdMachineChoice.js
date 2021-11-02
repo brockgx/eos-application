@@ -101,7 +101,7 @@ export default function CmdMachineChoice(props) {
           }}
           isOptionEqualToValue={(option, value) => option.name === value.name}
           disableCloseOnSelect
-          getOptionLabel={(option) => option.name}
+          getOptionLabel={(option) => option.name + " (" + option.mac_address + ")"}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
               {option.name + " (" + option.mac_address + ")"} 

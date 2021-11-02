@@ -107,11 +107,11 @@ export default function AvailApps(props) {
           isOptionEqualToValue={(option, value) => option.id === value.id}
           disableCloseOnSelect
           options={options}
-          getOptionLabel={(option) => option.app_name}
+          getOptionLabel={(option) => option.app_name + " (PID: " + option.pid + ")"}
           renderTags={() => null}
           renderOption={(props, option, { selected }) => (
             <li {...props} key={option.id}>
-              {option.app_name + "( PID: " + option.pid + ")"} 
+              {option.app_name + " (PID: " + option.pid + ")"} 
             </li>
           )}
           style={{marginTop: "8px", width: "75%"}}
