@@ -53,7 +53,7 @@ class AppMetrics(db.Model):
 #Table: for holding sending commands from server
 class Command(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  machine_id = db.Column(db.String(40), db.ForeignKey('client_machines.id'), nullable=True) #foreign
+  machine_id = db.Column(db.String(40), db.ForeignKey('client_machines.mac_address'), nullable=True) #foreign
   timestamp = db.Column(db.Numeric(16,6), nullable=False)
   type =  db.Column(db.String(50), nullable=False)
   # output = db.Column(db.String(500), nullable=False)
