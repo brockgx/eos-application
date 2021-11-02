@@ -137,7 +137,6 @@ def sendCommand():
   json_var["parameters"] = params_send
     
   json_data = json.dumps(json_var)  #Creating a json object
-  print(json_data)
   sendSocketData(sock, json_data) #Sending JSON Object to agent via sockets
 
   data = receiveSocketData(sock) #Receving the response from agent
