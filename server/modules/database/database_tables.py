@@ -13,7 +13,7 @@ class ClientMachines(db.Model):
   os_type = db.Column(db.String(10), nullable=False)
   os_full_version = db.Column(db.String(100), nullable=False)
   mac_address = db.Column(db.String(20), nullable=False, unique=True)
-  ip_address = db.Column(db.Integer, nullable=False)
+  ip_address = db.Column(db.Integer(unsigned=True), nullable=False)
   ports = db.Column(db.String(15), nullable=False)
   status = db.Column(db.Integer, nullable=False)
   system_metrics = db.relationship('SystemMetrics', backref='machine') #relationship to system metrics
