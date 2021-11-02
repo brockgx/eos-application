@@ -16,6 +16,7 @@ def main_metric_route():
 
 #Route: to get all metrics and return them as JSON
 #   - The route is /metrics/getallmetrics
+#   - it returns all the system and application metrics of all machines
 @metric_routes.route("/getallmetrics", methods=['GET'])
 def get_all_metric_data():
   #Return all system metric entries
@@ -30,7 +31,8 @@ def get_all_metric_data():
     if sys_metric.machine is not None:
       machine_name = sys_metric.machine.name
       machine_mac = sys_metric.machine.mac_address
-
+    
+    #Created the metrics opbject for system metrics and add entries
     metrics.append({
       "name": machine_name,
       "machine_name": machine_name,
@@ -47,6 +49,7 @@ def get_all_metric_data():
       "type": "system"
     })
 
+    #Created the metrics opbject for application metrics and add entries
     for app in sys_metric.app_metrics:
       metrics.append({
         "name": app.application.name,
@@ -63,6 +66,7 @@ def get_all_metric_data():
         "type": "app"
       })
 
+  #Return the follow JSON response with all metrics
   return jsonify({
     "desc": "Object of all system and application metrics",
     "content": metrics,
@@ -70,6 +74,7 @@ def get_all_metric_data():
 
 #Route: to get all system metrics and return them as JSON
 #   - The route is /metrics/getallsysmetrics
+#   - returns all the system metrics only
 @metric_routes.route("/getallsysmetrics", methods=['GET'])
 def get_all_sys_metrics():
   
@@ -104,8 +109,10 @@ def get_all_sys_metrics():
     "desc": "Object of all system and application metrics",
     "system_metrics": all_system_metrics,
   })
+
 #Route: to get all application metrics and return them as JSON
 #   - The route is /metrics/getallappmetrics
+#   - returns all the application metrics
 @metric_routes.route("/getallappmetrics", methods=['GET'])
 def get_all_app_metrics():
 

@@ -8,7 +8,7 @@ from flask import Blueprint, jsonify, request
 import json
 
 #Import from in house modules
-from ..database.prototype_database import db, AppMetrics, SystemMetrics, ClientMachines
+#from ..database.prototype_database import db, AppMetrics, SystemMetrics, ClientMachines
 
 #Setup the blueprint for the command routes
 query_routes = Blueprint('query_routes',__name__)
