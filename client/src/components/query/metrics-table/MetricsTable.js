@@ -214,7 +214,7 @@ const MetricsTable = ({ data, columns, machineName }) => {
         <Left>
         <CSVLink
           data={selectedFlatRows.map((row) => row.original)}
-          filename={"reprot_" + new Date().toLocaleDateString() + ".csv"}
+          filename={"report_" + new Date().toLocaleDateString() + ".csv"}
           target="_blank"
         >
           <Button 
@@ -348,6 +348,11 @@ const MetricsTable = ({ data, columns, machineName }) => {
           </Button>
         </PageButtons>
       </Pagination>
+      <span>
+        {selectedFlatRows.length === 0
+          ? ""
+          : selectedFlatRows.length + " row(s) selected"}
+      </span>
     </Container>
   )
 }

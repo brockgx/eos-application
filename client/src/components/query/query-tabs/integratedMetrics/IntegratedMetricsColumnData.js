@@ -80,7 +80,7 @@ export const IntegratedMetricsColumnData = [
         filter: "between", 
     },
     { 
-        Header: 'Network Usage (MB)',
+        Header: 'Network Usage (%)',
         accessor: 'network',
         Filter: NumberRangeColumnFilter,
         filter: "between",

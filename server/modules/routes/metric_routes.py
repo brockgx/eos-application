@@ -136,7 +136,7 @@ def get_all_app_metrics():
         "date": datetime.fromtimestamp(sys_metric.timestamp).strftime('%Y-%m-%d'),
         "time": datetime.fromtimestamp(sys_metric.timestamp).strftime('%H:%M'),
         "app_name": app.application.name,
-        "app_pid": app.application.pid,
+        "app_pid": str(app.application.pid),
         "app_cpu": str(app.cpu_usage),
         "app_ram": str(app.ram_usage),
       })
