@@ -192,8 +192,8 @@ def check_machine_status():
   #Get a list of everything in the machines database
   machine_list = ClientMachines.query.all()
 
-  can_connect = True
   for mach in machine_list:
+    can_connect = True
     try:
       sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
       sock.settimeout(20)
@@ -205,15 +205,12 @@ def check_machine_status():
       time.sleep(2)
       data = receiveSocketData(sock)
       if data:
-        print(data.decode())
         server_logger.info("Pinging on ({},{}) successful.".format(ip,port))
-      #sock.close()
+      sock.close()
     except Exception as err_msg:
       can_connect = False
-      server_logger.warning("Couldn't connect to {}, on port {}.".format(ip,port))
-      print(err_msg)
+      server_logger.warning("Couldn't connect to {}, on port {} {}.".format(ip,port,err_msg))
     
-    print(can_connect)
     if can_connect:
       if mach.status == 0:
         print("Machine is offline but should be online: " + mach.name)
