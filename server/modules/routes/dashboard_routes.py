@@ -207,7 +207,7 @@ def check_machine_status():
       if data:
         print(data.decode())
         server_logger.info("Pinging on ({},{}) successful.".format(ip,port))
-      sock.close()
+      #sock.close()
     except Exception as err_msg:
       can_connect = False
       server_logger.warning("Couldn't connect to {}, on port {}.".format(ip,port))
