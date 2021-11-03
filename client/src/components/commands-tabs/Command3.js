@@ -1,3 +1,13 @@
+/*
+ * Name: command3.js
+ * Purpose: Renders Simple component that makes up the 'Command Page' custom command tab (Tab 3)
+ * 
+ * Usage: Child of Command.js 
+ *        Receives Custom command input and sends through to command.js through props
+ */
+
+
+
 import React from 'react';
 import { useState} from 'react';
 import { TextField } from '@material-ui/core';

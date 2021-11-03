@@ -40,7 +40,7 @@ def getAvailableMachines():
       "mac_address": mach.mac_address,
       "machine_id": mach.id,
     })
-    #print(finalList)
+
     return jsonify({
       "description": "A list of all of the available machines",
       "content": finalList
@@ -51,7 +51,6 @@ def getAvailableMachines():
 
 @command_routes.route('/machineapps/<mac>', methods=['GET'])
 def getAvailableApps(mac):
- # mac = '94:de:80:c6:73:49'
   final_apps_avail = []
 
   machAppsList = AppDetails.query.filter_by(machine_id=mac).all()
@@ -86,7 +85,7 @@ def getPastCommands():
     })
 
     return jsonify({
-      "description": "A list of all of the available machines",
+      "description": "A list of the past 25 commands sent",
       "content": finalList
     })
 

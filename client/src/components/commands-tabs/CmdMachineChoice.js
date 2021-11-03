@@ -1,7 +1,20 @@
+/*
+ * Name: CmdMachineChoice.js
+ * Purpose: Renders a dropdown "Autocomplete"-based component that makes up part of the 'Command Page' 
+ * 
+ * Usage: Child of Command.js 
+ *        Fetches Machine data from database and displays in an Autocomplete-based dropdown component.
+ *        This component is based on the Autocomplete component template provided for free on material-ui's website.
+ *        Source: https://mui.com/components/autocomplete/#asynchronous-requests
+ */
+
+// Module imports here
 import React from 'react';
 import {useState } from 'react';
 import {useEffect } from 'react';
 
+
+// Component imports here
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -21,12 +34,6 @@ function sleep(delay = 0) {
     setTimeout(resolve, delay);
   });
 }
-
-/* 
-    CmdMachineChoice.js 29/10/21 notes.
-      -> Needs to have a message when there are no machines when you click the dropdown. It currently stays on loading...
-      -> 
-*/
 
 export default function CmdMachineChoice(props) {
     const [open, setOpen] = React.useState(false);
@@ -54,7 +61,6 @@ export default function CmdMachineChoice(props) {
           throw Error(`Request rejected with status ${resp.status}`);
       }
     }
-
 
     React.useEffect(() => {
       let active = true;
