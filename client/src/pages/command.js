@@ -42,7 +42,7 @@ const Container = styled.div`
 `;
 
 const Top = styled.div`
-  padding-left: 20px;
+  padding-left: 30px;
   padding-top: 10px;
   padding-bottom: 10px;
 `;
@@ -59,12 +59,13 @@ const Bottom = styled.div`
 const CommandsTab = styled.div`
   display: flex;
   padding: 10px 20px 20px 10px;
+  margin-left: 1%;
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-sizing: border-box;
   border-radius: 6px;
   background-color: #ffff;
-  height: 95vh;
-  width: 100%;
+  height: 850px;
+  width: 1550px;
   font-weight: 300;
   font-size: 24px;
 `;
@@ -167,7 +168,8 @@ const RightSide = styled.div`
   border-radius: 5px;
 `;
  
-const CommandHistoryDisplay = styled.div`
+//RHS = Right Hand Side
+const RhsTopHalfCommandDetailDisplay = styled.div`
   padding-top: 5px;
   padding-left: 10px;
   padding-bottom: 20px;
@@ -191,31 +193,33 @@ const CmdHistoryOutputLine = styled.div`
     letter-spacing: 5px;
   }
 `;
-const PastCommandDetailsLeftColumn = styled.div`
-  flex: 1;
+const PastCommandDetailsSection = styled.div`
+  
 `;
-const PastCommandDetailsRightColumn = styled.div`
+
+const RightSideBottomSectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 40px;
+`;
+
+const HeaderAndButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const  RHSBottomHalfHeader = styled.h3`
   flex: 2;
   margin-left: 10px;
 `;
-
-const ScrollableCmdHistoryOutput = styled.div`
-  padding-left: 10px;
-  margin-top: 10px;
-  height: 300px;
-  border: 2px solid grey;
-  border-radius: 4px;
-  background-color: #ffff;
-  font-size: 18px;
-  overflow-y: scroll;
-  resize: auto;
-`;
-
-const CurrentCommandOutput = styled.div`
+const CmdOutputScrollableTextBox = styled.div`
   padding-left: 10px;
   margin-left: 10px;
   margin-bottom: 10px;
-  height: 350px;
+  height: 400px;
+  width: 100%;
   border: 1px solid grey;
   border-radius: 6px;
   background-color: #ffff;
@@ -249,6 +253,7 @@ const Commands = (props) => {
     const [cmdHistoryChoice, setCmdHistoryChoice] = useState('')
     const [cmdOutput, setCmdOutput] = useState('waiting...')
 
+    console.log(cmdHistoryChoice)
     //for reading the file the user inputs, and prepares details object in the format for the API
     let uploadFile = () => {
       if(file !== null) {
@@ -321,6 +326,10 @@ const Commands = (props) => {
       .then(data => setCmdOutput(data.content))
     }
 
+    const handleClick = (event) => {
+      event.preventDefault();
+      setCmdHistoryChoice("Cleared");
+    }
     const handleSubmit = (event) => {
       event.preventDefault();
       /* depending on what tab the user is on, the command executed will differ so that the relevant
@@ -460,7 +469,8 @@ const Commands = (props) => {
                 </div>
               </div>
               <Button
-                style={{marginTop: "20px", flex: 1, marginBottom: "10px"}}
+                style={{marginTop: "20px", flex: 1, marginBottom: "10px", fontSize: "20px", 
+                fontWeight: "600",}}
                 fullWidth    
                 variant="contained"
                 type="submit"
@@ -473,66 +483,74 @@ const Commands = (props) => {
         </form>
         
         <RightSide>
-          {/* The CommandHistoryDisplay will be the component that you will use to display the past 25 commands*/}
-          <CommandHistoryDisplay>
+          {/* This section will be the component that you will use to display the past 25 commands*/}
+          <RhsTopHalfCommandDetailDisplay>
             <h3 style = {{paddingTop: '5px'}}>COMMAND HISTORY</h3> 
             <CmdHistoryDropdown changeCmdHistoryChoice={cmdHistoryChoice => setCmdHistoryChoice(cmdHistoryChoice)}/>
             <HistoryDetailsContainer>
-              <PastCommandDetailsLeftColumn>
+              <PastCommandDetailsSection>
                 {/* Past command choice chosen in dropdown is then displayed showing: 
                   Machine name, Timestamp, Command Type, the Specific command if custom command, and the response/output from the command 
                 */}
                 <CmdHistoryOutputLine style={{paddingTop: "5px"}}>
                   <DetailHeading>{'> Machine: '}</DetailHeading>
-                  {(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
+                  {(cmdHistoryChoice !== "" && cmdHistoryChoice != undefined && cmdHistoryChoice !== "Cleared")  
                   ? `${cmdHistoryChoice.machine_name}`
                   : "N/A"}
                 </CmdHistoryOutputLine>
               
                 <CmdHistoryOutputLine>
                   <DetailHeading>{'> Timestamp: '}</DetailHeading>
-                  {(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
+                  {(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined && cmdHistoryChoice !== "Cleared") 
                   ? `${cmdHistoryChoice.timestamp}`
                   : "N/A"}
                 </CmdHistoryOutputLine>
               
                 <CmdHistoryOutputLine>
                   <DetailHeading>{'> Type: '}</DetailHeading>
-                  {(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
+                  {(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined && cmdHistoryChoice !== "Cleared") 
                   ? `${cmdHistoryChoice.command_type}`
                   : "N/A"}
                 </CmdHistoryOutputLine>
               
                 <CmdHistoryOutputLine>
                   <DetailHeading>{'> Command: '}</DetailHeading>
-                  {(cmdHistoryChoice.command_type === "custom_command" && cmdHistoryChoice !== undefined && cmdHistoryChoice !== "") 
+                  {(cmdHistoryChoice.command_type === "custom_command" && cmdHistoryChoice !== undefined && cmdHistoryChoice !== "" && cmdHistoryChoice !== "Cleared") 
                   ? `${cmdHistoryChoice.command_input}`
                   : "N/A"}
                 </CmdHistoryOutputLine>
-                <CmdHistoryOutputLine>
-                  <DetailHeading>{'> Command Output: '}</DetailHeading> 
-                </CmdHistoryOutputLine>
-              </PastCommandDetailsLeftColumn>
-              
-              {/* Second column shows the output saved to the database for the past command chosen */}
-              <PastCommandDetailsRightColumn>
-                {(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
-                ? `Command #${cmdHistoryChoice.id} Output` 
-                : ''}
-                <ScrollableCmdHistoryOutput>
-                  {(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined) 
-                  ? `${cmdHistoryChoice.output}`
-                  : "N/A"}
-                </ScrollableCmdHistoryOutput>
-              </PastCommandDetailsRightColumn>
+              </PastCommandDetailsSection>
             </HistoryDetailsContainer>
-          </CommandHistoryDisplay> 
+          </RhsTopHalfCommandDetailDisplay> 
 
-          {/* Current Command Output Display, displays "waiting..." until a command is sent and then it displays the response received */}
-          <h3 style={{paddingLeft: "10px"}}>Current Command Output...</h3>
-          <CurrentCommandOutput>
-            {cmdOutput}
-          </CurrentCommandOutput>
+          {/* Current Command Output Display, displays "waiting..." until a command is sent and then it displays the response received*/}
+          <RightSideBottomSectionContainer>
+            <HeaderAndButtonRow>
+              <RHSBottomHalfHeader>{(cmdHistoryChoice !== "Cleared" && cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined && cmdHistoryChoice !== null) 
+                ? `Command #${cmdHistoryChoice.id} Output` 
+                : 'Command Output...'}
+              </RHSBottomHalfHeader>
+              <Button
+                style={{
+                  flex: "1", 
+                  marginBottom: "10px", 
+                  fontSize: "17px", 
+                  fontWeight: "600",
+                  border: "2px solid black"
+                }}
+                variant="contained"
+                onClick={handleClick}>
+                Clear Command History Output From Display  
+              </Button>
+            </HeaderAndButtonRow>
+
+            <CmdOutputScrollableTextBox>
+              {(cmdOutput !== "waiting..." && cmdOutput !== undefined && cmdOutput !== null)}
+              {(cmdHistoryChoice !== "" && cmdHistoryChoice !== undefined && cmdHistoryChoice !== null && cmdHistoryChoice !== "Cleared") 
+            ? `${cmdHistoryChoice.output}` 
+            : `${cmdOutput}` }
+            </CmdOutputScrollableTextBox>
+          </RightSideBottomSectionContainer>
         </RightSide>
       </CommandsTab>                
     </Bottom>
