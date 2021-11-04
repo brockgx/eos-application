@@ -17,7 +17,7 @@ import { SysMetricsColumnData } from './SysMetricsColumnData'
 /*
  * This is the main component for the System Metrics Table tab
 */
-export const SysMetricsTable = () => {
+export const SysMetricsTable = (props) => {
   
   /*
   * useMemo() hook ensures the data inst recreated on every render
@@ -51,7 +51,7 @@ export const SysMetricsTable = () => {
 
   return (
     <div>
-      <MetricsTable data={sysMetrics} columns={sysMetricsColumns} />
+      <MetricsTable data={sysMetrics} columns={sysMetricsColumns} machineName={props.machineName}/>
     </div>
   )
 }

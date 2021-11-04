@@ -17,7 +17,7 @@ import { ClientMachinesColumnData } from './ClientMachinesColumnData'
 /*
  * This is the main component for the Client Machines Table tab
 */
-export const ClientMachinesTable = () => {
+export const ClientMachinesTable = (props) => {
   /*
   * useMemo() hook ensures the data inst recreated on every render
   * otherwise react-table woulf think that it is receving new data on every render
@@ -50,7 +50,7 @@ export const ClientMachinesTable = () => {
   
   return (
     <div>
-      <MetricsTable data={clientMachines} columns={clientMachinesColumns} />
+      <MetricsTable data={clientMachines} columns={clientMachinesColumns} machineName={props.machineName} />
     </div>
   )
 }

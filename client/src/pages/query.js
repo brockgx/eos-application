@@ -88,16 +88,17 @@ const Query = (props) => {
               indicatorColor="primary"
               style={{minWidth: "200px"}}
               >
-              <Tab label="Integrated Metrics" style={{ fontSize:"18px"}}/>
+              <Tab label="Client Machines" style={{ fontSize:"18px"}}/>
               <Tab label="System Metrics" style={{ fontSize:"18px"}}/>
               <Tab label="App Metrics" style={{ fontSize:"18px"}}/>
-              <Tab label="Client Machines" style={{ fontSize:"18px"}}/>
+              <Tab label="Integrated Metrics" style={{ fontSize:"18px"}}/>
             </Tabs>
             </div>
-            {selectedTab === 0 && <IntegratedMetricsTable machineName={machineName}/>}
-            {selectedTab === 1 && <SysMetricsTable />}
-            {selectedTab === 2 && <AppMetricsTable />}
-            {selectedTab === 3 && <ClientMachinesTable />}
+            {selectedTab === 0 && <ClientMachinesTable machineName={machineName}/>}
+            {selectedTab === 1 && <SysMetricsTable machineName={machineName}/>}
+            {selectedTab === 2 && <AppMetricsTable machineName={machineName}/>}
+            {selectedTab === 3 && <IntegratedMetricsTable machineName={machineName}/>}
+
           </div>
         </Bottom>
       </Wrapper>

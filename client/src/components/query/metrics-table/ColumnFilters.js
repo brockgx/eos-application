@@ -20,7 +20,7 @@ const Input = styled.input`
   font-size: 18px;
   font-weight: inherit;
   border: none;
-  width: 85%;
+  width: 150px;
   border-bottom: 1px solid white;
   color: white;
   background-color: inherit;
@@ -41,8 +41,8 @@ const Input = styled.input`
 `;
 const NumInput = styled.input`
   font-size: 18px;
-  width: 50%;
   font-weight: inherit;
+  width: 100px;
   border: none;
   border-bottom: 1px solid white;
   color: white;
@@ -74,7 +74,7 @@ const NumInput = styled.input`
 `;
 const Select = styled.select`
   margin-top: 15px;
-  min-width: 200px;
+  min-width: 150px;
   background-color: #F4F4F7;
   border: 1px solid white;
   border-radius: 2px;

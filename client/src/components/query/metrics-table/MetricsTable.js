@@ -23,6 +23,7 @@ import { GlobalFilter } from './GlobalFilter';
 // Styled component declarations
 const Container = styled.div`
   padding: 20px;
+  overflow: hidden;
 `;
 const Top = styled.div`
   display: flex;
@@ -54,15 +55,21 @@ const DropdownOptions = styled.div`
   -webkit-box-shadow: 0px 0px 1px -5px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 0px 1px -5px rgba(0,0,0,0.75);
 `;
+const TableWrapper = styled.div`
+  display: block;
+  width: 75vw;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  border-bottom: 1px solid black;
+`;
 const Table = styled.table`
   border-collapse: collapse;
   width: 100%;
+  border-spacing: 0;
 `;
 const TableHeader = styled.th`
   border: 1px solid #687CA1;
-  padding: 8px;  
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px;  
   text-align: center;
   border: 1px solid white;
   background-color: #687CA1;
@@ -73,6 +80,7 @@ const TableHeader = styled.th`
 const TableHead = styled.thead`
 `;
 const TableBody = styled.tbody`
+
 `;
 const TableRow = styled.tr`
   font-size: 18px;
@@ -87,6 +95,7 @@ const TableRow = styled.tr`
     background-color: #AEB8CC;
   }
 `;
+
 const TableData = styled.td`
   border: 1px solid #687CA1;
   padding: 8px;
@@ -261,47 +270,49 @@ const MetricsTable = ({ data, columns, machineName }) => {
           }
         </HideColumns>
       </Top>
-      
-      {/* React Table component begins here */}
-      <Table {...getTableProps()}>
-        {/* Render the Table's header with sort and filter functionality  */}
-        <TableHead>
-          {headerGroups.map((headerGroup) => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <TableHeader {...column.getHeaderProps()}>    
-                  <Sort {...column.getSortByToggleProps()}>
-                    {column.render('Header')}
-                    {/* Add controls for sort direction */}
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? ' ↓'
-                        : ' ↑'
-                      : ''}
-                  </Sort>
-                  {/* Render filter for each column */}
-                  <Filter>
-                    {column.canFilter ? column.render('Filter') : null}
-                  </Filter>
-                </TableHeader>   
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        {/* Render the Table's body by mapping the data to each row  */}
-        <TableBody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row)
-            return (
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return  <TableData {...cell.getCellProps()}>{cell.render('Cell')}</TableData>
-                })}
+      <TableWrapper>
+        {/* React Table component begins here */}
+        <Table {...getTableProps()}>
+          {/* Render the Table's header with sort and filter functionality  */}
+          <TableHead>
+            {headerGroups.map((headerGroup) => (
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <TableHeader {...column.getHeaderProps()}>    
+                    <Sort {...column.getSortByToggleProps()}>
+                      {column.render('Header')}
+                      {/* Add controls for sort direction */}
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? ' ↓'
+                          : ' ↑'
+                        : ''}
+                    </Sort>
+                    {/* Render filter for each column */}
+                    <Filter>
+                      {column.canFilter ? column.render('Filter') : null}
+                    </Filter>
+                  </TableHeader>   
+                ))}
               </TableRow>
-            )
-          })}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHead>
+          {/* Render the Table's body by mapping the data to each row  */}
+          <TableBody {...getTableBodyProps()}>
+            {page.map((row, i) => {
+              prepareRow(row)
+              return (
+                <TableRow {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return  <TableData {...cell.getCellProps()}>{cell.render('Cell')}</TableData>
+                  })}
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
+      </TableWrapper>
+      
       {/* Render pagination and next/previous page controls  */}
       <Pagination>
         <RowsPerPage>

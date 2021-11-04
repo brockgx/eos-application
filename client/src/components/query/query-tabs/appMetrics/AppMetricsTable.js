@@ -18,7 +18,7 @@ import { AppMetricsColumnData } from './AppMetricsColumnData'
 /*
  * This is the main component for the System Metrics Table tab
 */
-export const AppMetricsTable = () => {
+export const AppMetricsTable = (props) => {
   
   /*
   * useMemo() hook ensures the data inst recreated on every render
@@ -52,7 +52,7 @@ export const AppMetricsTable = () => {
 
   return (
     <div>
-      <MetricsTable data={appMetrics} columns={appMetricsColumns} />
+      <MetricsTable data={appMetrics} columns={appMetricsColumns} machineName={props.machineName}/>
     </div>
   )
 }

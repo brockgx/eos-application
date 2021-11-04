@@ -38,10 +38,10 @@ const Wrapper = styled.div`
 `;
 const Top = styled.div`
   display: flex;
+  justify-content: space-between;
 `;
 const ColumnContainer = styled.div`
   display: flex;
-  flex: 2.5;  
   margin-top: 5px;
 `;
 const DetailsContainer = styled.div`
@@ -51,7 +51,7 @@ const DetailsContainer = styled.div`
   font-weight: 400;
 `;
 const MachineNameContainer = styled.span`
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -65,7 +65,6 @@ const DetailsRow = styled.span`
   align-items: center;
 `;
 const RightContainer = styled.div`
-  flex: 2;  
   display: flex;
   justify-content: flex-end;
   font-size: 22px;
