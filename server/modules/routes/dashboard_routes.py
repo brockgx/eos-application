@@ -192,10 +192,11 @@ def check_machine_status():
   #Get a list of everything in the machines database
   machine_list = ClientMachines.query.all()
 
-  can_connect = True
   for mach in machine_list:
+    can_connect = True
     try:
-      sock = socket.socket()
+      sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+      sock.settimeout(20)
       ip = str(ipaddress.IPv4Address(mach.ip_address))
       port = int(mach.ports.split(",")[0])
 
@@ -208,8 +209,7 @@ def check_machine_status():
       sock.close()
     except Exception as err_msg:
       can_connect = False
-      server_logger.warning("Couldn't connect to {}, on port {}.".format(ip,port))
-      print(err_msg)
+      server_logger.warning("Couldn't connect to {}, on port {} {}.".format(ip,port,err_msg))
     
     if can_connect:
       if mach.status == 0:
