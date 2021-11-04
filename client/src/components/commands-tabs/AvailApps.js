@@ -1,7 +1,20 @@
+/*
+ * Name: AvailApps.js
+ * Purpose: Renders a dropdown "Autocomplete"-based component that makes up part of the 'Command Page' 
+ * 
+ * Usage: Child of Command.js 
+ *        Fetches App data from database and displays in an Autocomplete dropdown component.
+ *        This component is based on the Autocomplete component template provided for free on material-ui's website.
+ *        Source: https://mui.com/components/autocomplete/#asynchronous-requests
+ */
+
+
+// Module imports here
 import React from 'react';
 import {useState } from 'react';
 import {useEffect } from 'react';
 
+// Component imports here
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -9,6 +22,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 import styled from 'styled-components';
 
+// Styled component declarations
 const MainContainer = styled.div`
   padding: 1px;
 `;
@@ -16,7 +30,6 @@ const MainContainer = styled.div`
 const AutocompleteWrapper = styled.div`
   padding: 1px;
 `;
-
 
 function sleep(delay = 0) {
   return new Promise((resolve) => {
@@ -30,7 +43,6 @@ export default function AvailApps(props) {
     const loading = open && options.length === 0;
     const [value, setValue] = useState();
 
-    //appsAvail is to be used when not using appsAvailTest hardcoded data
     const [appsAvail, setAppsAvail] = useState([])
       useEffect(() => {
         const getAppsAvail = async () => {
@@ -65,7 +77,6 @@ export default function AvailApps(props) {
       (async () => {
         await sleep(1e3); // For demo purposes. This can be awaiting fetch availApps, or removed entirely.
         if (active) {
-          //appsAvailTest is hardcoded array for testing console.log of data.content (line 48) from fetchAppsAvail
           setOptions([...appsAvail]);
         }
       })();
@@ -80,7 +91,6 @@ export default function AvailApps(props) {
         setOptions([]);
       }
     }, [open]);
-
 
     const handleChange = (event, newValue) => {
       event.preventDefault(); 
@@ -99,11 +109,9 @@ export default function AvailApps(props) {
           onOpen={() => {
           setOpen(true);
           }}
-
           onClose={() => {
           setOpen(false);
           }}
-        
           isOptionEqualToValue={(option, value) => option.id === value.id}
           disableCloseOnSelect
           options={options}
@@ -146,15 +154,3 @@ export default function AvailApps(props) {
     </MainContainer>
   );
 }
-
-
-//hardcoded array of test data for testing that the fetchAvailApps is receiving data.content properly 
-const appsAvailTest = [
-  { name: 'discord.exe'},
-  { name: 'notepad.exe'},
-  { name: 'explorer.exe'},
-  { name: 'Taskmgr.exe'},
-  { name: 'Spotify.exe'},
-  { name: 'AdobeUpdateService.exe'},
-  { name: 'chrome.exe'},
-];

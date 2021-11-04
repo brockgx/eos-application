@@ -1,4 +1,16 @@
+/*
+ * Name: command1list.js
+ * Purpose: Renders a group of buttons that make up the 'Command Page' preset commands options (Tab 1)
+ * 
+ * Usage: Child of Command.js 
+ *        Renders a group of buttons that make up the 'Command Page' preset commands options (Tab 1)
+ */
+
+
+// Module imports here
 import React from 'react';
+
+// Component imports here
 import { Button } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import styled from 'styled-components';
@@ -7,18 +19,23 @@ const MainContainer = styled.div`
     display: flex;
     flex-direction: column;
     font-size: 19px;
-    
+`;
+
+const DetailHeading = styled.text`
+  font-size: 25px;
+  font-weight: 600;
+  padding-top: 15px;
+  width: 100%;
 `;
 
 const ShutDeviceDiv = styled.div`
     display: flex;
     flex-direction: row;
     gap: 10px;
+    padding-bottom: 4px;
     margin-top: 25px;
     margin-bottom: 10px;
-    padding-bottom: 4px;
     border-bottom: 1px solid grey;
-    
 `;
 
 const ShutDownSpaceDiv = styled.div`
@@ -29,9 +46,9 @@ const RestartDeviceDiv = styled.div`
     display: flex;
     flex-direction: row;
     gap: 10px;
+    padding-bottom: 4px;
     margin-top: 10px;
     margin-bottom: 10px;
-    padding-bottom: 4px;
     border-bottom: 1px solid grey;
 `;
 
@@ -43,10 +60,10 @@ const KillProcessDiv = styled.div`
     display: flex;
     flex-direction: row;
     gap: 10px;
+    padding-bottom: 4px;
     align-items: center;
     margin-top: 10px;
     margin-bottom: 10px;
-    padding-bottom: 4px;
     border-bottom: 1px solid grey;
 `;
 
@@ -58,10 +75,9 @@ const RestartAppDiv = styled.div`
     display: flex;
     flex-direction: row;
     gap: 10px;
-    margin-top: 10px;
-    
-    align-items: center;
     padding-bottom: 4px;
+    align-items: center;
+    margin-top: 10px;
     border-bottom: 1px solid grey;
 `;
 
@@ -69,7 +85,6 @@ const RestartAppSpaceDiv = styled.div`
     flex: 2;
 `;
 
-//divs still to be made into styled components 
 export default function Command1List(props) {
 
       const handleSubmit = (event) => {
@@ -82,12 +97,14 @@ export default function Command1List(props) {
     <Box sx={{ width: '100%'}}>
         <form onSubmit={handleSubmit}>
             <MainContainer>
-                <div style={{fontSize: "20px", width: "100%", paddingTop: "15px"}}>Click the preset option you would like to run.</div>
+                <DetailHeading>
+                    Click the preset option you would like to run.
+                </DetailHeading>
                 <ShutDeviceDiv>
                     <div style={{flex: 1, }}>
                         Shutdown Device
                     </div>
-                        <ShutDownSpaceDiv />
+                    <ShutDownSpaceDiv />
                     <Button
                         variant="contained"
                         type="submit"
@@ -102,7 +119,7 @@ export default function Command1List(props) {
                     <div style={{flex: 1, marginRight: "0px"}}> 
                         Restart Device
                     </div >
-                        <RestartDeviceSpaceDiv />
+                    <RestartDeviceSpaceDiv />
                     <Button
                         variant="contained"
                         onClick={handleSubmit}
@@ -116,7 +133,7 @@ export default function Command1List(props) {
                     <div style={{flex: 1}}>
                         Kill Process
                     </div>
-                        <KillProcessSpaceDiv />
+                    <KillProcessSpaceDiv />
                     <Button
                         variant="contained"
                         value="appshutdown"
@@ -126,12 +143,11 @@ export default function Command1List(props) {
                         Select
                     </Button>  
                 </KillProcessDiv>
-
-               <RestartAppDiv>
+                <RestartAppDiv>
                     <div style={{flex: 1}}>
                         Restart Application
                     </div>
-                        <RestartAppSpaceDiv />
+                    <RestartAppSpaceDiv />
                     <Button
                         onClick={handleSubmit}
                         value="restartapp"
