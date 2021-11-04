@@ -57,7 +57,7 @@ const DropdownOptions = styled.div`
 `;
 const TableWrapper = styled.div`
   display: block;
-  width: 75vw;
+  width: 70vw;
   overflow-x: scroll;
   overflow-y: hidden;
   border-bottom: 1px solid black;

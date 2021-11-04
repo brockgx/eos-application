@@ -25,7 +25,6 @@ const Wrapper = styled.div`
 `;
 const MetricContainer = styled.div`
   display: flex;
-  flex: 1;
   margin-left: 10px;
   flex-direction: column;
 `;
@@ -34,14 +33,14 @@ const TableContainer = styled.div`
   flex-direction: column;
 `;
 const ChartContainer = styled.div`
-  margin-left: 50px;
+  margin-left: 10px;
 `;
 const ProgressWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-content: center;
   align-items: center;
-  margin: 10px 120px;
+  margin: 10px ;
 `;
 const DiskContainer = styled.div`
   display: flex;
@@ -57,7 +56,7 @@ const DiskWrapper = styled.div`
 `;
 const TableWrapper = styled.div`
   display: flex;
-  margin: 10px 0px 0px 170px;
+  margin: 10px 50px;
 `;
 const Table = styled.table`
   border-collapse: collapse;
@@ -243,7 +242,7 @@ const MachineMetrics = (props) => {
                       <Title>
                           Network Usage:
                       </Title>
-                      <ProgressWrapper style={{marginLeft: "162px"}}>
+                      <ProgressWrapper style={{marginLeft: "42px"}}>
                         <ProgressBar 
                           labelAlignment="outside"
                           labelColor="black"

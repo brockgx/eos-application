@@ -37,7 +37,7 @@ const Input = styled.input`
 /*
  * This is the component of Global Filter
 */
-export const GlobalFilter = ({filter, setFilter, preGlobalFilteredRows, prefill}) => {
+export const GlobalFilter = ({setFilter, preGlobalFilteredRows, prefill}) => {
   
   // Variable to store value of input field
   const [value, setValue] = useState(prefill)
