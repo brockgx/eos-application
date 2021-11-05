@@ -22,6 +22,7 @@ const Container = styled.div`
 `;
 const Wrapper = styled.div`
   display: flex;
+  justify-content: space-around;
 `;
 const MetricContainer = styled.div`
   display: flex;
@@ -33,20 +34,12 @@ const TableContainer = styled.div`
   flex-direction: column;
 `;
 const ChartContainer = styled.div`
-  margin-left: 10px;
 `;
 const ProgressWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-  align-items: center;
   margin: 10px ;
 `;
 const DiskContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  align-items: center;
+
 `;
 const DiskWrapper = styled.div`
   display: flex;
@@ -186,7 +179,7 @@ const MachineMetrics = (props) => {
           : <Wrapper>
               {machineMetrics.content.sysMetrics.map((metrics) => {
                 return (
-                  <>
+                  <Wrapper>
                     <MetricContainer>
                       <Title>
                         CPU Usage:
@@ -239,6 +232,8 @@ const MachineMetrics = (props) => {
                           })}
                         </DiskContainer>
                       </ProgressWrapper>
+                    </MetricContainer>
+                    <MetricContainer>
                       <Title>
                           Network Usage:
                       </Title>
@@ -254,7 +249,7 @@ const MachineMetrics = (props) => {
                           />
                       </ProgressWrapper>
                     </MetricContainer>
-                  </>
+                  </Wrapper>
                 );
               })}
               <TableContainer>
