@@ -1,3 +1,8 @@
+#
+# Custom logger file used to create both stream and file loggers
+# to capture specific information or error messages
+#
+
 #Import third party dependencies
 import logging, sys
 from os import path

@@ -1,3 +1,8 @@
+#
+# The module which is used to create all the tables needed in the database
+# this is done upon running the server (if the tables do not already exist)
+#
+
 #Import third party dependencies
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.mysql import INTEGER

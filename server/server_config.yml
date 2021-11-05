@@ -11,10 +11,9 @@ HTTPS-DETAILS:
   CERTIFICATE-FILE: None #the location/path of the certificate file for TLS 
   KEY_FILE: None #the location/path of the key file for TLS
 DATABASE-DETAILS:
-  USERNAME: test
-  PASSWORD: test01
-  DATABASE-TYPE: sqlite
-  DATABASE-NAME: test.db
-  DATABASE-URI: D:\Users\Alex\Documents\2_University\2021_Sem2\SWE40002\GitHub Local Copy of Group Project\eos-application\server\modules\database\
-  #DATABASE-URI:  /home/devmain/uni-work/app-resources/eos-app/server/modules/database/
+  USERNAME: test #the database account username
+  PASSWORD: test01 #the database account password
+  DATABASE-TYPE: sqlite #the database type (sqlite or mysql)
+  DATABASE-NAME: test.db #the database name
+  DATABASE-URI:  /home/devmain/uni-work/app-resources/eos-app/server/modules/database/ #the database uri (path or address) with a \ or / on the end
  

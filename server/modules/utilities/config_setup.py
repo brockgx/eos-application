@@ -1,3 +1,8 @@
+#
+# Handles all the configuration file reading and validation
+# validates sections and attributes based on existence and type
+#
+
 #Import third party dependencies
 from os import path
 from platform import system

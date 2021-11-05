@@ -22,6 +22,8 @@ def dashView():
   return "Main Dash Route"
 
 #Route: to get a list of all the machines added to the portal
+#   - The route is /dash/clientmachines, supporting the GET method
+#   - It will return all the stored client machines details
 @dashboard_routes.route('/clientmachines', methods=['GET'])
 def listClientMachines():
   #Get a list of everything in the machines database
@@ -47,6 +49,8 @@ def listClientMachines():
   })
 
 #Route: to add a client machine to the application
+#   - The route is /dash/clientmachines, supporting the POST method
+#   - It will add a new machine once connected, if it doesn't already exist
 @dashboard_routes.route('/clientmachines', methods=['POST'])
 def add_new_client_machine():
   #Handle the request data
@@ -58,7 +62,7 @@ def add_new_client_machine():
    
     #Add a new machines details if they don't exist
     if not machine_exists:
-      #Create a new table entry object using request data\
+      #Create a new table entry object using request data
       new_machine = ClientMachines(
         name=req_data["host_name"],
         host_name=req_data["host_name"],
@@ -79,6 +83,8 @@ def add_new_client_machine():
     return "[Error] " + str(err_msg)
 
 #Route: to remove an existing client machine from the portal
+#   - The route is /dash/clientmachines/<id>, supporting the DELETE method
+#   - It will remove a client machine from the database/frontend
 @dashboard_routes.route('/clientmachines/<id>', methods=['DELETE'])
 def remove_client_machine(id):
   #Get the machine to delete
@@ -101,6 +107,8 @@ def remove_client_machine(id):
     return "An error occurred: " + str(err_msg)
 
 #Route: to update an existing client machine in the portal
+#   - The route is /dash/clientmachines/<id>, supporting the PUT method
+#   - It will update the name attribute for a selected machine via id
 @dashboard_routes.route("/clientmachines/<id>", methods=['PUT'])
 def update_client_machine(id):
   req = request.json
@@ -118,24 +126,10 @@ def update_client_machine(id):
   except Exception as err_msg:
     print(str(err_msg))
     return "An error occurred: " + str(err_msg) + "."
-    
-#Route: to get a list of system metrics for a specified machine
-# @dashboard_routes.route('/clientmachinemetrics/<name>', methods=['GET'])
-# def listSystemMetrics(name):
-  
-#   #Get a list of metrics from the system_metrics table - filter by machine_name
-#   mach = SystemMetrics.query.filter_by(machine_name=name).order_by(SystemMetrics.id.desc()).first()
-#   final = []
-
-#   # for mach in result:
-#   #   print(mach)
-#   final.append({"id": mach.id, "name": mach.machine_name, "time": mach.timestamp, "cpu": mach.cpu_usage, "ram": mach.ram_usage,"disk": mach.disk_usage, "disk_read": mach.disk_read, "disk_write": mach.disk_write, "network": mach.network_usage})
-
-#   return jsonify({
-#     "description": "A list of system metrics for a machine",
-#     "content": final  })
 
 #Route: to get a list of all app & sys metrics for a machine
+#   - The route is /dash/clientmachinemetrics/<mac>, supporting the GET method
+#   - It will return the metrics for a given machine identified by mac
 @dashboard_routes.route('/clientmachinemetrics/<mac>', methods=['GET'])
 def listAllMetrics(mac):
   
@@ -150,8 +144,7 @@ def listAllMetrics(mac):
   for index, disk in enumerate(disk_names):
     disk_metrics.append({"name": disk, "usage": disk_usage[index]})
 
-
-
+  #Append all system metrics
   final_sys_metrics.append({
     "id": mach.id,
     "name": mach.machine.name,
@@ -166,6 +159,7 @@ def listAllMetrics(mac):
 
   final_app_metrics = []
 
+  #Append all app metrics
   for app in mach.app_metrics:
     final_app_metrics.append({
       "id": app.id,
@@ -187,11 +181,15 @@ def listAllMetrics(mac):
     }
   })
 
+#Route: to change any machine statuses
+#   - The route is /dash/checkstatus, supporting the GET method
+#   - It will try to connect to all machines sockets and get a response
 @dashboard_routes.route('/checkstatus', methods=['GET'])
 def check_machine_status():
   #Get a list of everything in the machines database
   machine_list = ClientMachines.query.all()
 
+  #Go through all machines and try to connect to the socket
   for mach in machine_list:
     can_connect = True
     try:
@@ -208,9 +206,11 @@ def check_machine_status():
         server_logger.info("Pinging on ({},{}) successful.".format(ip,port))
       sock.close()
     except Exception as err_msg:
+      #If the connection fails catch it and say that it fails
       can_connect = False
       server_logger.warning("Couldn't connect to {}, on port {} {}.".format(ip,port,err_msg))
     
+    #Modify the status depending on result
     if can_connect:
       if mach.status == 0:
         print("Machine is offline but should be online: " + mach.name)
@@ -226,10 +226,14 @@ def check_machine_status():
     "description": "Status check for all machines"
   })
 
-@dashboard_routes.route('/changeip/<id>', methods=['POST'])
+#Route: to change the ip address stored for a machine
+#   - The route is /dash/changeip/<id>, supporting the PUT method
+#   - It will modify the stored ip address of a machine identified via id
+@dashboard_routes.route('/changeip/<id>', methods=['PUT'])
 def change_ip_address(id):
   req = request.json
 
+  #Get the machine, then get the request body new ip and change it
   machine = ClientMachines.query.filter_by(id=id).first()
   if machine is not None:
     new_ip = int(ipaddress.IPv4Address(req["new_ip"]))

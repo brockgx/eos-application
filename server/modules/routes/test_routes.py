@@ -1,13 +1,17 @@
+#Import from third party libraries
 from platform import machine
 from flask import Blueprint, jsonify, request
 import json, ipaddress, socket, time
 from sqlalchemy import update
 
+#Import custom modules
 from ..database.database_tables import db, ClientMachines, Command
 from ..sockets.data_transfer import sendSocketData, receiveSocketData
 
+#Setup blueprint for test routes
 test_routes = Blueprint('test_routes',__name__)
 
+#Route: for returning a list of machines
 @test_routes.route("/getmachines")
 def get_machines():
   result = jsonify({

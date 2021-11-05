@@ -1,3 +1,8 @@
+#
+# This file holds all the relevant routes and functionality
+# for the metric routes, collecting and retrieving data
+#
+
 #Import any third party dependencies
 from flask import Blueprint, jsonify, request
 from datetime import datetime
@@ -91,6 +96,7 @@ def get_all_sys_metrics():
       machine_name = sys_metric.machine.name
       machine_mac = sys_metric.machine.mac_address
 
+    #Append the metrics for the system
     all_system_metrics.append({
       "name": machine_name,
       "mac_address": machine_mac,
@@ -128,7 +134,8 @@ def get_all_app_metrics():
     if sys_metric.machine is not None:
       machine_name = sys_metric.machine.name
       machine_mac = sys_metric.machine.mac_address
-
+    
+    #Append the metrics for the apps for output
     for app in sys_metric.app_metrics:
       all_application_metrics.append({
         "name": machine_name,

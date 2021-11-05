@@ -8,30 +8,31 @@ from flask import Blueprint, jsonify, request
 import json, ipaddress, socket, time
 from datetime import datetime
 
+#Import from in house modules
 from ..database.database_tables import db, ClientMachines, Command
 from ..sockets.data_transfer import sendSocketData, receiveSocketData
-
-#Import from in house modules
-#from ..database.prototype_database import db, Random, AppMetrics
-
-#Import from in house modules
 from ..database.database_tables import db, ClientMachines, AppMetrics, AppDetails
+
 #Setup the blueprint for the command routes
 command_routes = Blueprint('command_routes',__name__)
 
-
 #Route: main route for the commands
+#   - The route is /commands, supporting the GET, POST, PUT & DELETE methods
+#   - It will return the main route for commands
 @command_routes.route("/", methods=['GET','POST','PUT','DELETE'])
 def command():
   return "The command routes are: /availableMachines - to get connected machines, /send - to send a command, /sendfile - to send a file"
 
 #Route: to get a list of all machines tied to the application
+#   - The route is /commands/availableMachines, supporting the GET method
+#   - It will return the machine for running commands
 @command_routes.route("/availableMachines", methods=['GET'])
 def getAvailableMachines():
     #Get a list of everything in the machines database
     machineList = ClientMachines.query.all()
     finalList = []
 
+    #Append data to the list for return
     for mach in machineList:
       finalList.append({
       "id": mach.id,
@@ -47,8 +48,9 @@ def getAvailableMachines():
     })
 
 
-  #Route: to get list of apps for a specified machine
-
+#Route: to get list of apps for a specified machine
+#   - The route is /commands/machineapps/<mac>, supporting the GET method
+#   - It will return all the apps collected for a machine identified via the mac variable
 @command_routes.route('/machineapps/<mac>', methods=['GET'])
 def getAvailableApps(mac):
   final_apps_avail = []
@@ -68,6 +70,8 @@ def getAvailableApps(mac):
   })
 
 #Route: to get the past 20~ commands
+#   - The route is /commands/pastcommands, supporting the GET method
+#   - It will return a histroy of the latest 25 commands
 @command_routes.route("/pastcommands", methods=['GET'])
 def getPastCommands():
     #Get a list of everything in the machines database
@@ -90,6 +94,8 @@ def getPastCommands():
     })
 
 #Route: to send a command to the agent and get a response back
+#   - The route is /commands/send, supporting the POST method
+#   - It will attempt to send a command to the machine
 @command_routes.route("/send", methods=['POST'])
 def sendCommand():
   #Gets the body request - JSON structure for commands
@@ -149,10 +155,3 @@ def sendCommand():
   
 
   return jsonify({"desc": "Return of the message from the socket", "content": str(data.decode())}) #Returns the output from the agent in a JSON format
-
-#Route: to send a file to the agent machine
-@command_routes.route("/sendfile", methods=['POST'])
-def sendFile():
-  req = request.json
-  print(req)
-  return "Sending file to agent..."

@@ -1,8 +1,13 @@
-#import personal libraries
+#
+# Module to hold the functionality for sending over a socket
+# and for receiving a dynamic size over the socket with encryption
+#
+
+#Import third party libraries
+import io, sys, time
+
+#Import custom modules
 from ..security.AESEncryption import do_encrypt, do_decrypt
-import io
-import sys
-import time
 
 #Constants
 HEADERSIZE = 10

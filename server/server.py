@@ -1,3 +1,8 @@
+#
+# The main file for starting the FLask API server
+# it starts the Flask App and instantiates routes and database connections
+#
+
 #Import any downloaded/third party modules and packages
 from flask import Flask, jsonify
 from sys import exit
