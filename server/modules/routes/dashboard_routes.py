@@ -139,13 +139,10 @@ def listAllMetrics(mac):
   disk_metrics = []
 
   #Package the disks for display
-  try:
-    disk_names = mach.disk_names.split(",")
-    disk_usage = mach.disk_usage.split(",")
-    for index, disk in enumerate(disk_names):
-      disk_metrics.append({"name": disk, "usage": disk_usage[index]})
-  except Exception as err_msg:
-    server_logger.warning("Cannot calculate disks due to no data.")
+  disk_names = mach.disk_names.split(",")
+  disk_usage = mach.disk_usage.split(",")
+  for index, disk in enumerate(disk_names):
+    disk_metrics.append({"name": disk, "usage": disk_usage[index]})
 
   #Append all system metrics
   final_sys_metrics.append({
