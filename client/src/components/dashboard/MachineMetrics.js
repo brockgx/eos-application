@@ -19,10 +19,12 @@ import ProgressBar from "./ProgressBar";
 // Styled component declarations
 const Container = styled.div`
   display: flex;
+  width: 100%;
 `;
 const Wrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  width: 100%;
 `;
 const MetricContainer = styled.div`
   display: flex;
@@ -36,20 +38,24 @@ const TableContainer = styled.div`
 const ChartContainer = styled.div`
 `;
 const ProgressWrapper = styled.div`
-  margin: 10px ;
+  display: flex; 
+  justify-content: flex-end;
+  margin: 10px 45px;
 `;
 const DiskContainer = styled.div`
 
 `;
 const DiskWrapper = styled.div`
   display: flex;
+  justify-content: flex-end;
   align-content: center;
   align-items: center;
   margin-bottom: 15px;
 `;
 const TableWrapper = styled.div`
   display: flex;
-  margin: 10px 50px;
+  margin-top: 10px;
+  margin-left: 60px;
 `;
 const Table = styled.table`
   border-collapse: collapse;
@@ -179,7 +185,7 @@ const MachineMetrics = (props) => {
           : <Wrapper>
               {machineMetrics.content.sysMetrics.map((metrics) => {
                 return (
-                  <Wrapper>
+                  <>
                     <MetricContainer>
                       <Title>
                         CPU Usage:
@@ -232,12 +238,10 @@ const MachineMetrics = (props) => {
                           })}
                         </DiskContainer>
                       </ProgressWrapper>
-                    </MetricContainer>
-                    <MetricContainer>
                       <Title>
                           Network Usage:
                       </Title>
-                      <ProgressWrapper style={{marginLeft: "42px"}}>
+                      <ProgressWrapper >
                         <ProgressBar 
                           labelAlignment="outside"
                           labelColor="black"
@@ -249,7 +253,7 @@ const MachineMetrics = (props) => {
                           />
                       </ProgressWrapper>
                     </MetricContainer>
-                  </Wrapper>
+                  </>
                 );
               })}
               <TableContainer>
