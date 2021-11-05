@@ -207,6 +207,10 @@ const Machines = (props) => {
   
   // Redirect functions to navigate to "Query page"
   const redirect_query = () =>{
+
+    //set the pathname to update the sidebar selection
+    window.location.pathname = '/query';
+
     // Pass data to prefill query filter with "machine name"
     history.push({
       pathname: '/query',

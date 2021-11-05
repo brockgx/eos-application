@@ -32,26 +32,23 @@ const SearchBar = styled.input`
 
 const Search = ({ searchQuery, setSearchQuery }) => {
 
-  // const history = useHistory();
-  // const onSubmit = (e) => {
-  //   history.push(`?s=${searchQuery}`);
-  //   e.preventDefault();
-  // };
+  const onSubmit = (e) => {
+    window.location.reload()
+    e.preventDefault();
+  };
 
   return (
     <form
       action="/"
       method="get"
       autoComplete="off"
+      onSubmit={onSubmit}
     >
     <SearchBar
-      
       value={searchQuery}
       onInput={(e) => setSearchQuery(e.target.value)}
       type="text"
-      id="header-search"
       placeholder="Filter by machine name"
-      name="s"
     />
     <FaIcons.FaTimes style={{color: "red", cursor: "pointer"}} onClick={(e) => setSearchQuery("")}/>
 

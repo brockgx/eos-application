@@ -5,8 +5,12 @@
  * Usage: MetricsTable.js
  */
 
+//module imports here
 import React from 'react'
 
+/*
+ * This is the component of Checkbox
+*/
 export const Checkbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
   const defaultRef = React.useRef()
   const resolvedRef = ref || defaultRef

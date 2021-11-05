@@ -146,6 +146,7 @@ export const DateColumnFilter = ({ column }) => {
     </Container>
   )
 }
+
 /*
  * Name: DateTimeColumnFilter
  * Filter function for datetime columns
