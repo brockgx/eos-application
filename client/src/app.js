@@ -34,16 +34,6 @@ const Container = styled.div`
  * Renders a Sidebar&Topbar on all pages but he login/home page
  */
 function App() {
-
-  // Hook to make an API call that checks the status of devices
-  // If disconnected, status = 0 else, status = 1
-  // Status of connected machines can be viewed on dashbaord page 
-  useEffect(() => {
-    setInterval(() => {
-      fetch('/dash/checkstatus')
-    }, 180000); //check every 3 mins
-  });
-
   return (   
     <Router>
       { window.location.pathname !== '/' &&  <Topbar /> }

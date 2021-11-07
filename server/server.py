@@ -6,11 +6,12 @@
 #Import any downloaded/third party modules and packages
 from flask import Flask, jsonify
 from sys import exit
-import logging
+import logging, platform
 
 #Import any custom made modules
 from modules.utilities.config_setup import get_config_details
 from modules.utilities.logging_setup import server_logger, FILE_HANDLER, STREAM_HANDLER
+from modules.utilities.status_check import start_status_thread
 from modules.routes.test_routes import test_routes
 from modules.routes.command_routes import command_routes
 from modules.routes.dashboard_routes import dashboard_routes
@@ -30,6 +31,10 @@ flask_logger.addHandler(STREAM_HANDLER)
 #If all configuration files are valid continue setting up the application
 #and database connection
 if config_dets != False:
+  server_logger.debug("=================================================")
+  server_logger.info("Starting the server on {}.".format(platform.node()))
+  server_logger.info("Server configuration options: {}".format(config_dets))
+  
   #Instantiate the DB, getting the path and details from the config file
   try:
     DB_LOCATION = config_dets["DATABASE-DETAILS"]["DATABASE-URI"] + config_dets["DATABASE-DETAILS"]["DATABASE-NAME"]
@@ -67,9 +72,13 @@ if config_dets != False:
   #Run the Flask app server with HTTPS enabled or disabled (depending on config option)
   if __name__ == '__main__':
     if config_dets["HTTPS-DETAILS"]["HTTPS-ENABLED"]:
-      app.run(host=config_dets["SERVER-DETAILS"]["SERVER-ADDRESS"],port=config_dets["SERVER-DETAILS"]["SERVER-PORT"],debug=True,ssl_context=(config_dets["HTTPS-DETAILS"]["CERTIFICATE-FILE"],config_dets["HTTPS-DETAILS"]["KEY_FILE"]))
+      #Start the status checker for client machines and the FLask App
+      start_status_thread("https://" + str(config_dets["SERVER-DETAILS"]["SERVER-ADDRESS"]) + ":" + str(config_dets["SERVER-DETAILS"]["SERVER-PORT"]) + "/dash/checkstatus", 300)
+      app.run(host=config_dets["SERVER-DETAILS"]["SERVER-ADDRESS"],port=config_dets["SERVER-DETAILS"]["SERVER-PORT"],debug=False,ssl_context=(config_dets["HTTPS-DETAILS"]["CERTIFICATE-FILE"],config_dets["HTTPS-DETAILS"]["KEY_FILE"]))
     else:
-      app.run(host=config_dets["SERVER-DETAILS"]["SERVER-ADDRESS"],port=config_dets["SERVER-DETAILS"]["SERVER-PORT"],debug=True)
+      #Start the status checker for client machines and the FLask App
+      start_status_thread("http://" + str(config_dets["SERVER-DETAILS"]["SERVER-ADDRESS"]) + ":" + str(config_dets["SERVER-DETAILS"]["SERVER-PORT"]) + "/dash/checkstatus", 300)
+      app.run(host=config_dets["SERVER-DETAILS"]["SERVER-ADDRESS"],port=config_dets["SERVER-DETAILS"]["SERVER-PORT"],debug=False)
 else:
   #Exit if the App failed to start
   server_logger.critical("Failed to start the API server, issue with config file.")
