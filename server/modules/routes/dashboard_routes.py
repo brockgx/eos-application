@@ -194,7 +194,7 @@ def check_machine_status():
     can_connect = True
     try:
       sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-      sock.settimeout(20)
+      sock.settimeout(10)
       ip = str(ipaddress.IPv4Address(mach.ip_address))
       port = int(mach.ports.split(",")[0])
 
@@ -213,12 +213,12 @@ def check_machine_status():
     #Modify the status depending on result
     if can_connect:
       if mach.status == 0:
-        print("Machine is offline but should be online: " + mach.name)
+        #print("Machine is offline but should be online: " + mach.name)
         mach.status = 1
         db.session.commit()
     elif not can_connect:
       if mach.status == 1:
-        print("Machine is online but should be offline: " + mach.name)
+        #print("Machine is online but should be offline: " + mach.name)
         mach.status = 0
         db.session.commit()
   
